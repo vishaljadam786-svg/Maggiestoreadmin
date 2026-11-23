@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAGGIE - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00e676;
+            --info: #00b0ff;
+            --danger: #ff5252;
+            --bg: #0b1120;
+            --card-bg: #162032;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 25px 15px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
+            background: #1e293b;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, #00e676, #00b0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .box {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .helper-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .helper-hint code {
+            color: var(--info);
+            background: rgba(0, 176, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: var(--bg);
+            color: white;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+        }
+
+        textarea { resize: vertical; min-height: 75px; }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: #000;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover { transform: translateY(-2px); opacity: 0.92; }
+
+        .cancel-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 460px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            gap: 10px;
+        }
+
+        .list-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .list-left img {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .app-meta {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .app-meta span.name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-meta span.cat {
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .small-btn {
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 500;
+            border: 1px solid;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .edit-btn {
+            color: var(--info);
+            border-color: var(--info);
+        }
+        .edit-btn:hover { background: var(--info); color: #000; }
+
+        .del-btn {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        .del-btn:hover { background: var(--danger); color: #fff; }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr auto;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .social-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .social-tag {
+            background: var(--bg);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 8px 14px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: none;
+            z-index: 300;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .social-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img id="adminLogoPreview" src="https://via.placeholder.com/70/00e676/000000?text=M" alt="MAGGIE" class="header-logo" onerror="this.src='https://via.placeholder.com/70/00e676/000000?text=M'">
+        <h1 id="adminStoreTitle">MAGGIE</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Admin Control Panel</p>
+    </div>
+
+    <div class="container">
+        <div class="box full-width">
+            <h2>⚙️ Store Customization (Logo & Name)</h2>
+            <p class="helper-hint">ImgBB par upload karke <strong>Direct link</strong> (<code>https://i.ibb.co/...</code>) yahan paste karein.</p>
+            <form id="customizeForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) auto; gap: 12px; align-items: end;">
+                <div class="form-group" style="margin:0;">
+                    <label>Store Name *</label>
+                    <input type="text" id="custName" value="MAGGIE STORE" required>
+                </div>
+                <div class="form-group" style="margin:0;">
+                    <label>Store Logo Direct URL (imgbb.com) *</label>
+                    <input type="url" id="custLogo" placeholder="https://i.ibb.co/your-logo.png" required>
+                </div>
+                <button type="submit" id="custBtn" class="btn" style="padding: 11px 25px; width: auto; font-size:0.9rem;">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="box">
+            <h2 id="formHeading">+ Publish New App</h2>
+            <form id="addAppForm">
+                <input type="hidden" id="editAppId">
+                <div class="form-group">
+                    <label>App Name *</label>
+                    <input type="text" id="appName" placeholder="e.g. Maggie Pro" required>
+                </div>
+                <div class="form-group">
+                    <label>Category *</label>
+                    <input type="text" id="appCategory" list="catSuggestions" placeholder="e.g. Games, Tools, Social" required>
+                    <datalist id="catSuggestions">
+                        <option value="Games">
+                        <option value="Tools">
+                        <option value="Social">
+                        <option value="Entertainment">
+                        <option value="Productivity">
+                    </datalist>
+                </div>
+                <div class="form-group">
+                    <label>App Logo Direct URL (imgbb.com) *</label>
+                    <input type="url" id="appLogo" placeholder="https://i.ibb.co/your-app-icon.png" required>
+                </div>
+                <div class="form-group">
+                    <label>GitHub Download Link *</label>
+                    <input type="url" id="appLink" placeholder="https://github.com/user/repo/releases/download/..." required>
+                </div>
+                <div class="form-group">
+                    <label>Description (Optional)</label>
+                    <textarea id="appDesc" placeholder="App features & details..."></textarea>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">Publish to Store</button>
+                <button type="button" class="cancel-btn" id="cancelEditBtn" onclick="resetAppForm()">Cancel Edit</button>
+            </form>
+        </div>
+
+        <div class="box">
+            <h2>Manage Apps (Edit / Delete)</h2>
+            <div id="adminAppList" class="item-list">
+                <p style="color: var(--text-muted);">Loading apps...</p>
+            </div>
+        </div>
+
+        <div class="box full-width">
+            <h2>Social Media Promotion Handles</h2>
+            <p class="helper-hint">
+                Jo handles aap yahan add karenge, sirf wahi user website par dikhenge.
+            </p>
+            <form id="socialForm" class="social-grid">
+                <input type="text" id="socialPlatform" list="platformList" placeholder="Platform (e.g. Telegram)" required>
+                <datalist id="platformList">
+                    <option value="Instagram">
+                    <option value="Telegram">
+                    <option value="Discord">
+                    <option value="YouTube">
+                    <option value="WhatsApp">
+                    <option value="X (Twitter)">
+                </datalist>
+                <input type="url" id="socialUrl" placeholder="https://t.me/yourchannel" required>
+                <button type="submit" id="socialBtn" class="btn" style="padding: 11px 25px;">+ Add Handle</button>
+            </form>
+
+            <div id="socialList" class="social-tags"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Action Completed!</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, updateDoc, doc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAz5VFvZ4nb7XOd8R72uW-aCYoLp0A_DAk",
+            authDomain: "maggie-store-d3f3f.firebaseapp.com",
+            projectId: "maggie-store-d3f3f",
+            storageBucket: "maggie-store-d3f3f.firebasestorage.app",
+            messagingSenderId: "646860878839",
+            appId: "1:646860878839:web:1dd29cff6636c45bf374f2",
+            measurementId: "G-BSTQZS5KQJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let appsCache = {};
+
+        const toast = document.getElementById('toast');
+        function showToast(msg) {
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        function withTimeout(promise, ms = 10000) {
+            return Promise.race([
+                promise,
+                new Promise((_, reject) => setTimeout(() => reject(new Error("Firebase request timeout. Check Firestore database & rules.")), ms))
+            ]);
+        }
+
+        onSnapshot(doc(db, "settings", "general"), (docSnap) => {
+            if (docSnap.exists()) {
+                const settings = docSnap.data();
+                if (settings.storeName) {
+                    document.getElementById('custName').value = settings.storeName;
+                    document.getElementById('adminStoreTitle').innerText = settings.storeName;
+                }
+                if (settings.logoUrl) {
+                    document.getElementById('custLogo').value = settings.logoUrl;
+                    document.getElementById('adminLogoPreview').src = settings.logoUrl;
+                }
+            }
+        });
+
+        document.getElementById('customizeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('custBtn');
+            btn.innerText = 'Saving...';
+            btn.disabled = true;
+            try {
+                await withTimeout(setDoc(doc(db, "settings", "general"), {
+                    storeName: document.getElementById('custName').value.trim(),
+                    logoUrl: document.getElementById('custLogo').value.trim()
+                }));
+                showToast('Website customized successfully!');
+            } catch (err) {
+                alert("Save Error: " + err.message);
+            } finally {
+                btn.innerText = 'Save Changes';
+                btn.disabled = false;
+            }
+        });
+
+        window.resetAppForm = () => {
+            document.getElementById('editAppId').value = '';
+            document.getElementById('addAppForm').reset();
+            document.getElementById('formHeading').innerText = '+ Publish New App';
+            document.getElementById('submitBtn').innerText = 'Publish to Store';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        };
+
+        window.startEditApp = (id) => {
+            const data = appsCache[id];
+            if (!data) return;
+            document.getElementById('editAppId').value = id;
+            document.getElementById('appName').value = data.name || '';
+            document.getElementById('appCategory').value = data.category || 'General';
+            document.getElementById('appLogo').value = data.logoUrl || '';
+            document.getElementById('appLink').value = data.downloadUrl || '';
+            document.getElementById('appDesc').value = data.description || '';
+            document.getElementById('formHeading').innerText = '✏️ Edit App';
+            document.getElementById('submitBtn').innerText = 'Update App';
+            document.getElementById('cancelEditBtn').style.display = 'block';
+            document.getElementById('addAppForm').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        document.getElementById('addAppForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const editId = document.getElementById('editAppId').value.trim();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = editId ? 'Updating...' : 'Publishing...';
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('appName').value.trim(),
+                category: document.getElementById('appCategory').value.trim() || 'General',
+                logoUrl: document.getElementById('appLogo').value.trim(),
+                downloadUrl: document.getElementById('appLink').value.trim(),
+                description: document.getElementById('appDesc').value.trim()
+            };
+
+            try {
+                if (editId) {
+                    await withTimeout(updateDoc(doc(db, "apps", editId), payload));
+                    showToast('App Updated!');
+                } else {
+                    await withTimeout(addDoc(collection(db, "apps"), {
+                        ...payload,
+                        createdAt: serverTimestamp()
+                    }));
+                    showToast('App Published!');
+                }
+                resetAppForm();
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                btn.innerText = editId ? 'Update App' : 'Publish to Store';
+                btn.disabled = false;
+            }
+        });
+
+        onSnapshot(collection(db, "apps"), (snapshot) => {
+            const list = document.getElementById('adminAppList');
+            list.innerHTML = '';
+            appsCache = {};
+
+            if (snapshot.empty) {
+                list.innerHTML = '<p style="color: var(--text-muted);">No apps published yet.</p>';
+                return;
+            }
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id;
+                appsCache[id] = data;
+
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-left">
+                        <img src="${data.logoUrl || ''}" onerror="this.src='https://via.placeholder.com/45?text=App'">
+                        <div class="app-meta">
+                            <span class="name">${data.name || 'Unnamed App'}</span>
+                            <span class="cat">Category: ${data.category || 'General'}</span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="small-btn edit-btn" onclick="startEditApp('${id}')">Edit</button>
+                        <button class="small-btn del-btn" onclick="deleteApp('${id}')">Delete</button>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }, (err) => {
+            document.getElementById('adminAppList').innerHTML = `<p style="color:var(--danger);">Error loading apps: ${err.message}</p>`;
+        });
+
+        window.deleteApp = async (id) => {
+            if (confirm("Delete this app from MAGGIE STORE?")) {
+                try {
+                    await withTimeout(deleteDoc(doc(db, "apps", id)));
+                    if (document.getElementById('editAppId').value === id) resetAppForm();
+                    showToast('App Deleted!');
+                } catch (err) {
+                    alert("Delete Error: " + err.message);
+                }
+            }
+        };
+
+        document.getElementById('socialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('socialBtn');
+            btn.innerText = 'Adding...';
+            btn.disabled = true;
+            try {
+                await withTimeout(addDoc(collection(db, "socials"), {
+                    platform: document.getElementById('socialPlatform').value.trim(),
+                    url: document.getElementById('socialUrl').value.trim()
+                }));
+                e.target.reset();
+                showToast('Social Handle Added!');
+            } catch (error) {
+                alert("Social Error: " + error.message);
+            } finally {
+                btn.innerText = '+ Add Handle';
+                btn.disabled = false;
+            }
+        });
+
+        onSnapshot(collection(db, "socials"), (snapshot) => {
+            const socialList = document.getElementById('socialList');
+            socialList.innerHTML = '';
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                const tag = document.createElement('div');
+                tag.className = 'social-tag';
+                tag.innerHTML = `
+                    <span><strong>${data.platform}:</strong> <a href="${data.url}" target="_blank" style="color:var(--info); text-decoration:none;">Link</a></span>
+                    <button class="small-btn del-btn" style="padding:2px 7px;" onclick="deleteSocial('${docSnap.id}')">&times;</button>
+                `;
+                socialList.appendChild(tag);
+            });
+        });
+
+        window.deleteSocial = async (id) => {
+            if (confirm("Remove this social media handle?")) {
+                await deleteDoc(doc(db, "socials", id));
+                showToast('Social Handle Removed!');
+            }
+        };
+    </script>
+</body>
+</html>
