@@ -3,42 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAGGIE STUDIO - Admin Command Center</title>
+    <title>MAGGIE STORE - Violet Glass Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root, [data-theme="dark"] {
-            --bg: #070b14;
-            --sidebar: #0c1220;
-            --card: #11192b;
-            --card-2: #17223a;
-            --primary: #00e676;
-            --primary-dark: #00c853;
-            --primary-glow: rgba(0, 230, 118, 0.24);
-            --accent: #00b0ff;
-            --warm: #f59e0b;
-            --danger: #ff5252;
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #f8fafc;
-            --muted: #94a3b8;
-            --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+            --bg-1: #120926;
+            --bg-2: #1e0f3d;
+            --glow-a: rgba(168, 85, 247, 0.34);
+            --glow-b: rgba(139, 92, 246, 0.24);
+            --glass: rgba(34, 19, 66, 0.62);
+            --glass-2: rgba(52, 30, 98, 0.56);
+            --border: rgba(216, 180, 254, 0.18);
+            --primary: #c084fc;
+            --primary-strong: #9333ea;
+            --primary-glow: rgba(168, 85, 247, 0.36);
+            --accent: #38bdf8;
+            --danger: #fb7185;
+            --text: #faf5ff;
+            --muted: #cbb7eb;
+            --shadow: 0 18px 42px rgba(8, 3, 20, 0.52);
         }
 
         [data-theme="light"] {
-            --bg: #f1f5f9;
-            --sidebar: #ffffff;
-            --card: #ffffff;
-            --card-2: #f8fafc;
-            --primary: #00b248;
-            --primary-dark: #008e3a;
-            --primary-glow: rgba(0, 178, 72, 0.2);
+            --bg-1: #f5f0ff;
+            --bg-2: #ebe2ff;
+            --glow-a: rgba(147, 51, 234, 0.14);
+            --glow-b: rgba(124, 58, 237, 0.12);
+            --glass: rgba(255, 255, 255, 0.76);
+            --glass-2: rgba(248, 244, 255, 0.88);
+            --border: rgba(126, 34, 206, 0.15);
+            --primary: #7e22ce;
+            --primary-strong: #6b21a8;
+            --primary-glow: rgba(126, 34, 206, 0.2);
             --accent: #0284c7;
-            --warm: #d97706;
             --danger: #e11d48;
-            --border: rgba(15, 23, 42, 0.1);
-            --text: #0f172a;
-            --muted: #475569;
-            --shadow: 0 10px 26px rgba(15, 23, 42, 0.07);
+            --text: #1e1035;
+            --muted: #5b4b7a;
+            --shadow: 0 14px 32px rgba(76, 29, 149, 0.09);
         }
 
         * {
@@ -49,20 +51,46 @@
         }
 
         body {
-            background-color: var(--bg);
-            background-image:
-                radial-gradient(circle at 12% 8%, rgba(0, 230, 118, 0.09), transparent 34%),
-                radial-gradient(circle at 88% 12%, rgba(0, 176, 255, 0.09), transparent 34%);
+            background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
             color: var(--text);
             min-height: 100vh;
             display: flex;
-            transition: background-color 0.25s ease, color 0.25s ease;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.25s ease;
         }
 
-        /* Sidebar Navigation (Desktop) */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(85px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            width: 360px;
+            height: 360px;
+            top: -80px;
+            left: 16%;
+            background: var(--glow-a);
+        }
+
+        body::after {
+            width: 420px;
+            height: 420px;
+            bottom: -110px;
+            right: 6%;
+            background: var(--glow-b);
+        }
+
+        /* Sidebar */
         .sidebar {
-            width: 265px;
-            background: var(--sidebar);
+            width: 266px;
+            background: var(--glass);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
             border-right: 1px solid var(--border);
             padding: 22px 16px;
             display: flex;
@@ -71,65 +99,63 @@
             position: sticky;
             top: 0;
             height: 100vh;
+            z-index: 20;
             flex-shrink: 0;
         }
 
-        .brand-header {
+        .brand-box {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 6px 8px 20px;
+            padding: 4px 6px 18px;
             border-bottom: 1px solid var(--border);
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .brand-logo {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
             object-fit: cover;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 14px var(--primary-glow);
-            background: var(--card-2);
+            border: 1.5px solid var(--primary);
+            box-shadow: 0 0 18px var(--primary-glow);
+            background: var(--glass-2);
             flex-shrink: 0;
         }
 
-        .brand-title {
+        .brand-name {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.15rem;
+            font-size: 1.14rem;
             font-weight: 800;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             line-height: 1.15;
         }
 
-        .brand-sub {
+        .brand-tag {
             font-size: 0.72rem;
             color: var(--muted);
         }
 
-        .nav-menu {
+        .nav-list {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .nav-btn {
+            width: 100%;
             padding: 11px 14px;
-            border-radius: 13px;
+            border-radius: 14px;
             border: 1px solid transparent;
             background: transparent;
             color: var(--muted);
             font-size: 0.86rem;
             font-weight: 600;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             text-align: left;
             transition: all 0.2s ease;
-            width: 100%;
         }
 
         .nav-left {
@@ -138,33 +164,28 @@
             gap: 11px;
         }
 
-        .nav-item i {
-            width: 18px;
-            text-align: center;
-            font-size: 0.95rem;
-        }
-
-        .nav-item:hover {
-            background: var(--card-2);
+        .nav-btn:hover {
+            background: var(--glass-2);
             color: var(--text);
         }
 
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(0, 230, 118, 0.16), rgba(0, 176, 255, 0.12));
-            border-color: rgba(0, 230, 118, 0.35);
-            color: var(--primary);
+        .nav-btn.active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(126, 34, 206, 0.18));
+            border-color: var(--border);
+            color: var(--text);
+            box-shadow: 0 6px 18px var(--primary-glow);
         }
 
-        .nav-badge {
-            background: var(--card-2);
+        .nav-pill {
+            background: var(--glass-2);
+            border: 1px solid var(--border);
             color: var(--text);
             font-size: 0.72rem;
             padding: 2px 8px;
             border-radius: 999px;
-            border: 1px solid var(--border);
         }
 
-        .sidebar-footer {
+        .sidebar-bottom {
             padding-top: 14px;
             border-top: 1px solid var(--border);
         }
@@ -172,9 +193,9 @@
         .theme-btn {
             width: 100%;
             padding: 10px 14px;
-            border-radius: 12px;
+            border-radius: 13px;
             border: 1px solid var(--border);
-            background: var(--card-2);
+            background: var(--glass-2);
             color: var(--text);
             font-size: 0.83rem;
             font-weight: 600;
@@ -183,76 +204,83 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, transform 0.2s;
         }
 
-        .theme-btn:hover { border-color: var(--primary); }
+        .theme-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
 
-        /* Main Content Area */
-        .main-area {
+        /* Workspace */
+        .workspace {
             flex: 1;
-            padding: 24px 26px 80px;
+            padding: 24px 26px 84px;
             max-width: 1060px;
             margin: 0 auto;
             width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
-        .mobile-topbar {
+        .mobile-header {
             display: none;
             align-items: center;
             justify-content: space-between;
-            background: var(--card);
+            background: var(--glass);
+            backdrop-filter: blur(18px);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 12px 16px;
+            padding: 12px 15px;
             margin-bottom: 16px;
         }
 
-        .page-header {
-            margin-bottom: 20px;
+        .section-head {
+            margin-bottom: 18px;
         }
 
-        .page-header h2 {
+        .section-head h2 {
             font-family: 'Outfit', sans-serif;
             font-size: 1.55rem;
             font-weight: 800;
             margin-bottom: 4px;
         }
 
-        .page-header p {
+        .section-head p {
             color: var(--muted);
             font-size: 0.85rem;
         }
 
-        /* Views */
-        .view-section {
+        .view-pane {
             display: none;
-            animation: fadeIn 0.22s ease;
+            animation: paneIn 0.22s ease;
         }
 
-        .view-section.active {
-            display: block;
-        }
+        .view-pane.active { display: block; }
 
-        @keyframes fadeIn {
+        @keyframes paneIn {
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Bento Cards & Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
-        .stat-card {
-            background: var(--card);
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 18px;
+            border-radius: 22px;
+            padding: 20px;
             box-shadow: var(--shadow);
+        }
+
+        .stat-box {
             display: flex;
             align-items: center;
             gap: 14px;
@@ -266,83 +294,65 @@
             align-items: center;
             justify-content: center;
             font-size: 1.15rem;
-            background: rgba(0, 230, 118, 0.14);
+            background: rgba(168, 85, 247, 0.2);
             color: var(--primary);
         }
 
-        .stat-card:nth-child(2) .stat-icon {
-            background: rgba(0, 176, 255, 0.14);
-            color: var(--accent);
-        }
-
-        .stat-card:nth-child(3) .stat-icon {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warm);
-        }
-
-        .stat-val {
+        .stat-num {
             font-family: 'Outfit', sans-serif;
             font-size: 1.5rem;
             font-weight: 800;
             line-height: 1.1;
         }
 
-        .stat-label {
+        .stat-txt {
             font-size: 0.78rem;
             color: var(--muted);
         }
 
-        .quick-actions {
+        .tile-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
             gap: 14px;
-            margin-bottom: 22px;
         }
 
-        .action-tile {
-            background: var(--card);
+        .tile-btn {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 16px;
-            cursor: pointer;
+            border-radius: 20px;
+            padding: 18px;
             text-align: left;
             color: var(--text);
-            transition: transform 0.2s, border-color 0.2s;
+            cursor: pointer;
             box-shadow: var(--shadow);
+            transition: transform 0.2s, border-color 0.2s;
         }
 
-        .action-tile:hover {
+        .tile-btn:hover {
             transform: translateY(-3px);
             border-color: var(--primary);
         }
 
-        .action-tile i {
-            font-size: 1.2rem;
+        .tile-btn i {
+            font-size: 1.25rem;
             color: var(--primary);
             margin-bottom: 10px;
             display: block;
         }
 
-        .action-tile strong {
+        .tile-btn strong {
             display: block;
-            font-size: 0.94rem;
-            margin-bottom: 3px;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
         }
 
-        .action-tile span {
+        .tile-btn span {
             font-size: 0.77rem;
             color: var(--muted);
         }
 
-        .panel-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 22px;
-            box-shadow: var(--shadow);
-        }
-
-        .form-group { margin-bottom: 15px; }
+        .field { margin-bottom: 14px; }
 
         label {
             display: block;
@@ -355,9 +365,9 @@
         input, textarea {
             width: 100%;
             padding: 11px 14px;
-            border-radius: 12px;
+            border-radius: 13px;
             border: 1px solid var(--border);
-            background: var(--card-2);
+            background: var(--glass-2);
             color: var(--text);
             font-size: 0.86rem;
             outline: none;
@@ -369,14 +379,15 @@
             box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
-        textarea { min-height: 86px; resize: vertical; }
+        textarea { min-height: 84px; resize: vertical; }
 
         .btn {
-            padding: 12px 20px;
-            border-radius: 12px;
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 13px;
             border: none;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #041208;
+            background: linear-gradient(135deg, #a855f7, #7e22ce);
+            color: #ffffff;
             font-weight: 700;
             font-size: 0.88rem;
             cursor: pointer;
@@ -384,49 +395,39 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
+            box-shadow: 0 8px 22px var(--primary-glow);
+            transition: transform 0.2s, opacity 0.2s;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--primary-glow);
-        }
+        .btn:hover { transform: translateY(-2px); opacity: 0.95; }
 
-        .btn-secondary {
-            background: var(--card-2);
+        .btn-ghost {
+            background: var(--glass-2);
             color: var(--text);
             border: 1px solid var(--border);
+            box-shadow: none;
             margin-top: 10px;
         }
 
-        .btn-secondary:hover {
-            box-shadow: none;
-            border-color: var(--muted);
-        }
-
-        /* Uploaded Apps List */
-        .toolbar {
+        .apps-toolbar {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             margin-bottom: 16px;
             flex-wrap: wrap;
         }
 
-        .search-input {
-            max-width: 280px;
-        }
+        .search-box { max-width: 280px; }
 
-        .apps-grid {
+        .apps-list-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
             gap: 14px;
         }
 
-        .app-item-card {
-            background: var(--card-2);
+        .app-card {
+            background: var(--glass-2);
             border: 1px solid var(--border);
             border-radius: 18px;
             padding: 14px;
@@ -436,13 +437,13 @@
             gap: 12px;
         }
 
-        .app-item-top {
+        .app-top {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .app-item-top img {
+        .app-top img {
             width: 52px;
             height: 52px;
             border-radius: 14px;
@@ -450,12 +451,7 @@
             flex-shrink: 0;
         }
 
-        .app-item-info {
-            min-width: 0;
-            flex: 1;
-        }
-
-        .app-item-name {
+        .app-title {
             font-weight: 700;
             font-size: 0.96rem;
             white-space: nowrap;
@@ -463,32 +459,32 @@
             text-overflow: ellipsis;
         }
 
-        .app-item-cat {
+        .app-cat-pill {
             display: inline-block;
             font-size: 0.72rem;
             font-weight: 600;
             color: var(--primary);
-            background: rgba(0, 230, 118, 0.12);
+            background: rgba(168, 85, 247, 0.16);
             padding: 2px 8px;
-            border-radius: 6px;
-            margin-top: 3px;
+            border-radius: 7px;
+            margin-top: 4px;
         }
 
-        .app-item-actions {
+        .app-btns {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
         }
 
-        .chip-btn {
+        .action-chip {
             padding: 7px 10px;
             border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--glass);
+            color: var(--text);
             font-size: 0.78rem;
             font-weight: 700;
             cursor: pointer;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--text);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -496,56 +492,50 @@
             transition: all 0.2s;
         }
 
-        .chip-btn.edit { color: var(--accent); }
-        .chip-btn.edit:hover { background: var(--accent); color: #041018; border-color: var(--accent); }
+        .action-chip.edit { color: var(--accent); }
+        .action-chip.edit:hover { background: var(--accent); color: #06131f; border-color: var(--accent); }
 
-        .chip-btn.del { color: var(--danger); }
-        .chip-btn.del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+        .action-chip.del { color: var(--danger); }
+        .action-chip.del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
 
-        /* Branding Preview Card */
-        .branding-grid {
+        .branding-layout {
             display: grid;
             grid-template-columns: 1.3fr 0.7fr;
             gap: 18px;
             align-items: start;
         }
 
-        .preview-box {
-            background: var(--card-2);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 22px;
+        .preview-card {
             text-align: center;
         }
 
-        .preview-box img {
+        .preview-card img {
             width: 84px;
             height: 84px;
-            border-radius: 50%;
+            border-radius: 22px;
             object-fit: cover;
             border: 2px solid var(--primary);
-            box-shadow: 0 0 18px var(--primary-glow);
+            box-shadow: 0 0 22px var(--primary-glow);
             margin-bottom: 12px;
         }
 
-        /* Social Handles */
-        .social-form-row {
+        .social-row {
             display: grid;
             grid-template-columns: 1fr 2fr auto;
             gap: 10px;
             margin-bottom: 18px;
         }
 
-        .social-cards {
+        .social-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 12px;
         }
 
-        .social-card {
-            background: var(--card-2);
+        .social-item {
+            background: var(--glass-2);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 15px;
             padding: 12px 14px;
             display: flex;
             align-items: center;
@@ -553,21 +543,21 @@
             gap: 10px;
         }
 
-        /* Mobile Bottom Tab Bar */
         .mobile-nav {
             display: none;
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--sidebar);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
             border-top: 1px solid var(--border);
             padding: 8px 6px;
-            z-index: 150;
+            z-index: 120;
             justify-content: space-around;
         }
 
-        .m-tab {
+        .m-btn {
             background: transparent;
             border: none;
             color: var(--muted);
@@ -579,18 +569,17 @@
             gap: 4px;
             cursor: pointer;
             padding: 4px 6px;
-            border-radius: 10px;
         }
 
-        .m-tab i { font-size: 1.05rem; }
-        .m-tab.active { color: var(--primary); }
+        .m-btn i { font-size: 1.05rem; }
+        .m-btn.active { color: var(--primary); }
 
         .toast {
             position: fixed;
             bottom: 72px;
             right: 18px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #041208;
+            background: linear-gradient(135deg, #a855f7, #7e22ce);
+            color: #fff;
             padding: 11px 20px;
             border-radius: 12px;
             font-weight: 700;
@@ -602,65 +591,62 @@
 
         @media (max-width: 860px) {
             .sidebar { display: none; }
-            .mobile-topbar { display: flex; }
+            .mobile-header { display: flex; }
             .mobile-nav { display: flex; }
-            .main-area { padding: 16px 14px 86px; }
+            .workspace { padding: 16px 14px 86px; }
             .stats-grid { grid-template-columns: 1fr; }
-            .branding-grid { grid-template-columns: 1fr; }
-            .social-form-row { grid-template-columns: 1fr; }
+            .branding-layout { grid-template-columns: 1fr; }
+            .social-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Desktop Sidebar -->
     <aside class="sidebar">
         <div>
-            <div class="brand-header">
-                <img id="sidebarLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwZTY3NiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDAiPk08L3RleHQ+PC9zdmc+" alt="Logo" class="brand-logo" referrerpolicy="no-referrer">
+            <div class="brand-box">
+                <img id="sidebarLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+" alt="Logo" class="brand-logo" referrerpolicy="no-referrer">
                 <div>
-                    <div class="brand-title" id="sidebarStoreName">MAGGIE STORE</div>
-                    <div class="brand-sub">Admin Workspace</div>
+                    <div class="brand-name" id="sidebarStoreName">MAGGIE STORE</div>
+                    <div class="brand-tag">Violet Glass Studio</div>
                 </div>
             </div>
 
-            <nav class="nav-menu">
-                <button class="nav-item active" data-tab="overview" onclick="switchTab('overview')">
+            <nav class="nav-list">
+                <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview')">
                     <span class="nav-left"><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
                 </button>
-                <button class="nav-item" data-tab="apps" onclick="switchTab('apps')">
+                <button class="nav-btn" data-tab="apps" onclick="switchTab('apps')">
                     <span class="nav-left"><i class="fa-solid fa-grid-2"></i> Uploaded Apps</span>
-                    <span class="nav-badge" id="navAppsBadge">0</span>
+                    <span class="nav-pill" id="navAppsBadge">0</span>
                 </button>
-                <button class="nav-item" data-tab="upload" onclick="openUploadTab()">
+                <button class="nav-btn" data-tab="upload" onclick="openUploadTab()">
                     <span class="nav-left"><i class="fa-solid fa-cloud-arrow-up"></i> Upload New App</span>
                 </button>
-                <button class="nav-item" data-tab="branding" onclick="switchTab('branding')">
+                <button class="nav-btn" data-tab="branding" onclick="switchTab('branding')">
                     <span class="nav-left"><i class="fa-solid fa-palette"></i> Website Logo & Name</span>
                 </button>
-                <button class="nav-item" data-tab="socials" onclick="switchTab('socials')">
+                <button class="nav-btn" data-tab="socials" onclick="switchTab('socials')">
                     <span class="nav-left"><i class="fa-solid fa-share-nodes"></i> Social Handles</span>
-                    <span class="nav-badge" id="navSocialBadge">0</span>
+                    <span class="nav-pill" id="navSocialBadge">0</span>
                 </button>
             </nav>
         </div>
 
-        <div class="sidebar-footer">
+        <div class="sidebar-bottom">
             <button type="button" class="theme-btn" id="desktopThemeBtn" onclick="toggleTheme()">
                 <i class="fa-solid fa-sun"></i> <span>Light Mode</span>
             </button>
         </div>
     </aside>
 
-    <!-- Main Workspace -->
-    <main class="main-area">
-        <!-- Mobile Topbar -->
-        <div class="mobile-topbar">
+    <main class="workspace">
+        <div class="mobile-header">
             <div style="display:flex; align-items:center; gap:10px;">
-                <img id="mobileLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwZTY3NiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDAiPk08L3RleHQ+PC9zdmc+" alt="Logo" class="brand-logo" style="width:38px; height:38px;" referrerpolicy="no-referrer">
+                <img id="mobileLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+" alt="Logo" class="brand-logo" style="width:38px; height:38px;" referrerpolicy="no-referrer">
                 <div>
-                    <div class="brand-title" id="mobileStoreName" style="font-size:1.05rem;">MAGGIE STORE</div>
-                    <div class="brand-sub">Admin Panel</div>
+                    <div class="brand-name" id="mobileStoreName" style="font-size:1.04rem;">MAGGIE STORE</div>
+                    <div class="brand-tag">Admin Workspace</div>
                 </div>
             </div>
             <button type="button" class="theme-btn" id="mobileThemeBtn" style="width:auto; padding:7px 12px;" onclick="toggleTheme()">
@@ -668,96 +654,96 @@
             </button>
         </div>
 
-        <!-- TAB 1: DASHBOARD OVERVIEW -->
-        <section id="view-overview" class="view-section active">
-            <div class="page-header">
+        <!-- 1. DASHBOARD -->
+        <section id="view-overview" class="view-pane active">
+            <div class="section-head">
                 <h2>Dashboard Overview</h2>
-                <p>Apne store ke apps, branding, aur social links ko alag-alag sections se manage karein.</p>
+                <p>Har section alag rakha gaya hai taaki aap aasani se apps, logo, aur social handles manage kar sakein.</p>
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="glass-card stat-box">
                     <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
                     <div>
-                        <div class="stat-val" id="statAppsCount">0</div>
-                        <div class="stat-label">Uploaded Apps</div>
+                        <div class="stat-num" id="statAppsCount">0</div>
+                        <div class="stat-txt">Uploaded Apps</div>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="glass-card stat-box">
                     <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
                     <div>
-                        <div class="stat-val" id="statCatsCount">0</div>
-                        <div class="stat-label">Active Categories</div>
+                        <div class="stat-num" id="statCatsCount">0</div>
+                        <div class="stat-txt">Categories</div>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="glass-card stat-box">
                     <div class="stat-icon"><i class="fa-solid fa-share-nodes"></i></div>
                     <div>
-                        <div class="stat-val" id="statSocialsCount">0</div>
-                        <div class="stat-label">Social Handles</div>
+                        <div class="stat-num" id="statSocialsCount">0</div>
+                        <div class="stat-txt">Social Handles</div>
                     </div>
                 </div>
             </div>
 
-            <div class="quick-actions">
-                <button class="action-tile" onclick="switchTab('apps')">
+            <div class="tile-grid">
+                <button class="tile-btn" onclick="switchTab('apps')">
                     <i class="fa-solid fa-grid-2"></i>
                     <strong>Uploaded Apps</strong>
                     <span>Dekhein kaun-kaun se apps upload hain, edit ya delete karein</span>
                 </button>
-                <button class="action-tile" onclick="openUploadTab()">
+                <button class="tile-btn" onclick="openUploadTab()">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <strong>Upload New App</strong>
                     <span>Naya app naam, logo aur download link ke saath publish karein</span>
                 </button>
-                <button class="action-tile" onclick="switchTab('branding')">
+                <button class="tile-btn" onclick="switchTab('branding')">
                     <i class="fa-solid fa-palette"></i>
                     <strong>Website Logo & Name</strong>
-                    <span>Apne store ka logo URL aur title change karein</span>
+                    <span>Apne store ka logo URL aur naam badlein</span>
                 </button>
-                <button class="action-tile" onclick="switchTab('socials')">
+                <button class="tile-btn" onclick="switchTab('socials')">
                     <i class="fa-solid fa-hashtag"></i>
-                    <strong>Social Media Handles</strong>
+                    <strong>Social Handles</strong>
                     <span>Instagram, Telegram, Discord ya YouTube links add karein</span>
                 </button>
             </div>
         </section>
 
-        <!-- TAB 2: UPLOADED APPS LIST -->
-        <section id="view-apps" class="view-section">
-            <div class="page-header">
+        <!-- 2. UPLOADED APPS -->
+        <section id="view-apps" class="view-pane">
+            <div class="section-head">
                 <h2>Uploaded Apps</h2>
-                <p>Yahan aapke store par upload kiye gaye saare apps dikh rahe hain.</p>
+                <p>Store par upload kiye gaye saare apps yahan dikh rahe hain.</p>
             </div>
 
-            <div class="panel-card">
-                <div class="toolbar">
-                    <input type="text" id="adminSearch" class="search-input" placeholder="Search uploaded apps...">
+            <div class="glass-card">
+                <div class="apps-toolbar">
+                    <input type="text" id="adminSearch" class="search-box" placeholder="Search uploaded apps...">
                     <button class="btn" style="width:auto;" onclick="openUploadTab()">
                         <i class="fa-solid fa-plus"></i> Upload New App
                     </button>
                 </div>
-                <div id="adminAppList" class="apps-grid">
+                <div id="adminAppList" class="apps-list-grid">
                     <p style="color: var(--muted);">Loading apps...</p>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 3: UPLOAD / EDIT APP -->
-        <section id="view-upload" class="view-section">
-            <div class="page-header">
+        <!-- 3. UPLOAD NEW APP -->
+        <section id="view-upload" class="view-pane">
+            <div class="section-head">
                 <h2 id="formHeading">Upload New App</h2>
                 <p id="formSubtext">Naya app store mein publish karne ke liye details bharein.</p>
             </div>
 
-            <div class="panel-card" style="max-width: 640px;">
+            <div class="glass-card" style="max-width: 640px;">
                 <form id="addAppForm">
                     <input type="hidden" id="editAppId">
-                    <div class="form-group">
+                    <div class="field">
                         <label>App Name *</label>
                         <input type="text" id="appName" placeholder="e.g. Capcut Pro" required>
                     </div>
-                    <div class="form-group">
+                    <div class="field">
                         <label>Category *</label>
                         <input type="text" id="appCategory" list="catSuggestions" placeholder="e.g. Social, Editing, Games" required>
                         <datalist id="catSuggestions">
@@ -768,43 +754,43 @@
                             <option value="Entertainment">
                         </datalist>
                     </div>
-                    <div class="form-group">
+                    <div class="field">
                         <label>App Logo Image URL *</label>
                         <input type="text" id="appLogo" placeholder="https://.../app-icon.png" required>
                     </div>
-                    <div class="form-group">
+                    <div class="field">
                         <label>Download Link *</label>
                         <input type="text" id="appLink" placeholder="https://github.com/..." required>
                     </div>
-                    <div class="form-group">
+                    <div class="field">
                         <label>Description (Optional)</label>
                         <textarea id="appDesc" placeholder="App features & details..."></textarea>
                     </div>
                     <button type="submit" class="btn" id="submitBtn">
                         <i class="fa-solid fa-rocket"></i> Publish to Store
                     </button>
-                    <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">
+                    <button type="button" class="btn btn-ghost" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">
                         Cancel Edit
                     </button>
                 </form>
             </div>
         </section>
 
-        <!-- TAB 4: WEBSITE LOGO & NAME -->
-        <section id="view-branding" class="view-section">
-            <div class="page-header">
+        <!-- 4. WEBSITE LOGO & NAME -->
+        <section id="view-branding" class="view-pane">
+            <div class="section-head">
                 <h2>Website Logo & Name</h2>
-                <p>Yahan se apne store ka main logo aur naam change karein.</p>
+                <p>Yahan se apne store ka logo aur naam change karein.</p>
             </div>
 
-            <div class="branding-grid">
-                <div class="panel-card">
+            <div class="branding-layout">
+                <div class="glass-card">
                     <form id="customizeForm">
-                        <div class="form-group">
+                        <div class="field">
                             <label>Website / Store Name *</label>
                             <input type="text" id="custName" value="MAGGIE STORE" required>
                         </div>
-                        <div class="form-group">
+                        <div class="field">
                             <label>Website Logo Image URL *</label>
                             <input type="text" id="custLogo" placeholder="https://.../store-logo.png" required>
                         </div>
@@ -814,23 +800,23 @@
                     </form>
                 </div>
 
-                <div class="preview-box">
-                    <img id="brandingPreviewImg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwZTY3NiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDAiPk08L3RleHQ+PC9zdmc+" alt="Preview" referrerpolicy="no-referrer">
+                <div class="glass-card preview-card">
+                    <img id="brandingPreviewImg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+" alt="Preview" referrerpolicy="no-referrer">
                     <h3 id="brandingPreviewName" style="font-family:'Outfit',sans-serif;">MAGGIE STORE</h3>
-                    <p style="font-size:0.78rem; color:var(--muted); margin-top:4px;">Live Store Logo Preview</p>
+                    <p style="font-size:0.78rem; color:var(--muted); margin-top:4px;">Live Store Branding Preview</p>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 5: SOCIAL MEDIA HANDLES -->
-        <section id="view-socials" class="view-section">
-            <div class="page-header">
+        <!-- 5. SOCIAL HANDLES -->
+        <section id="view-socials" class="view-pane">
+            <div class="section-head">
                 <h2>Social Media Handles</h2>
-                <p>User website ke header aur footer mein dikhne wale social links yahan manage karein.</p>
+                <p>Storefront ke header aur footer mein dikhne wale social links yahan se add ya remove karein.</p>
             </div>
 
-            <div class="panel-card">
-                <form id="socialForm" class="social-form-row">
+            <div class="glass-card">
+                <form id="socialForm" class="social-row">
                     <input type="text" id="socialPlatform" list="platformList" placeholder="Platform (e.g. Telegram)" required>
                     <datalist id="platformList">
                         <option value="Instagram">
@@ -846,26 +832,25 @@
                     </button>
                 </form>
 
-                <div id="socialList" class="social-cards"></div>
+                <div id="socialList" class="social-grid"></div>
             </div>
         </section>
     </main>
 
-    <!-- Mobile Bottom Navigation -->
     <nav class="mobile-nav">
-        <button class="m-tab active" data-tab="overview" onclick="switchTab('overview')">
+        <button class="m-btn active" data-tab="overview" onclick="switchTab('overview')">
             <i class="fa-solid fa-gauge-high"></i><span>Home</span>
         </button>
-        <button class="m-tab" data-tab="apps" onclick="switchTab('apps')">
+        <button class="m-btn" data-tab="apps" onclick="switchTab('apps')">
             <i class="fa-solid fa-grid-2"></i><span>Apps</span>
         </button>
-        <button class="m-tab" data-tab="upload" onclick="openUploadTab()">
+        <button class="m-btn" data-tab="upload" onclick="openUploadTab()">
             <i class="fa-solid fa-circle-plus"></i><span>Upload</span>
         </button>
-        <button class="m-tab" data-tab="branding" onclick="switchTab('branding')">
+        <button class="m-btn" data-tab="branding" onclick="switchTab('branding')">
             <i class="fa-solid fa-palette"></i><span>Logo</span>
         </button>
-        <button class="m-tab" data-tab="socials" onclick="switchTab('socials')">
+        <button class="m-btn" data-tab="socials" onclick="switchTab('socials')">
             <i class="fa-solid fa-share-nodes"></i><span>Social</span>
         </button>
     </nav>
@@ -903,11 +888,11 @@
         };
 
         window.switchTab = function (tabName) {
-            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.view-pane').forEach(sec => sec.classList.remove('active'));
             const target = document.getElementById('view-' + tabName);
             if (target) target.classList.add('active');
 
-            document.querySelectorAll('.nav-item, .m-tab').forEach(btn => {
+            document.querySelectorAll('.nav-btn, .m-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -931,8 +916,8 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const FALLBACK_STORE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwZTY3NiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDAiPk08L3RleHQ+PC9zdmc+";
-        const FALLBACK_APP = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWMyMzMwIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmaWxsPSIjOWE0YjhiIj5BUFA8L3RleHQ+PC9zdmc+";
+        const FALLBACK_STORE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+";
+        const FALLBACK_APP = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmQxYjUzIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmaWxsPSIjY2JiN2ViIj5BUFA8L3RleHQ+PC9zdmc+";
 
         let appsCache = {};
         const resolvedUrlCache = new Map();
@@ -1123,20 +1108,20 @@
 
             entries.forEach(([id, data]) => {
                 const card = document.createElement('div');
-                card.className = 'app-item-card';
+                card.className = 'app-card';
                 card.innerHTML = `
-                    <div class="app-item-top">
+                    <div class="app-top">
                         <img src="${FALLBACK_APP}" referrerpolicy="no-referrer">
-                        <div class="app-item-info">
-                            <div class="app-item-name">${data.name || 'Unnamed App'}</div>
-                            <span class="app-item-cat">${data.category || 'General'}</span>
+                        <div style="min-width:0; flex:1;">
+                            <div class="app-title">${data.name || 'Unnamed App'}</div>
+                            <span class="app-cat-pill">${data.category || 'General'}</span>
                         </div>
                     </div>
-                    <div class="app-item-actions">
-                        <button class="chip-btn edit" onclick="startEditApp('${id}')">
+                    <div class="app-btns">
+                        <button class="action-chip edit" onclick="startEditApp('${id}')">
                             <i class="fa-solid fa-pen"></i> Edit
                         </button>
-                        <button class="chip-btn del" onclick="deleteApp('${id}')">
+                        <button class="action-chip del" onclick="deleteApp('${id}')">
                             <i class="fa-solid fa-trash"></i> Delete
                         </button>
                     </div>
@@ -1210,18 +1195,18 @@
 
             snapshot.forEach((docSnap) => {
                 const data = docSnap.data();
-                const card = document.createElement('div');
-                card.className = 'social-card';
-                card.innerHTML = `
+                const item = document.createElement('div');
+                item.className = 'social-item';
+                item.innerHTML = `
                     <div style="min-width:0;">
                         <strong style="display:block; font-size:0.9rem;">${data.platform}</strong>
                         <a href="${data.url}" target="_blank" style="color:var(--accent); font-size:0.76rem; text-decoration:none;">Open Link</a>
                     </div>
-                    <button class="chip-btn del" style="padding:6px 9px;" onclick="deleteSocial('${docSnap.id}')">
+                    <button class="action-chip del" style="padding:6px 9px;" onclick="deleteSocial('${docSnap.id}')">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 `;
-                socialList.appendChild(card);
+                socialList.appendChild(item);
             });
         });
 
