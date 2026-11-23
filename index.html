@@ -87,13 +87,6 @@
             margin-bottom: 15px;
         }
 
-        .helper-hint code {
-            color: var(--info);
-            background: rgba(0, 176, 255, 0.1);
-            padding: 2px 6px;
-            border-radius: 5px;
-        }
-
         .form-group {
             margin-bottom: 14px;
         }
@@ -276,7 +269,7 @@
 <body>
 
     <div class="header">
-        <img id="adminLogoPreview" src="https://via.placeholder.com/70/00e676/000000?text=M" alt="MAGGIE" class="header-logo" onerror="this.src='https://via.placeholder.com/70/00e676/000000?text=M'">
+        <img id="adminLogoPreview" src="https://via.placeholder.com/70/00e676/000000?text=M" alt="MAGGIE" class="header-logo" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/70/00e676/000000?text=M'">
         <h1 id="adminStoreTitle">MAGGIE</h1>
         <p style="color: var(--text-muted); font-size: 0.9rem;">Admin Control Panel</p>
     </div>
@@ -284,15 +277,15 @@
     <div class="container">
         <div class="box full-width">
             <h2>⚙️ Store Customization (Logo & Name)</h2>
-            <p class="helper-hint">ImgBB par upload karke <strong>Direct link</strong> (<code>https://i.ibb.co/...</code>) yahan paste karein.</p>
+            <p class="helper-hint">Kisi bhi website ya image host ka direct image URL yahan paste karein.</p>
             <form id="customizeForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) auto; gap: 12px; align-items: end;">
                 <div class="form-group" style="margin:0;">
                     <label>Store Name *</label>
                     <input type="text" id="custName" value="MAGGIE STORE" required>
                 </div>
                 <div class="form-group" style="margin:0;">
-                    <label>Store Logo Direct URL (imgbb.com) *</label>
-                    <input type="url" id="custLogo" placeholder="https://i.ibb.co/your-logo.png" required>
+                    <label>Store Logo Image URL (Any Host) *</label>
+                    <input type="text" id="custLogo" placeholder="https://.../logo.png" required>
                 </div>
                 <button type="submit" id="custBtn" class="btn" style="padding: 11px 25px; width: auto; font-size:0.9rem;">Save Changes</button>
             </form>
@@ -318,12 +311,12 @@
                     </datalist>
                 </div>
                 <div class="form-group">
-                    <label>App Logo Direct URL (imgbb.com) *</label>
-                    <input type="url" id="appLogo" placeholder="https://i.ibb.co/your-app-icon.png" required>
+                    <label>App Logo Image URL (Any Host) *</label>
+                    <input type="text" id="appLogo" placeholder="https://.../icon.png" required>
                 </div>
                 <div class="form-group">
-                    <label>GitHub Download Link *</label>
-                    <input type="url" id="appLink" placeholder="https://github.com/user/repo/releases/download/..." required>
+                    <label>Download Link *</label>
+                    <input type="text" id="appLink" placeholder="https://github.com/..." required>
                 </div>
                 <div class="form-group">
                     <label>Description (Optional)</label>
@@ -356,7 +349,7 @@
                     <option value="WhatsApp">
                     <option value="X (Twitter)">
                 </datalist>
-                <input type="url" id="socialUrl" placeholder="https://t.me/yourchannel" required>
+                <input type="text" id="socialUrl" placeholder="https://t.me/yourchannel" required>
                 <button type="submit" id="socialBtn" class="btn" style="padding: 11px 25px;">+ Add Handle</button>
             </form>
 
@@ -385,6 +378,15 @@
 
         let appsCache = {};
 
+        function cleanUrl(raw) {
+            const val = (raw || '').trim();
+            if (!val) return '';
+            if (!val.startsWith('http://') && !val.startsWith('https://') && !val.startsWith('data:image/')) {
+                return 'https://' + val;
+            }
+            return val;
+        }
+
         const toast = document.getElementById('toast');
         function showToast(msg) {
             toast.innerText = msg;
@@ -395,7 +397,7 @@
         function withTimeout(promise, ms = 10000) {
             return Promise.race([
                 promise,
-                new Promise((_, reject) => setTimeout(() => reject(new Error("Firebase request timeout. Check Firestore database & rules.")), ms))
+                new Promise((_, reject) => setTimeout(() => reject(new Error("Firebase request timeout.")), ms))
             ]);
         }
 
@@ -407,8 +409,9 @@
                     document.getElementById('adminStoreTitle').innerText = settings.storeName;
                 }
                 if (settings.logoUrl) {
-                    document.getElementById('custLogo').value = settings.logoUrl;
-                    document.getElementById('adminLogoPreview').src = settings.logoUrl;
+                    const url = cleanUrl(settings.logoUrl);
+                    document.getElementById('custLogo').value = url;
+                    document.getElementById('adminLogoPreview').src = url;
                 }
             }
         });
@@ -418,11 +421,13 @@
             const btn = document.getElementById('custBtn');
             btn.innerText = 'Saving...';
             btn.disabled = true;
+            const logoUrl = cleanUrl(document.getElementById('custLogo').value);
             try {
                 await withTimeout(setDoc(doc(db, "settings", "general"), {
                     storeName: document.getElementById('custName').value.trim(),
-                    logoUrl: document.getElementById('custLogo').value.trim()
+                    logoUrl
                 }));
+                document.getElementById('adminLogoPreview').src = logoUrl;
                 showToast('Website customized successfully!');
             } catch (err) {
                 alert("Save Error: " + err.message);
@@ -465,8 +470,8 @@
             const payload = {
                 name: document.getElementById('appName').value.trim(),
                 category: document.getElementById('appCategory').value.trim() || 'General',
-                logoUrl: document.getElementById('appLogo').value.trim(),
-                downloadUrl: document.getElementById('appLink').value.trim(),
+                logoUrl: cleanUrl(document.getElementById('appLogo').value),
+                downloadUrl: cleanUrl(document.getElementById('appLink').value),
                 description: document.getElementById('appDesc').value.trim()
             };
 
@@ -509,7 +514,7 @@
                 item.className = 'list-item';
                 item.innerHTML = `
                     <div class="list-left">
-                        <img src="${data.logoUrl || ''}" onerror="this.src='https://via.placeholder.com/45?text=App'">
+                        <img src="${cleanUrl(data.logoUrl)}" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/45?text=App'">
                         <div class="app-meta">
                             <span class="name">${data.name || 'Unnamed App'}</span>
                             <span class="cat">Category: ${data.category || 'General'}</span>
@@ -546,7 +551,7 @@
             try {
                 await withTimeout(addDoc(collection(db, "socials"), {
                     platform: document.getElementById('socialPlatform').value.trim(),
-                    url: document.getElementById('socialUrl').value.trim()
+                    url: cleanUrl(document.getElementById('socialUrl').value)
                 }));
                 e.target.reset();
                 showToast('Social Handle Added!');
