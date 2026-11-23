@@ -1,19 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAGGIE - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>MAGGIE STORE - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
+        :root, [data-theme="dark"] {
             --primary: #00e676;
-            --info: #00b0ff;
-            --danger: #ff5252;
-            --bg: #0b1120;
-            --card-bg: #162032;
+            --primary-dark: #00c853;
+            --primary-glow: rgba(0, 230, 118, 0.25);
+            --accent: #00b0ff;
+            --bg: #070c17;
+            --bg-grad-1: rgba(0, 230, 118, 0.13);
+            --bg-grad-2: rgba(0, 176, 255, 0.12);
+            --card-bg: rgba(16, 25, 44, 0.85);
+            --input-bg: #09101f;
+            --border: rgba(255, 255, 255, 0.09);
             --text: #f8fafc;
             --text-muted: #94a3b8;
+            --danger: #ff5252;
+        }
+
+        [data-theme="light"] {
+            --primary: #00b248;
+            --primary-dark: #008e3a;
+            --primary-glow: rgba(0, 178, 72, 0.22);
+            --accent: #0284c7;
+            --bg: #eef3f9;
+            --bg-grad-1: rgba(0, 230, 118, 0.12);
+            --bg-grad-2: rgba(0, 176, 255, 0.12);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --input-bg: #f1f5f9;
+            --border: rgba(15, 23, 42, 0.1);
+            --text: #0f172a;
+            --text-muted: #475569;
+            --danger: #e11d48;
         }
 
         * {
@@ -25,128 +48,250 @@
 
         body {
             background-color: var(--bg);
+            background-image:
+                radial-gradient(circle at 14% 8%, var(--bg-grad-1), transparent 36%),
+                radial-gradient(circle at 86% 12%, var(--bg-grad-2), transparent 36%);
             color: var(--text);
-            padding: 25px 15px;
+            padding: 22px 15px 42px;
+            min-height: 100vh;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+        .wrapper {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .header-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 16px 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
         }
 
         .header-logo {
-            width: 70px;
-            height: 70px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--primary);
-            box-shadow: 0 0 15px rgba(0, 230, 118, 0.3);
-            background: #1e293b;
+            box-shadow: 0 0 16px var(--primary-glow);
+            background: var(--input-bg);
         }
 
-        .header h1 {
-            font-size: 2.2rem;
-            background: linear-gradient(45deg, #00e676, #00b0ff);
+        .brand-left h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.15;
+        }
+
+        .brand-left p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .theme-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 15px 18px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 230, 118, 0.14);
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: rgba(0, 176, 255, 0.14);
+            color: var(--accent);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: rgba(168, 85, 247, 0.16);
+            color: #c084fc;
+        }
+
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
         .container {
-            max-width: 1100px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
         }
 
         .box {
             background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            padding: 22px;
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
         }
 
-        .full-width {
-            grid-column: 1 / -1;
+        .full-width { grid-column: 1 / -1; }
+
+        .box-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         h2 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
             color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .helper-hint {
             font-size: 0.78rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-
-        .form-group {
             margin-bottom: 14px;
         }
 
+        .form-group { margin-bottom: 13px; }
+
         label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
             margin-bottom: 5px;
         }
 
-        input, textarea, select {
+        input, textarea {
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px 14px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: var(--bg);
-            color: white;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: 0.85rem;
             outline: none;
-            transition: border 0.3s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus, textarea:focus, select:focus {
+        input:focus, textarea:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
-        textarea { resize: vertical; min-height: 75px; }
+        textarea { min-height: 74px; resize: vertical; }
 
         .btn {
             width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: #000;
-            font-weight: 600;
+            padding: 11px 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #041208;
+            font-weight: 700;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 0.95rem;
-            transition: transform 0.2s, opacity 0.2s;
+            font-size: 0.88rem;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .btn:hover { transform: translateY(-2px); opacity: 0.92; }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--primary-glow);
+        }
 
         .cancel-btn {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
+            margin-top: 8px;
             background: transparent;
             color: var(--text-muted);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid var(--border);
             border-radius: 12px;
             cursor: pointer;
-            margin-top: 8px;
             display: none;
+            font-size: 0.83rem;
+        }
+
+        .mini-search {
+            max-width: 195px;
+            padding: 7px 12px;
+            font-size: 0.8rem;
+            border-radius: 10px;
         }
 
         .item-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-height: 460px;
+            gap: 11px;
+            max-height: 440px;
             overflow-y: auto;
         }
 
@@ -154,10 +299,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: var(--bg);
-            padding: 12px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--input-bg);
+            padding: 11px 13px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
             gap: 10px;
         }
 
@@ -165,7 +310,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            overflow: hidden;
+            min-width: 0;
         }
 
         .list-left img {
@@ -173,25 +318,27 @@
             height: 46px;
             border-radius: 12px;
             object-fit: cover;
+            flex-shrink: 0;
         }
 
         .app-meta {
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            min-width: 0;
         }
 
         .app-meta span.name {
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .app-meta span.cat {
-            font-size: 0.75rem;
+            font-size: 0.74rem;
             color: var(--primary);
+            font-weight: 500;
         }
 
         .actions {
@@ -202,24 +349,24 @@
 
         .small-btn {
             padding: 6px 10px;
-            border-radius: 8px;
+            border-radius: 9px;
             cursor: pointer;
-            font-size: 0.78rem;
-            font-weight: 500;
+            font-size: 0.76rem;
+            font-weight: 600;
             border: 1px solid;
             background: transparent;
             transition: all 0.2s;
         }
 
         .edit-btn {
-            color: var(--info);
-            border-color: var(--info);
+            color: var(--accent);
+            border-color: rgba(0, 176, 255, 0.45);
         }
-        .edit-btn:hover { background: var(--info); color: #000; }
+        .edit-btn:hover { background: var(--accent); color: #041018; }
 
         .del-btn {
             color: var(--danger);
-            border-color: var(--danger);
+            border-color: rgba(255, 82, 82, 0.45);
         }
         .del-btn:hover { background: var(--danger); color: #fff; }
 
@@ -227,7 +374,7 @@
             display: grid;
             grid-template-columns: 1fr 2fr auto;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
         .social-tags {
@@ -237,30 +384,33 @@
         }
 
         .social-tag {
-            background: var(--bg);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: var(--input-bg);
+            border: 1px solid var(--border);
             padding: 8px 14px;
-            border-radius: 25px;
+            border-radius: 999px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 0.85rem;
+            font-size: 0.83rem;
         }
 
         .toast {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: var(--primary);
-            color: #000;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #041208;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.86rem;
             display: none;
             z-index: 300;
+            box-shadow: 0 10px 24px var(--primary-glow);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
+            .stats-grid { grid-template-columns: 1fr; }
             .container { grid-template-columns: 1fr; }
             .social-grid { grid-template-columns: 1fr; }
         }
@@ -268,96 +418,160 @@
 </head>
 <body>
 
-    <div class="header">
-        <img id="adminLogoPreview" src="https://via.placeholder.com/70/00e676/000000?text=M" alt="MAGGIE" class="header-logo" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/70/00e676/000000?text=M'">
-        <h1 id="adminStoreTitle">MAGGIE</h1>
-        <p style="color: var(--text-muted); font-size: 0.9rem;">Admin Control Panel</p>
-    </div>
-
-    <div class="container">
-        <div class="box full-width">
-            <h2>⚙️ Store Customization (Logo & Name)</h2>
-            <p class="helper-hint">Kisi bhi website ya image host ka direct image URL yahan paste karein.</p>
-            <form id="customizeForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) auto; gap: 12px; align-items: end;">
-                <div class="form-group" style="margin:0;">
-                    <label>Store Name *</label>
-                    <input type="text" id="custName" value="MAGGIE STORE" required>
+    <div class="wrapper">
+        <div class="header-card">
+            <div class="brand-left">
+                <img id="adminLogoPreview" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwZTY3NiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDAiPk08L3RleHQ+PC9zdmc+" alt="MAGGIE" class="header-logo" referrerpolicy="no-referrer">
+                <div>
+                    <h1 id="adminStoreTitle">MAGGIE STORE</h1>
+                    <p>Admin Control Panel</p>
                 </div>
-                <div class="form-group" style="margin:0;">
-                    <label>Store Logo Image URL (Any Host) *</label>
-                    <input type="text" id="custLogo" placeholder="https://.../logo.png" required>
-                </div>
-                <button type="submit" id="custBtn" class="btn" style="padding: 11px 25px; width: auto; font-size:0.9rem;">Save Changes</button>
-            </form>
+            </div>
+            <button type="button" id="themeBtn" class="theme-btn" onclick="toggleTheme()">
+                <i class="fa-solid fa-sun"></i> <span>Light</span>
+            </button>
         </div>
 
-        <div class="box">
-            <h2 id="formHeading">+ Publish New App</h2>
-            <form id="addAppForm">
-                <input type="hidden" id="editAppId">
-                <div class="form-group">
-                    <label>App Name *</label>
-                    <input type="text" id="appName" placeholder="e.g. Maggie Pro" required>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
+                <div>
+                    <div class="stat-val" id="statAppsCount">0</div>
+                    <div class="stat-label">Published Apps</div>
                 </div>
-                <div class="form-group">
-                    <label>Category *</label>
-                    <input type="text" id="appCategory" list="catSuggestions" placeholder="e.g. Games, Tools, Social" required>
-                    <datalist id="catSuggestions">
-                        <option value="Games">
-                        <option value="Tools">
-                        <option value="Social">
-                        <option value="Entertainment">
-                        <option value="Productivity">
-                    </datalist>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <div>
+                    <div class="stat-val" id="statCatsCount">0</div>
+                    <div class="stat-label">Categories</div>
                 </div>
-                <div class="form-group">
-                    <label>App Logo Image URL (Any Host) *</label>
-                    <input type="text" id="appLogo" placeholder="https://.../icon.png" required>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                <div>
+                    <div class="stat-val" id="statSocialsCount">0</div>
+                    <div class="stat-label">Social Links</div>
                 </div>
-                <div class="form-group">
-                    <label>Download Link *</label>
-                    <input type="text" id="appLink" placeholder="https://github.com/..." required>
-                </div>
-                <div class="form-group">
-                    <label>Description (Optional)</label>
-                    <textarea id="appDesc" placeholder="App features & details..."></textarea>
-                </div>
-                <button type="submit" class="btn" id="submitBtn">Publish to Store</button>
-                <button type="button" class="cancel-btn" id="cancelEditBtn" onclick="resetAppForm()">Cancel Edit</button>
-            </form>
-        </div>
-
-        <div class="box">
-            <h2>Manage Apps (Edit / Delete)</h2>
-            <div id="adminAppList" class="item-list">
-                <p style="color: var(--text-muted);">Loading apps...</p>
             </div>
         </div>
 
-        <div class="box full-width">
-            <h2>Social Media Promotion Handles</h2>
-            <p class="helper-hint">
-                Jo handles aap yahan add karenge, sirf wahi user website par dikhenge.
-            </p>
-            <form id="socialForm" class="social-grid">
-                <input type="text" id="socialPlatform" list="platformList" placeholder="Platform (e.g. Telegram)" required>
-                <datalist id="platformList">
-                    <option value="Instagram">
-                    <option value="Telegram">
-                    <option value="Discord">
-                    <option value="YouTube">
-                    <option value="WhatsApp">
-                    <option value="X (Twitter)">
-                </datalist>
-                <input type="text" id="socialUrl" placeholder="https://t.me/yourchannel" required>
-                <button type="submit" id="socialBtn" class="btn" style="padding: 11px 25px;">+ Add Handle</button>
-            </form>
+        <div class="container">
+            <div class="box full-width">
+                <div class="box-head">
+                    <h2><i class="fa-solid fa-sliders"></i> Store Customization (Logo & Name)</h2>
+                </div>
+                <p class="helper-hint">Store ka naam aur kisi bhi image host ka direct image URL yahan daalein.</p>
+                <form id="customizeForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) auto; gap: 12px; align-items: end;">
+                    <div class="form-group" style="margin:0;">
+                        <label>Store Name *</label>
+                        <input type="text" id="custName" value="MAGGIE STORE" required>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>Store Logo Image URL *</label>
+                        <input type="text" id="custLogo" placeholder="https://.../logo.png" required>
+                    </div>
+                    <button type="submit" id="custBtn" class="btn" style="width: auto; padding: 11px 24px;">Save Changes</button>
+                </form>
+            </div>
 
-            <div id="socialList" class="social-tags"></div>
+            <div class="box">
+                <div class="box-head">
+                    <h2 id="formHeading"><i class="fa-solid fa-plus-circle"></i> Publish New App</h2>
+                </div>
+                <form id="addAppForm">
+                    <input type="hidden" id="editAppId">
+                    <div class="form-group">
+                        <label>App Name *</label>
+                        <input type="text" id="appName" placeholder="e.g. Maggie Pro" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <input type="text" id="appCategory" list="catSuggestions" placeholder="e.g. Games, Tools, Social" required>
+                        <datalist id="catSuggestions">
+                            <option value="Games">
+                            <option value="Tools">
+                            <option value="Social">
+                            <option value="Editing">
+                            <option value="Entertainment">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>App Logo Image URL *</label>
+                        <input type="text" id="appLogo" placeholder="https://.../icon.png" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Download Link *</label>
+                        <input type="text" id="appLink" placeholder="https://github.com/..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description (Optional)</label>
+                        <textarea id="appDesc" placeholder="App features & details..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" id="submitBtn">Publish to Store</button>
+                    <button type="button" class="cancel-btn" id="cancelEditBtn" onclick="resetAppForm()">Cancel Edit</button>
+                </form>
+            </div>
+
+            <div class="box">
+                <div class="box-head">
+                    <h2><i class="fa-solid fa-list-check"></i> Manage Apps</h2>
+                    <input type="text" id="adminSearch" class="mini-search" placeholder="Filter apps...">
+                </div>
+                <div id="adminAppList" class="item-list">
+                    <p style="color: var(--text-muted);">Loading apps...</p>
+                </div>
+            </div>
+
+            <div class="box full-width">
+                <div class="box-head">
+                    <h2><i class="fa-solid fa-hashtag"></i> Social Media Promotion Handles</h2>
+                </div>
+                <p class="helper-hint">Jo handles aap yahan add karenge, wahi user store par dikhenge.</p>
+                <form id="socialForm" class="social-grid">
+                    <input type="text" id="socialPlatform" list="platformList" placeholder="Platform (e.g. Telegram)" required>
+                    <datalist id="platformList">
+                        <option value="Instagram">
+                        <option value="Telegram">
+                        <option value="Discord">
+                        <option value="YouTube">
+                        <option value="WhatsApp">
+                        <option value="X (Twitter)">
+                    </datalist>
+                    <input type="text" id="socialUrl" placeholder="https://t.me/yourchannel" required>
+                    <button type="submit" id="socialBtn" class="btn" style="padding: 11px 24px;">+ Add Handle</button>
+                </form>
+
+                <div id="socialList" class="social-tags"></div>
+            </div>
         </div>
     </div>
 
     <div id="toast" class="toast">Action Completed!</div>
+
+    <script>
+        (function initSavedTheme() {
+            const saved = localStorage.getItem("maggie_theme") || "dark";
+            document.documentElement.setAttribute("data-theme", saved);
+            updateThemeButton(saved);
+        })();
+
+        function updateThemeButton(theme) {
+            const btn = document.getElementById("themeBtn");
+            if (!btn) return;
+            btn.innerHTML = theme === "dark"
+                ? '<i class="fa-solid fa-sun"></i> <span>Light</span>'
+                : '<i class="fa-solid fa-moon"></i> <span>Dark</span>';
+        }
+
+        window.toggleTheme = function () {
+            const current = document.documentElement.getAttribute("data-theme") || "dark";
+            const next = current === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("maggie_theme", next);
+            updateThemeButton(next);
+        };
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -376,7 +590,12 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        const FALLBACK_STORE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwZTY3NiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMDAiPk08L3RleHQ+PC9zdmc+";
+        const FALLBACK_APP = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMWMyMzMwIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmaWxsPSIjOWE0YjhiIj5BUFA8L3RleHQ+PC9zdmc+";
+
         let appsCache = {};
+        const resolvedUrlCache = new Map();
+        const adminSearchInput = document.getElementById('adminSearch');
 
         function cleanUrl(raw) {
             const val = (raw || '').trim();
@@ -385,6 +604,47 @@
                 return 'https://' + val;
             }
             return val;
+        }
+
+        async function extractDirectImageUrl(rawUrl) {
+            const url = cleanUrl(rawUrl);
+            if (!url) return '';
+            if (resolvedUrlCache.has(url)) return resolvedUrlCache.get(url);
+
+            const ibbPageMatch = url.match(/^https?:\/\/(?:www\.)?ibb\.co\/([a-zA-Z0-9_-]+)\/?$/i);
+            if (ibbPageMatch) {
+                const proxies = [
+                    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+                    `https://corsproxy.io/?${encodeURIComponent(url)}`
+                ];
+                for (const proxyUrl of proxies) {
+                    try {
+                        const res = await fetch(proxyUrl);
+                        if (!res.ok) continue;
+                        const html = await res.text();
+                        const match = html.match(/https?:\/\/i\.ibb\.co\/[a-zA-Z0-9_-]+\/[^"'\s<>\\]+/i);
+                        if (match && match[0]) {
+                            resolvedUrlCache.set(url, match[0]);
+                            return match[0];
+                        }
+                    } catch (_) {}
+                }
+            }
+
+            resolvedUrlCache.set(url, url);
+            return url;
+        }
+
+        async function setSmartImage(imgEl, rawUrl, fallbackUrl) {
+            imgEl.src = fallbackUrl;
+            const resolved = await extractDirectImageUrl(rawUrl);
+            if (!resolved) return;
+
+            const testImg = new Image();
+            testImg.referrerPolicy = 'no-referrer';
+            testImg.onload = () => { imgEl.src = resolved; };
+            testImg.onerror = () => { imgEl.src = fallbackUrl; };
+            testImg.src = resolved;
         }
 
         const toast = document.getElementById('toast');
@@ -411,7 +671,7 @@
                 if (settings.logoUrl) {
                     const url = cleanUrl(settings.logoUrl);
                     document.getElementById('custLogo').value = url;
-                    document.getElementById('adminLogoPreview').src = url;
+                    setSmartImage(document.getElementById('adminLogoPreview'), url, FALLBACK_STORE);
                 }
             }
         });
@@ -427,7 +687,7 @@
                     storeName: document.getElementById('custName').value.trim(),
                     logoUrl
                 }));
-                document.getElementById('adminLogoPreview').src = logoUrl;
+                setSmartImage(document.getElementById('adminLogoPreview'), logoUrl, FALLBACK_STORE);
                 showToast('Website customized successfully!');
             } catch (err) {
                 alert("Save Error: " + err.message);
@@ -440,7 +700,7 @@
         window.resetAppForm = () => {
             document.getElementById('editAppId').value = '';
             document.getElementById('addAppForm').reset();
-            document.getElementById('formHeading').innerText = '+ Publish New App';
+            document.getElementById('formHeading').innerHTML = '<i class="fa-solid fa-plus-circle"></i> Publish New App';
             document.getElementById('submitBtn').innerText = 'Publish to Store';
             document.getElementById('cancelEditBtn').style.display = 'none';
         };
@@ -454,7 +714,7 @@
             document.getElementById('appLogo').value = data.logoUrl || '';
             document.getElementById('appLink').value = data.downloadUrl || '';
             document.getElementById('appDesc').value = data.description || '';
-            document.getElementById('formHeading').innerText = '✏️ Edit App';
+            document.getElementById('formHeading').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit App';
             document.getElementById('submitBtn').innerText = 'Update App';
             document.getElementById('cancelEditBtn').style.display = 'block';
             document.getElementById('addAppForm').scrollIntoView({ behavior: 'smooth' });
@@ -495,26 +755,27 @@
             }
         });
 
-        onSnapshot(collection(db, "apps"), (snapshot) => {
+        function renderAdminApps() {
             const list = document.getElementById('adminAppList');
+            const filterTerm = (adminSearchInput.value || '').toLowerCase();
             list.innerHTML = '';
-            appsCache = {};
 
-            if (snapshot.empty) {
-                list.innerHTML = '<p style="color: var(--text-muted);">No apps published yet.</p>';
+            const entries = Object.entries(appsCache).filter(([, data]) =>
+                (data.name || '').toLowerCase().includes(filterTerm) ||
+                (data.category || '').toLowerCase().includes(filterTerm)
+            );
+
+            if (entries.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-muted);">No matching apps found.</p>';
                 return;
             }
 
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const id = docSnap.id;
-                appsCache[id] = data;
-
+            entries.forEach(([id, data]) => {
                 const item = document.createElement('div');
                 item.className = 'list-item';
                 item.innerHTML = `
                     <div class="list-left">
-                        <img src="${cleanUrl(data.logoUrl)}" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/45?text=App'">
+                        <img src="${FALLBACK_APP}" referrerpolicy="no-referrer">
                         <div class="app-meta">
                             <span class="name">${data.name || 'Unnamed App'}</span>
                             <span class="cat">Category: ${data.category || 'General'}</span>
@@ -525,8 +786,26 @@
                         <button class="small-btn del-btn" onclick="deleteApp('${id}')">Delete</button>
                     </div>
                 `;
+                setSmartImage(item.querySelector('img'), data.logoUrl, FALLBACK_APP);
                 list.appendChild(item);
             });
+        }
+
+        adminSearchInput.addEventListener('input', renderAdminApps);
+
+        onSnapshot(collection(db, "apps"), (snapshot) => {
+            appsCache = {};
+            const cats = new Set();
+
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                appsCache[docSnap.id] = data;
+                if (data.category) cats.add(data.category);
+            });
+
+            document.getElementById('statAppsCount').innerText = snapshot.size;
+            document.getElementById('statCatsCount').innerText = cats.size;
+            renderAdminApps();
         }, (err) => {
             document.getElementById('adminAppList').innerHTML = `<p style="color:var(--danger);">Error loading apps: ${err.message}</p>`;
         });
@@ -566,12 +845,13 @@
         onSnapshot(collection(db, "socials"), (snapshot) => {
             const socialList = document.getElementById('socialList');
             socialList.innerHTML = '';
+            document.getElementById('statSocialsCount').innerText = snapshot.size;
             snapshot.forEach((docSnap) => {
                 const data = docSnap.data();
                 const tag = document.createElement('div');
                 tag.className = 'social-tag';
                 tag.innerHTML = `
-                    <span><strong>${data.platform}:</strong> <a href="${data.url}" target="_blank" style="color:var(--info); text-decoration:none;">Link</a></span>
+                    <span><strong>${data.platform}:</strong> <a href="${data.url}" target="_blank" style="color:var(--accent); text-decoration:none;">Link</a></span>
                     <button class="small-btn del-btn" style="padding:2px 7px;" onclick="deleteSocial('${docSnap.id}')">&times;</button>
                 `;
                 socialList.appendChild(tag);
