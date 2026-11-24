@@ -3,48 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAGGIE STORE - Violet Glass Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>MAGGIE STORE - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root, [data-theme="dark"] {
-            --bg-1: #120926;
-            --bg-2: #1e0f3d;
-            --glow-a: rgba(168, 85, 247, 0.34);
-            --glow-b: rgba(139, 92, 246, 0.24);
-            --glass: rgba(34, 19, 66, 0.62);
-            --glass-2: rgba(52, 30, 98, 0.56);
-            --border: rgba(216, 180, 254, 0.18);
-            --primary: #c084fc;
-            --primary-strong: #9333ea;
-            --primary-glow: rgba(168, 85, 247, 0.36);
-            --accent: #38bdf8;
-            --success: #34d399;
-            --amber: #fbbf24;
-            --danger: #fb7185;
-            --text: #faf5ff;
-            --muted: #cbb7eb;
-            --shadow: 0 18px 42px rgba(8, 3, 20, 0.52);
+            --bg: #0c0f14;
+            --surface: #141922;
+            --surface-2: #1c2330;
+            --ink: #f4f6fb;
+            --muted: #9aa4b8;
+            --accent: #10b981;
+            --accent-ink: #04130d;
+            --warm: #f59e0b;
+            --danger: #ef4444;
+            --border: rgba(255, 255, 255, 0.09);
+            --shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
         }
 
         [data-theme="light"] {
-            --bg-1: #f5f0ff;
-            --bg-2: #ebe2ff;
-            --glow-a: rgba(147, 51, 234, 0.14);
-            --glow-b: rgba(124, 58, 237, 0.12);
-            --glass: rgba(255, 255, 255, 0.76);
-            --glass-2: rgba(248, 244, 255, 0.88);
-            --border: rgba(126, 34, 206, 0.15);
-            --primary: #7e22ce;
-            --primary-strong: #6b21a8;
-            --primary-glow: rgba(126, 34, 206, 0.2);
-            --accent: #0284c7;
-            --success: #059669;
-            --amber: #d97706;
-            --danger: #e11d48;
-            --text: #1e1035;
-            --muted: #5b4b7a;
-            --shadow: 0 14px 32px rgba(76, 29, 149, 0.09);
+            --bg: #f6f4ef;
+            --surface: #ffffff;
+            --surface-2: #ece8df;
+            --ink: #141820;
+            --muted: #5b6475;
+            --accent: #059669;
+            --accent-ink: #ffffff;
+            --warm: #d97706;
+            --danger: #dc2626;
+            --border: rgba(20, 24, 32, 0.11);
+            --shadow: 0 12px 28px rgba(20, 24, 32, 0.08);
         }
 
         * {
@@ -55,1102 +43,605 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-1), var(--bg-2));
-            color: var(--text);
+            background: var(--bg);
+            color: var(--ink);
             min-height: 100vh;
-            display: flex;
-            position: relative;
-            overflow-x: hidden;
-            transition: background 0.3s ease, color 0.25s ease;
+            padding-bottom: 50px;
+            transition: background 0.25s ease, color 0.25s ease;
         }
 
-        body::before, body::after {
-            content: "";
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(85px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        body::before {
-            width: 360px;
-            height: 360px;
-            top: -80px;
-            left: 16%;
-            background: var(--glow-a);
-        }
-
-        body::after {
-            width: 420px;
-            height: 420px;
-            bottom: -110px;
-            right: 6%;
-            background: var(--glow-b);
-        }
-
-        .sidebar {
-            width: 268px;
-            background: var(--glass);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            border-right: 1px solid var(--border);
-            padding: 22px 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        header {
             position: sticky;
             top: 0;
-            height: 100vh;
-            z-index: 20;
-            flex-shrink: 0;
-        }
-
-        .brand-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 4px 6px 18px;
+            z-index: 90;
+            background: color-mix(in srgb, var(--bg) 85%, transparent);
+            backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-
-        .brand-logo {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
-            object-fit: cover;
-            border: 1.5px solid var(--primary);
-            box-shadow: 0 0 18px var(--primary-glow);
-            background: var(--glass-2);
-            flex-shrink: 0;
-        }
-
-        .brand-name {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.14rem;
-            font-weight: 800;
-            line-height: 1.15;
-        }
-
-        .brand-tag {
-            font-size: 0.72rem;
-            color: var(--muted);
-        }
-
-        .nav-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .nav-btn {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 14px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: var(--muted);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
+            padding: 12px 5%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            text-align: left;
-            transition: all 0.2s ease;
+            gap: 12px;
         }
 
-        .nav-left {
+        .brand-wrap {
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 10px;
         }
 
-        .nav-btn:hover {
-            background: var(--glass-2);
-            color: var(--text);
+        .brand-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
         }
 
-        .nav-btn.active {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(126, 34, 206, 0.18));
-            border-color: var(--border);
-            color: var(--text);
-            box-shadow: 0 6px 18px var(--primary-glow);
+        .role-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: color-mix(in srgb, var(--accent) 16%, transparent);
+            color: var(--accent);
+            padding: 3px 9px;
+            border-radius: 7px;
         }
 
-        .nav-pill {
-            background: var(--glass-2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-size: 0.72rem;
-            padding: 2px 8px;
-            border-radius: 999px;
-        }
-
-        .sidebar-bottom {
-            padding-top: 14px;
-            border-top: 1px solid var(--border);
-        }
-
-        .theme-btn {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 13px;
-            border: 1px solid var(--border);
-            background: var(--glass-2);
-            color: var(--text);
-            font-size: 0.83rem;
-            font-weight: 600;
-            cursor: pointer;
+        .header-actions {
             display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 11px;
+            padding: 9px 15px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: border-color 0.2s, transform 0.2s;
+            gap: 7px;
+            text-decoration: none;
+            transition: transform 0.15s, opacity 0.2s;
         }
 
-        .theme-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-1px);
-        }
-
-        .workspace {
-            flex: 1;
-            padding: 24px 26px 84px;
-            max-width: 1080px;
-            margin: 0 auto;
-            width: 100%;
-            position: relative;
-            z-index: 10;
-        }
-
-        .mobile-header {
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--glass);
-            backdrop-filter: blur(18px);
+        .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-primary { background: var(--accent); color: var(--accent-ink); }
+        .btn-warm { background: var(--warm); color: #141820; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--ink);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 12px 15px;
-            margin-bottom: 16px;
         }
 
-        .section-head {
-            margin-bottom: 18px;
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .section-head h2 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.55rem;
-            font-weight: 800;
-            margin-bottom: 4px;
+        .wrap {
+            max-width: 1120px;
+            margin: 24px auto 0;
+            padding: 0 20px;
         }
 
-        .section-head p {
-            color: var(--muted);
-            font-size: 0.85rem;
-        }
-
-        .view-pane {
-            display: none;
-            animation: paneIn 0.22s ease;
-        }
-
-        .view-pane.active { display: block; }
-
-        @keyframes paneIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+        /* LOGIN CARD */
+        .login-card {
+            max-width: 400px;
+            margin: 60px auto;
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 22px;
-            padding: 20px;
+            padding: 28px 24px;
             box-shadow: var(--shadow);
         }
 
-        .stat-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            background: rgba(168, 85, 247, 0.2);
-            color: var(--primary);
-            flex-shrink: 0;
-        }
-
-        .stat-num {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            line-height: 1.1;
-        }
-
-        .stat-txt {
-            font-size: 0.76rem;
-            color: var(--muted);
-        }
-
-        .tile-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 14px;
-        }
-
-        .tile-btn {
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 18px;
-            text-align: left;
-            color: var(--text);
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .tile-btn:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary);
-        }
-
-        .tile-btn i {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .tile-btn strong {
-            display: block;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .tile-btn span {
-            font-size: 0.77rem;
-            color: var(--muted);
-        }
-
-        .field { margin-bottom: 14px; }
-
-        .row-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--muted);
+        .login-card h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.6rem;
             margin-bottom: 6px;
         }
 
-        .hint-txt {
-            font-size: 0.72rem;
+        .login-card p {
             color: var(--muted);
-            margin-top: 4px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: 13px;
-            border: 1px solid var(--border);
-            background: var(--glass-2);
-            color: var(--text);
-            font-size: 0.86rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        select option {
-            background: var(--bg-2);
-            color: var(--text);
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-glow);
-        }
-
-        textarea { min-height: 82px; resize: vertical; }
-
-        .btn {
-            width: 100%;
-            padding: 12px 18px;
-            border-radius: 13px;
-            border: none;
-            background: linear-gradient(135deg, #a855f7, #7e22ce);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 8px 22px var(--primary-glow);
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        .btn:hover { transform: translateY(-2px); opacity: 0.95; }
-
-        .btn-ghost {
-            background: var(--glass-2);
-            color: var(--text);
-            border: 1px solid var(--border);
-            box-shadow: none;
-            margin-top: 10px;
-        }
-
-        .apps-toolbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .search-box { max-width: 280px; }
-
-        .apps-list-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
-            gap: 14px;
-        }
-
-        .app-card {
-            background: var(--glass-2);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .app-top {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .app-top img {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .app-title {
-            font-weight: 700;
-            font-size: 0.96rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .badge-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-
-        .app-cat-pill {
-            display: inline-block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--primary);
-            background: rgba(168, 85, 247, 0.16);
-            padding: 2px 8px;
-            border-radius: 7px;
-        }
-
-        .price-pill.free {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--success);
-            background: rgba(52, 211, 153, 0.16);
-            padding: 2px 8px;
-            border-radius: 7px;
-        }
-
-        .price-pill.paid {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--amber);
-            background: rgba(251, 191, 36, 0.18);
-            padding: 2px 8px;
-            border-radius: 7px;
-        }
-
-        .app-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .action-chip {
-            padding: 7px 10px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--glass);
-            color: var(--text);
-            font-size: 0.78rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-
-        .action-chip.edit { color: var(--accent); }
-        .action-chip.edit:hover { background: var(--accent); color: #06131f; border-color: var(--accent); }
-
-        .action-chip.del { color: var(--danger); }
-        .action-chip.del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
-
-        .xml-layout {
-            display: grid;
-            grid-template-columns: 1.05fr 1.25fr;
-            gap: 18px;
-            align-items: start;
-        }
-
-        .branding-layout {
-            display: grid;
-            grid-template-columns: 1.3fr 0.7fr;
-            gap: 18px;
-            align-items: start;
-        }
-
-        .preview-card {
-            text-align: center;
-        }
-
-        .preview-card img {
-            width: 84px;
-            height: 84px;
-            border-radius: 22px;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 22px var(--primary-glow);
-            margin-bottom: 12px;
-        }
-
-        .social-row {
-            display: grid;
-            grid-template-columns: 1fr 2fr auto;
-            gap: 10px;
+            font-size: 0.85rem;
             margin-bottom: 18px;
         }
 
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
+        /* TABS */
+        .tabs-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+        }
+        .tabs-row::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            background: var(--surface);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 0.83rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
         }
 
-        .social-item {
-            background: var(--glass-2);
+        .tab-btn.active {
+            background: var(--accent);
+            color: var(--accent-ink);
+            border-color: var(--accent);
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .panel-card {
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+
+        .panel-card h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
+            margin-bottom: 14px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field.full { grid-column: 1 / -1; }
+
+        label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        input[type="url"],
+        select,
+        textarea {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--ink);
+            border-radius: 12px;
+            padding: 10px 13px;
+            font-size: 0.88rem;
+            outline: none;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .paid-toggle-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
             padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--ink);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--warm);
+            cursor: pointer;
+        }
+
+        /* LIST ITEMS */
+        .items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 15px;
+        }
+
+        .admin-item-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
         }
 
-        .txn-table-wrap {
-            overflow-x: auto;
-            margin-top: 12px;
+        .item-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        table.txn-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.82rem;
+        .item-thumb {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
         }
 
-        .txn-table th, .txn-table td {
-            padding: 10px 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .txn-table th {
-            color: var(--muted);
-            font-size: 0.75rem;
+        .badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
             text-transform: uppercase;
         }
 
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border);
-            padding: 8px 4px;
-            z-index: 120;
-            justify-content: space-around;
+        .badge-free {
+            background: color-mix(in srgb, var(--accent) 15%, transparent);
+            color: var(--accent);
         }
 
-        .m-btn {
-            background: transparent;
-            border: none;
+        .badge-paid {
+            background: color-mix(in srgb, var(--warm) 18%, transparent);
+            color: var(--warm);
+        }
+
+        .badge-cat {
+            background: var(--surface);
             color: var(--muted);
-            font-size: 0.65rem;
-            font-weight: 600;
+            border: 1px solid var(--border);
+        }
+
+        .item-actions {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            padding: 4px 5px;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
         }
 
-        .m-btn i { font-size: 1rem; }
-        .m-btn.active { color: var(--primary); }
-
-        .toast {
-            position: fixed;
-            bottom: 72px;
-            right: 18px;
-            background: linear-gradient(135deg, #a855f7, #7e22ce);
-            color: #fff;
-            padding: 11px 20px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            display: none;
-            z-index: 300;
-            box-shadow: 0 10px 24px var(--primary-glow);
-        }
-
-        @media (max-width: 940px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .xml-layout { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 860px) {
-            .sidebar { display: none; }
-            .mobile-header { display: flex; }
-            .mobile-nav { display: flex; }
-            .workspace { padding: 16px 14px 86px; }
-            .branding-layout { grid-template-columns: 1fr; }
-            .social-row, .row-2 { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 520px) {
-            .stats-grid { grid-template-columns: 1fr; }
+        .toast-msg {
+            margin-top: 12px;
+            font-size: 0.84rem;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div>
-            <div class="brand-box">
-                <img id="sidebarLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+" alt="Logo" class="brand-logo" referrerpolicy="no-referrer">
-                <div>
-                    <div class="brand-name" id="sidebarStoreName">MAGGIE STORE</div>
-                    <div class="brand-tag">Violet Glass Studio</div>
-                </div>
-            </div>
-
-            <nav class="nav-list">
-                <button class="nav-btn active" data-tab="overview" onclick="switchTab('overview')">
-                    <span class="nav-left"><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
-                </button>
-                <button class="nav-btn" data-tab="apps" onclick="switchTab('apps')">
-                    <span class="nav-left"><i class="fa-solid fa-grid-2"></i> Uploaded Apps</span>
-                    <span class="nav-pill" id="navAppsBadge">0</span>
-                </button>
-                <button class="nav-btn" data-tab="upload" onclick="openUploadTab()">
-                    <span class="nav-left"><i class="fa-solid fa-cloud-arrow-up"></i> Upload New App</span>
-                </button>
-                <button class="nav-btn" data-tab="xmltemplates" onclick="switchTab('xmltemplates')">
-                    <span class="nav-left"><i class="fa-solid fa-code"></i> XML & Templates</span>
-                    <span class="nav-pill" id="navXmlBadge">0</span>
-                </button>
-                <button class="nav-btn" data-tab="gateway" onclick="switchTab('gateway')">
-                    <span class="nav-left"><i class="fa-solid fa-wallet"></i> FamGateway</span>
-                </button>
-                <button class="nav-btn" data-tab="branding" onclick="switchTab('branding')">
-                    <span class="nav-left"><i class="fa-solid fa-palette"></i> Website Logo & Name</span>
-                </button>
-                <button class="nav-btn" data-tab="socials" onclick="switchTab('socials')">
-                    <span class="nav-left"><i class="fa-solid fa-share-nodes"></i> Social Handles</span>
-                    <span class="nav-pill" id="navSocialBadge">0</span>
-                </button>
-            </nav>
+    <header>
+        <div class="brand-wrap">
+            <span class="brand-title">MAGGIE ADMIN</span>
+            <span class="role-pill">Control Panel</span>
         </div>
-
-        <div class="sidebar-bottom">
-            <button type="button" class="theme-btn" id="desktopThemeBtn" onclick="toggleTheme()">
-                <i class="fa-solid fa-sun"></i> <span>Light Mode</span>
+        <div class="header-actions">
+            <a href="index.html" class="btn btn-ghost">
+                <i class="fa-solid fa-store"></i> View Store
+            </a>
+            <button type="button" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i id="themeIcon" class="fa-solid fa-sun"></i>
+            </button>
+            <button type="button" id="logoutBtn" class="btn btn-danger" style="display:none;" onclick="logoutAdmin()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
             </button>
         </div>
-    </aside>
+    </header>
 
-    <main class="workspace">
-        <div class="mobile-header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <img id="mobileLogo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+" alt="Logo" class="brand-logo" style="width:38px; height:38px;" referrerpolicy="no-referrer">
-                <div>
-                    <div class="brand-name" id="mobileStoreName" style="font-size:1.04rem;">MAGGIE STORE</div>
-                    <div class="brand-tag">Admin Workspace</div>
-                </div>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="wrap">
+        <div class="login-card">
+            <div style="color:var(--accent); font-size:0.75rem; font-weight:800; text-transform:uppercase; margin-bottom:6px;">
+                <i class="fa-solid fa-shield-halved"></i> Admin Sign In
             </div>
-            <button type="button" class="theme-btn" id="mobileThemeBtn" style="width:auto; padding:7px 12px;" onclick="toggleTheme()">
-                <i class="fa-solid fa-sun"></i>
+            <h1>Welcome Back</h1>
+            <p>Apne Firebase Admin email aur password se login karein.</p>
+
+            <form id="loginForm" style="display:flex; flex-direction:column; gap:14px;">
+                <div class="field">
+                    <label for="adminEmail">Admin Email</label>
+                    <input type="text" id="adminEmail" placeholder="admin@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="adminPass">Password</label>
+                    <input type="password" id="adminPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="padding:11px;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login to Panel
+                </button>
+            </form>
+            <div id="loginError" class="toast-msg" style="color:var(--danger);"></div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD SCREEN -->
+    <div id="dashboardScreen" class="wrap" style="display:none;">
+        <div class="tabs-row">
+            <button type="button" class="tab-btn active" data-tab="appsTab" onclick="switchTab('appsTab')">
+                <i class="fa-solid fa-mobile-screen"></i> Apps (Free / Paid)
+            </button>
+            <button type="button" class="tab-btn" data-tab="xmlTab" onclick="switchTab('xmlTab')">
+                <i class="fa-solid fa-layer-group"></i> XML & Templates
+            </button>
+            <button type="button" class="tab-btn" data-tab="settingsTab" onclick="switchTab('settingsTab')">
+                <i class="fa-solid fa-sliders"></i> Store & Socials
             </button>
         </div>
 
-        <!-- 1. DASHBOARD -->
-        <section id="view-overview" class="view-pane active">
-            <div class="section-head">
-                <h2>Dashboard Overview</h2>
-                <p>Apps, Paid/Free XML & Templates, FamGateway UPI, Logo, aur Social Handles yahan se manage karein.</p>
-            </div>
-
-            <div class="stats-grid">
-                <div class="glass-card stat-box">
-                    <div class="stat-icon"><i class="fa-solid fa-cubes"></i></div>
-                    <div>
-                        <div class="stat-num" id="statAppsCount">0</div>
-                        <div class="stat-txt">Uploaded Apps</div>
-                    </div>
-                </div>
-                <div class="glass-card stat-box">
-                    <div class="stat-icon"><i class="fa-solid fa-code"></i></div>
-                    <div>
-                        <div class="stat-num" id="statXmlCount">0</div>
-                        <div class="stat-txt">XML & Templates</div>
-                    </div>
-                </div>
-                <div class="glass-card stat-box">
-                    <div class="stat-icon"><i class="fa-solid fa-crown"></i></div>
-                    <div>
-                        <div class="stat-num" id="statPaidCount">0</div>
-                        <div class="stat-txt">Paid Items</div>
-                    </div>
-                </div>
-                <div class="glass-card stat-box">
-                    <div class="stat-icon"><i class="fa-solid fa-share-nodes"></i></div>
-                    <div>
-                        <div class="stat-num" id="statSocialsCount">0</div>
-                        <div class="stat-txt">Social Handles</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tile-grid">
-                <button class="tile-btn" onclick="switchTab('apps')">
-                    <i class="fa-solid fa-grid-2"></i>
-                    <strong>Uploaded Apps</strong>
-                    <span>Apne uploaded apps dekhein, edit ya delete karein</span>
-                </button>
-                <button class="tile-btn" onclick="openUploadTab()">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <strong>Upload New App</strong>
-                    <span>Naya app store mein publish karein</span>
-                </button>
-                <button class="tile-btn" onclick="switchTab('xmltemplates')">
-                    <i class="fa-solid fa-code"></i>
-                    <strong>XML & Templates</strong>
-                    <span>Multiple preview photos, Paid/Free mode aur protected link set karein</span>
-                </button>
-                <button class="tile-btn" onclick="switchTab('gateway')">
-                    <i class="fa-solid fa-wallet"></i>
-                    <strong>FamGateway UPI</strong>
-                    <span>API key config aur recent UPI transactions dekhein</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- 2. UPLOADED APPS (UNCHANGED) -->
-        <section id="view-apps" class="view-pane">
-            <div class="section-head">
-                <h2>Uploaded Apps</h2>
-                <p>Store par upload kiye gaye saare apps yahan dikh rahe hain.</p>
-            </div>
-
-            <div class="glass-card">
-                <div class="apps-toolbar">
-                    <input type="text" id="adminSearch" class="search-box" placeholder="Search uploaded apps...">
-                    <button class="btn" style="width:auto;" onclick="openUploadTab()">
-                        <i class="fa-solid fa-plus"></i> Upload New App
-                    </button>
-                </div>
-                <div id="adminAppList" class="apps-list-grid">
-                    <p style="color: var(--muted);">Loading apps...</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. UPLOAD NEW APP (UNCHANGED) -->
-        <section id="view-upload" class="view-pane">
-            <div class="section-head">
-                <h2 id="formHeading">Upload New App</h2>
-                <p id="formSubtext">Naya app store mein publish karne ke liye details bharein.</p>
-            </div>
-
-            <div class="glass-card" style="max-width: 640px;">
-                <form id="addAppForm">
+        <!-- TAB 1: APPS (SUPPORTS FREE & PAID) -->
+        <div id="appsTab" class="tab-panel active">
+            <div class="panel-card">
+                <h2 id="appFormHeading"><i class="fa-solid fa-plus-circle"></i> Add New App</h2>
+                <form id="appForm">
                     <input type="hidden" id="editAppId">
-                    <div class="field">
-                        <label>App Name *</label>
-                        <input type="text" id="appName" placeholder="e.g. Capcut Pro" required>
-                    </div>
-                    <div class="field">
-                        <label>Category *</label>
-                        <input type="text" id="appCategory" list="catSuggestions" placeholder="e.g. Social, Editing, Games" required>
-                        <datalist id="catSuggestions">
-                            <option value="Social">
-                            <option value="Editing">
-                            <option value="Games">
-                            <option value="Tools">
-                            <option value="Entertainment">
-                        </datalist>
-                    </div>
-                    <div class="field">
-                        <label>App Logo Image URL *</label>
-                        <input type="text" id="appLogo" placeholder="https://.../app-icon.png" required>
-                    </div>
-                    <div class="field">
-                        <label>Download Link *</label>
-                        <input type="text" id="appLink" placeholder="https://github.com/..." required>
-                    </div>
-                    <div class="field">
-                        <label>Description (Optional)</label>
-                        <textarea id="appDesc" placeholder="App features & details..."></textarea>
-                    </div>
-                    <button type="submit" class="btn" id="submitBtn">
-                        <i class="fa-solid fa-rocket"></i> Publish to Store
-                    </button>
-                    <button type="button" class="btn btn-ghost" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">
-                        Cancel Edit
-                    </button>
-                </form>
-            </div>
-        </section>
-
-        <!-- 4. XML & TEMPLATES (PAID / FREE + MULTIPLE PHOTOS + EDIT + PROTECTED LINK) -->
-        <section id="view-xmltemplates" class="view-pane">
-            <div class="section-head">
-                <h2>XML & Templates Manager</h2>
-                <p>XML ya Templates ko Free ya Paid mark karein, multiple preview photos add karein, edit karein, aur payment ke baad khulne wali link daalein.</p>
-            </div>
-
-            <div class="xml-layout">
-                <div class="glass-card">
-                    <h3 id="xmlFormTitle" style="font-family:'Outfit',sans-serif; margin-bottom:14px;">Add XML / Template</h3>
-                    <form id="xmlForm">
-                        <input type="hidden" id="editXmlId">
-
+                    <div class="form-grid">
                         <div class="field">
-                            <label>Item Title *</label>
-                            <input type="text" id="xmlTitle" placeholder="e.g. Alight Motion Shake XML" required>
+                            <label for="appName">App Name *</label>
+                            <input type="text" id="appName" placeholder="e.g. Alight Motion Pro" required>
+                        </div>
+                        <div class="field">
+                            <label for="appCategory">Category *</label>
+                            <input type="text" id="appCategory" placeholder="e.g. Editing, Games, Tools" required>
+                        </div>
+                        <div class="field">
+                            <label for="appLogoUrl">App Icon URL (imgbb / direct link) *</label>
+                            <input type="url" id="appLogoUrl" placeholder="https://i.ibb.co/..." required>
+                        </div>
+                        <div class="field">
+                            <label for="appDownloadUrl">Download / File URL (GitHub / Direct) *</label>
+                            <input type="url" id="appDownloadUrl" placeholder="https://github.com/..." required>
                         </div>
 
-                        <div class="row-2">
-                            <div class="field">
-                                <label>Type *</label>
-                                <select id="xmlType">
-                                    <option value="XML">XML File</option>
-                                    <option value="Template">Template</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label>Access Mode *</label>
-                                <select id="xmlAccess" onchange="togglePriceInput()">
-                                    <option value="free">Free</option>
-                                    <option value="paid">Paid (FamGateway UPI)</option>
-                                </select>
+                        <!-- PAID / FREE APP CONTROLS -->
+                        <div class="field full">
+                            <div class="paid-toggle-box">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="appIsPaid" onchange="toggleAppPriceInput()">
+                                    <span>Paid App (UPI Payment ke baad Download Link khulega)</span>
+                                </label>
+                                <div id="appPriceWrap" style="display:none; align-items:center; gap:8px;">
+                                    <label for="appPrice" style="margin:0;">Price (₹):</label>
+                                    <input type="number" id="appPrice" min="1" value="29" style="width:110px;">
+                                </div>
                             </div>
                         </div>
 
-                        <div class="field" id="priceFieldWrap" style="display:none;">
-                            <label>Price (INR ₹) *</label>
-                            <input type="number" id="xmlPrice" min="1" step="1" placeholder="e.g. 49">
+                        <div class="field full">
+                            <label for="appDesc">Description</label>
+                            <textarea id="appDesc" placeholder="App details, version, features..."></textarea>
                         </div>
+                    </div>
 
-                        <div class="field">
-                            <label>Card Thumbnail / Cover URL *</label>
-                            <input type="text" id="xmlThumb" placeholder="https://i.ibb.co/..." required>
-                        </div>
-
-                        <div class="field">
-                            <label>Preview Photos URLs (Ek Se Jyada Photos — 1 Link Per Line)</label>
-                            <textarea id="xmlGallery" placeholder="https://i.ibb.co/photo1.jpg&#10;https://i.ibb.co/photo2.jpg&#10;https://i.ibb.co/photo3.jpg"></textarea>
-                            <div class="hint-txt">Jab user is XML/Template par click karega, toh ye sabhi photos gallery mein dikhengi.</div>
-                        </div>
-
-                        <div class="field">
-                            <label id="xmlLinkLabel">Download / Protected Unlock Link *</label>
-                            <input type="text" id="xmlLink" placeholder="https://drive.google.com/... or https://..." required>
-                        </div>
-
-                        <div class="field">
-                            <label>Short Details (Optional)</label>
-                            <textarea id="xmlDesc" placeholder="XML/Template details..."></textarea>
-                        </div>
-
-                        <button type="submit" id="xmlSubmitBtn" class="btn">
-                            <i class="fa-solid fa-check"></i> Save XML / Template
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+                        <button type="submit" id="saveAppBtn" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> Save App
                         </button>
-                        <button type="button" id="xmlCancelBtn" class="btn btn-ghost" style="display:none;" onclick="resetXmlForm()">
+                        <button type="button" id="cancelAppEditBtn" class="btn btn-ghost" style="display:none;" onclick="resetAppForm()">
                             Cancel Edit
                         </button>
-                    </form>
-                </div>
-
-                <div class="glass-card">
-                    <div class="apps-toolbar">
-                        <h3 style="font-family:'Outfit',sans-serif;">Uploaded XML & Templates</h3>
-                        <input type="text" id="xmlSearch" class="search-box" placeholder="Search XML / template...">
                     </div>
-                    <div id="adminXmlList" class="apps-list-grid">
-                        <p style="color:var(--muted);">Loading XML & templates...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. FAMGATEWAY UPI CONFIG & TRANSACTIONS -->
-        <section id="view-gateway" class="view-pane">
-            <div class="section-head">
-                <h2>FamGateway UPI Settings</h2>
-                <p>0% fee automated UPI collection config aur recent transactions yahan se check karein.</p>
-            </div>
-
-            <div class="glass-card" style="margin-bottom:18px;">
-                <form id="gatewayForm">
-                    <div class="row-2">
-                        <div class="field">
-                            <label>FamGateway API Key *</label>
-                            <input type="text" id="fgApiKeyInput" value="fam_95a256e60ea571df5923128a187d7659d00c5716" required>
-                        </div>
-                        <div class="field">
-                            <label>Backend Order Endpoint (Optional)</label>
-                            <input type="text" id="fgBackendUrlInput" placeholder="https://yourdomain.com/create_order.php">
-                        </div>
-                    </div>
-                    <button type="submit" id="fgSaveBtn" class="btn" style="width:auto;">
-                        <i class="fa-solid fa-floppy-disk"></i> Save FamGateway Config
-                    </button>
+                    <div id="appFormStatus" class="toast-msg"></div>
                 </form>
             </div>
 
-            <div class="glass-card">
-                <div class="apps-toolbar">
-                    <h3 style="font-family:'Outfit',sans-serif;">Recent FamGateway Transactions</h3>
-                    <button type="button" class="action-chip edit" onclick="loadFamTransactions()">
-                        <i class="fa-solid fa-rotate"></i> Refresh
-                    </button>
-                </div>
-                <div id="fgTxnStatus" style="font-size:0.82rem; color:var(--muted);">Click Refresh to fetch latest transactions.</div>
-                <div class="txn-table-wrap">
-                    <table class="txn-table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>UTR</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fgTxnBody"></tbody>
-                    </table>
+            <div class="panel-card">
+                <h2>All Apps</h2>
+                <div id="adminAppsList" class="items-list">
+                    <p style="color:var(--muted);">Loading apps...</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- 6. WEBSITE LOGO & NAME -->
-        <section id="view-branding" class="view-pane">
-            <div class="section-head">
-                <h2>Website Logo & Name</h2>
-                <p>Yahan se apne store ka logo aur naam change karein.</p>
-            </div>
-
-            <div class="branding-layout">
-                <div class="glass-card">
-                    <form id="customizeForm">
+        <!-- TAB 2: XML & TEMPLATES -->
+        <div id="xmlTab" class="tab-panel">
+            <div class="panel-card">
+                <h2 id="xmlFormHeading"><i class="fa-solid fa-plus-circle"></i> Add XML / Template</h2>
+                <form id="xmlForm">
+                    <input type="hidden" id="editXmlId">
+                    <div class="form-grid">
                         <div class="field">
-                            <label>Website / Store Name *</label>
-                            <input type="text" id="custName" value="MAGGIE STORE" required>
+                            <label for="xmlTitle">Title *</label>
+                            <input type="text" id="xmlTitle" placeholder="e.g. 4K CC XML Pack" required>
                         </div>
                         <div class="field">
-                            <label>Website Logo Image URL *</label>
-                            <input type="text" id="custLogo" placeholder="https://i.ibb.co/..." required>
+                            <label for="xmlType">Type *</label>
+                            <select id="xmlType">
+                                <option value="XML">XML</option>
+                                <option value="Template">Template</option>
+                                <option value="Preset">Preset</option>
+                            </select>
                         </div>
-                        <button type="submit" id="custBtn" class="btn">
-                            <i class="fa-solid fa-check"></i> Save Website Branding
+                        <div class="field">
+                            <label for="xmlThumbUrl">Thumbnail / Cover Photo URL</label>
+                            <input type="url" id="xmlThumbUrl" placeholder="https://i.ibb.co/...">
+                        </div>
+                        <div class="field">
+                            <label for="xmlProtectedLink">Protected Download / Drive / GitHub Link *</label>
+                            <input type="url" id="xmlProtectedLink" placeholder="https://..." required>
+                        </div>
+
+                        <div class="field full">
+                            <div class="paid-toggle-box">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="xmlIsPaid" checked onchange="toggleXmlPriceInput()">
+                                    <span>Paid Item (Payment ke baad link unlock hoga)</span>
+                                </label>
+                                <div id="xmlPriceWrap" style="display:flex; align-items:center; gap:8px;">
+                                    <label for="xmlPrice" style="margin:0;">Price (₹):</label>
+                                    <input type="number" id="xmlPrice" min="1" value="9" style="width:110px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlPhotos">All Screenshots URLs (Ek line mein ek URL ya comma se alag karein)</label>
+                            <textarea id="xmlPhotos" placeholder="https://i.ibb.co/shot1.jpg&#10;https://i.ibb.co/shot2.jpg"></textarea>
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlDesc">Description</label>
+                            <textarea id="xmlDesc" placeholder="XML / Template details..."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+                        <button type="submit" id="saveXmlBtn" class="btn btn-warm">
+                            <i class="fa-solid fa-floppy-disk"></i> Save XML / Template
                         </button>
-                    </form>
-                </div>
-
-                <div class="glass-card preview-card">
-                    <img id="brandingPreviewImg" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+" alt="Preview" referrerpolicy="no-referrer">
-                    <h3 id="brandingPreviewName" style="font-family:'Outfit',sans-serif;">MAGGIE STORE</h3>
-                    <p style="font-size:0.78rem; color:var(--muted); margin-top:4px;">Live Store Branding Preview</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. SOCIAL HANDLES -->
-        <section id="view-socials" class="view-pane">
-            <div class="section-head">
-                <h2>Social Media Handles</h2>
-                <p>Storefront ke header aur footer mein dikhne wale social links yahan se add ya remove karein.</p>
+                        <button type="button" id="cancelXmlEditBtn" class="btn btn-ghost" style="display:none;" onclick="resetXmlForm()">
+                            Cancel Edit
+                        </button>
+                    </div>
+                    <div id="xmlFormStatus" class="toast-msg"></div>
+                </form>
             </div>
 
-            <div class="glass-card">
-                <form id="socialForm" class="social-row">
-                    <input type="text" id="socialPlatform" list="platformList" placeholder="Platform (e.g. Telegram)" required>
-                    <datalist id="platformList">
-                        <option value="Instagram">
-                        <option value="Telegram">
-                        <option value="Discord">
-                        <option value="YouTube">
-                        <option value="WhatsApp">
-                        <option value="X (Twitter)">
-                    </datalist>
-                    <input type="text" id="socialUrl" placeholder="https://t.me/yourchannel" required>
-                    <button type="submit" id="socialBtn" class="btn" style="width:auto; padding:11px 22px;">
-                        + Add Handle
+            <div class="panel-card">
+                <h2>All XML & Templates</h2>
+                <div id="adminXmlList" class="items-list">
+                    <p style="color:var(--muted);">Loading XML & templates...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: STORE & SOCIALS -->
+        <div id="settingsTab" class="tab-panel">
+            <div class="panel-card">
+                <h2>Store General Settings</h2>
+                <form id="settingsForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="storeNameInput">Store Name</label>
+                            <input type="text" id="storeNameInput" placeholder="MAGGIE STORE" required>
+                        </div>
+                        <div class="field">
+                            <label for="storeLogoInput">Store Logo URL (imgbb)</label>
+                            <input type="url" id="storeLogoInput" placeholder="https://i.ibb.co/...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:14px;">
+                        <i class="fa-solid fa-check"></i> Save Store Settings
                     </button>
+                    <div id="settingsStatus" class="toast-msg"></div>
+                </form>
+            </div>
+
+            <div class="panel-card">
+                <h2>Social Media Links</h2>
+                <form id="socialForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="socialPlatform">Platform Name</label>
+                            <input type="text" id="socialPlatform" placeholder="Instagram / Telegram / YouTube / Discord" required>
+                        </div>
+                        <div class="field">
+                            <label for="socialUrl">Profile / Channel URL</label>
+                            <input type="url" id="socialUrl" placeholder="https://..." required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:14px;">
+                        <i class="fa-solid fa-plus"></i> Add Social Link
+                    </button>
+                    <div id="socialStatus" class="toast-msg"></div>
                 </form>
 
-                <div id="socialList" class="social-grid"></div>
+                <div id="adminSocialsList" class="items-list" style="margin-top:18px;"></div>
             </div>
-        </section>
-    </main>
-
-    <nav class="mobile-nav">
-        <button class="m-btn active" data-tab="overview" onclick="switchTab('overview')">
-            <i class="fa-solid fa-gauge-high"></i><span>Home</span>
-        </button>
-        <button class="m-btn" data-tab="apps" onclick="switchTab('apps')">
-            <i class="fa-solid fa-grid-2"></i><span>Apps</span>
-        </button>
-        <button class="m-btn" data-tab="upload" onclick="openUploadTab()">
-            <i class="fa-solid fa-circle-plus"></i><span>Upload</span>
-        </button>
-        <button class="m-btn" data-tab="xmltemplates" onclick="switchTab('xmltemplates')">
-            <i class="fa-solid fa-code"></i><span>XML</span>
-        </button>
-        <button class="m-btn" data-tab="gateway" onclick="switchTab('gateway')">
-            <i class="fa-solid fa-wallet"></i><span>UPI</span>
-        </button>
-        <button class="m-btn" data-tab="branding" onclick="switchTab('branding')">
-            <i class="fa-solid fa-palette"></i><span>Logo</span>
-        </button>
-    </nav>
-
-    <div id="toast" class="toast">Action Completed!</div>
+        </div>
+    </div>
 
     <script>
-        (function initSavedTheme() {
-            const saved = localStorage.getItem("maggie_theme") || "dark";
-            document.documentElement.setAttribute("data-theme", saved);
-            updateThemeButtons(saved);
+        (function initTheme() {
+            const t = localStorage.getItem("maggie_theme") || "dark";
+            document.documentElement.setAttribute("data-theme", t);
+            updateThemeIcon(t);
         })();
 
-        function updateThemeButtons(theme) {
-            const dBtn = document.getElementById("desktopThemeBtn");
-            const mBtn = document.getElementById("mobileThemeBtn");
-            if (dBtn) {
-                dBtn.innerHTML = theme === "dark"
-                    ? '<i class="fa-solid fa-sun"></i> <span>Light Mode</span>'
-                    : '<i class="fa-solid fa-moon"></i> <span>Dark Mode</span>';
-            }
-            if (mBtn) {
-                mBtn.innerHTML = theme === "dark"
-                    ? '<i class="fa-solid fa-sun"></i>'
-                    : '<i class="fa-solid fa-moon"></i>';
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById("themeIcon");
+            if (icon) {
+                icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
             }
         }
 
         window.toggleTheme = function () {
-            const current = document.documentElement.getAttribute("data-theme") || "dark";
-            const next = current === "dark" ? "light" : "dark";
+            const cur = document.documentElement.getAttribute("data-theme") || "dark";
+            const next = cur === "dark" ? "light" : "dark";
             document.documentElement.setAttribute("data-theme", next);
             localStorage.setItem("maggie_theme", next);
-            updateThemeButtons(next);
+            updateThemeIcon(next);
         };
 
-        window.switchTab = function (tabName) {
-            document.querySelectorAll('.view-pane').forEach(sec => sec.classList.remove('active'));
-            const target = document.getElementById('view-' + tabName);
-            if (target) target.classList.add('active');
-
-            document.querySelectorAll('.nav-btn, .m-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
-            });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.switchTab = function (tabId) {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-tab") === tabId));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === tabId));
         };
 
-        window.togglePriceInput = function () {
-            const mode = document.getElementById('xmlAccess').value;
-            const wrap = document.getElementById('priceFieldWrap');
-            const priceInput = document.getElementById('xmlPrice');
-            const linkLabel = document.getElementById('xmlLinkLabel');
+        window.toggleAppPriceInput = function () {
+            const checked = document.getElementById("appIsPaid").checked;
+            document.getElementById("appPriceWrap").style.display = checked ? "flex" : "none";
+        };
 
-            if (mode === 'paid') {
-                wrap.style.display = 'block';
-                priceInput.required = true;
-                linkLabel.innerText = 'Protected Link (FamGateway Payment Ke Baad Khulega) *';
-            } else {
-                wrap.style.display = 'none';
-                priceInput.required = false;
-                priceInput.value = '';
-                linkLabel.innerText = 'Free Download Link *';
-            }
+        window.toggleXmlPriceInput = function () {
+            const checked = document.getElementById("xmlIsPaid").checked;
+            document.getElementById("xmlPriceWrap").style.display = checked ? "flex" : "none";
         };
     </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, updateDoc, doc, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import {
+            getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAz5VFvZ4nb7XOd8R72uW-aCYoLp0A_DAk",
@@ -1163,504 +654,369 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const FALLBACK_STORE = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzllMzNlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiNmZmYiPk08L3RleHQ+PC9zdmc+";
-        const FALLBACK_APP = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmQxYjUzIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmaWxsPSIjY2JiN2ViIj5BUFA8L3RleHQ+PC9zdmc+";
+        const FALLBACK_ICON = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFjMjMzMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjI2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZmlsbD0iIzlhYTRiOCI+TUFHR0lFPC90ZXh0Pjwvc3ZnPg==";
 
-        let appsCache = {};
-        let xmlCache = {};
-        const adminSearchInput = document.getElementById('adminSearch');
-        const xmlSearchInput = document.getElementById('xmlSearch');
+        let cachedApps = [];
+        let cachedXmls = [];
 
         function cleanUrl(raw) {
-            const val = (raw || '').trim();
-            if (!val) return '';
-            if (!val.startsWith('http://') && !val.startsWith('https://') && !val.startsWith('data:image/')) {
-                return 'https://' + val;
+            const val = (raw || "").trim();
+            if (!val) return "";
+            if (!val.startsWith("http://") && !val.startsWith("https://") && !val.startsWith("data:image/")) {
+                return "https://" + val;
             }
             return val;
         }
 
-        function parsePhotoUrls(rawText, fallbackThumb = '') {
-            const parts = (rawText || '')
-                .split(/[\n,]+/)
-                .map(s => cleanUrl(s))
-                .filter(Boolean);
-            const unique = Array.from(new Set(parts));
-            if (unique.length === 0 && cleanUrl(fallbackThumb)) {
-                return [cleanUrl(fallbackThumb)];
-            }
-            return unique;
+        function setStatus(elId, msg, isError = false) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.style.color = isError ? "var(--danger)" : "var(--accent)";
+            el.innerText = msg;
         }
 
-        function setDirectImage(imgEl, rawUrl, fallbackUrl) {
-            if (!imgEl) return;
-            const url = cleanUrl(rawUrl);
-            imgEl.onerror = () => {
-                imgEl.onerror = null;
-                imgEl.src = fallbackUrl;
-            };
-            imgEl.src = url || fallbackUrl;
-        }
-
-        const toast = document.getElementById('toast');
-        function showToast(msg) {
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2800);
-        }
-
-        function withTimeout(promise, ms = 10000) {
-            return Promise.race([
-                promise,
-                new Promise((_, reject) => setTimeout(() => reject(new Error("Firebase request timeout.")), ms))
-            ]);
-        }
-
-        // BRANDING
-        onSnapshot(doc(db, "settings", "general"), (docSnap) => {
-            if (docSnap.exists()) {
-                const settings = docSnap.data();
-                if (settings.storeName) {
-                    document.getElementById('custName').value = settings.storeName;
-                    document.getElementById('sidebarStoreName').innerText = settings.storeName;
-                    document.getElementById('mobileStoreName').innerText = settings.storeName;
-                    document.getElementById('brandingPreviewName').innerText = settings.storeName;
-                }
-                if (settings.logoUrl) {
-                    const url = cleanUrl(settings.logoUrl);
-                    document.getElementById('custLogo').value = url;
-                    setDirectImage(document.getElementById('sidebarLogo'), url, FALLBACK_STORE);
-                    setDirectImage(document.getElementById('mobileLogo'), url, FALLBACK_STORE);
-                    setDirectImage(document.getElementById('brandingPreviewImg'), url, FALLBACK_STORE);
-                }
-            }
-        });
-
-        document.getElementById('customizeForm').addEventListener('submit', async (e) => {
+        // AUTH
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('custBtn');
-            btn.innerHTML = 'Saving...';
+            const email = document.getElementById("adminEmail").value.trim();
+            const pass = document.getElementById("adminPass").value;
+            const btn = document.getElementById("loginSubmitBtn");
             btn.disabled = true;
-            const storeName = document.getElementById('custName').value.trim();
-            const logoUrl = cleanUrl(document.getElementById('custLogo').value);
-            try {
-                await withTimeout(setDoc(doc(db, "settings", "general"), { storeName, logoUrl }));
-                showToast('Website logo & name updated!');
-            } catch (err) {
-                alert("Save Error: " + err.message);
-            } finally {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Save Website Branding';
-                btn.disabled = false;
-            }
-        });
+            setStatus("loginError", "");
 
-        // FAMGATEWAY CONFIG & TRANSACTIONS
-        onSnapshot(doc(db, "settings", "famgateway"), (docSnap) => {
-            if (docSnap.exists()) {
-                const g = docSnap.data();
-                if (g.apiKey) document.getElementById('fgApiKeyInput').value = g.apiKey;
-                if (g.backendOrderUrl !== undefined) document.getElementById('fgBackendUrlInput').value = g.backendOrderUrl;
-            }
-        });
-
-        document.getElementById('gatewayForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('fgSaveBtn');
-            btn.disabled = true;
-            btn.innerText = 'Saving...';
             try {
-                await withTimeout(setDoc(doc(db, "settings", "famgateway"), {
-                    apiKey: document.getElementById('fgApiKeyInput').value.trim(),
-                    backendOrderUrl: document.getElementById('fgBackendUrlInput').value.trim()
-                }));
-                showToast('FamGateway config saved!');
+                await signInWithEmailAndPassword(auth, email, pass);
             } catch (err) {
-                alert("Gateway Save Error: " + err.message);
+                setStatus("loginError", err.message, true);
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save FamGateway Config';
             }
         });
 
-        window.loadFamTransactions = async () => {
-            const statusEl = document.getElementById('fgTxnStatus');
-            const tbody = document.getElementById('fgTxnBody');
-            const apiKey = document.getElementById('fgApiKeyInput').value.trim() || "fam_95a256e60ea571df5923128a187d7659d00c5716";
-            statusEl.innerText = "Fetching transactions from FamGateway...";
-            tbody.innerHTML = "";
+        window.logoutAdmin = async () => {
+            await signOut(auth);
+        };
 
-            try {
-                const res = await fetch("https://famgateway.in/api/get-transactions.php?filter=all&date=30days&limit=25&page=1", {
-                    headers: { "X-Api-Key": apiKey }
-                });
-                const json = await res.json();
-                const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json.transactions) ? json.transactions : []);
+        onAuthStateChanged(auth, (user) => {
+            const loginScreen = document.getElementById("loginScreen");
+            const dashScreen = document.getElementById("dashboardScreen");
+            const logoutBtn = document.getElementById("logoutBtn");
 
-                if (!res.ok) {
-                    throw new Error(json.message || "Could not fetch transactions.");
+            if (user) {
+                loginScreen.style.display = "none";
+                dashScreen.style.display = "block";
+                logoutBtn.style.display = "inline-flex";
+                startListeners();
+            } else {
+                loginScreen.style.display = "block";
+                dashScreen.style.display = "none";
+                logoutBtn.style.display = "none";
+            }
+        });
+
+        let listenersStarted = false;
+        function startListeners() {
+            if (listenersStarted) return;
+            listenersStarted = true;
+
+            // APPS LIST
+            onSnapshot(collection(db, "apps"), (snap) => {
+                cachedApps = [];
+                snap.forEach(d => cachedApps.push({ id: d.id, ...d.data() }));
+                renderAdminApps();
+            });
+
+            // XML & TEMPLATES LIST
+            onSnapshot(collection(db, "xmlTemplates"), (snap) => {
+                cachedXmls = [];
+                snap.forEach(d => cachedXmls.push({ id: d.id, ...d.data() }));
+                renderAdminXmls();
+            });
+
+            // SETTINGS
+            onSnapshot(doc(db, "settings", "general"), (snap) => {
+                if (snap.exists()) {
+                    const s = snap.data();
+                    if (s.storeName) document.getElementById("storeNameInput").value = s.storeName;
+                    if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
                 }
-                if (rows.length === 0) {
-                    statusEl.innerText = "No transactions found in the last 30 days.";
-                    return;
-                }
+            });
 
-                statusEl.innerText = `Showing ${rows.length} recent transactions.`;
-                rows.forEach((tx) => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${tx.order_id || "-"}</td>
-                        <td>₹${tx.amount || "0"}</td>
-                        <td>${tx.status || "-"}</td>
-                        <td>${tx.utr || "-"}</td>
+            // SOCIALS
+            onSnapshot(collection(db, "socials"), (snap) => {
+                const list = document.getElementById("adminSocialsList");
+                list.innerHTML = "";
+                snap.forEach(d => {
+                    const data = d.data();
+                    const div = document.createElement("div");
+                    div.className = "admin-item-card";
+                    div.innerHTML = `
+                        <div>
+                            <div style="font-weight:700;">${data.platform || "Link"}</div>
+                            <div style="font-size:0.78rem; color:var(--muted); word-break:break-all;">${data.url || ""}</div>
+                        </div>
+                        <div class="item-actions">
+                            <button type="button" class="btn btn-danger" onclick="deleteSocialDoc('${d.id}')">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </div>
                     `;
-                    tbody.appendChild(tr);
+                    list.appendChild(div);
                 });
-            } catch (err) {
-                statusEl.innerHTML = `<span style="color:var(--danger);">${err.message}</span>`;
-            }
+            });
+        }
+
+        // APPS CRUD (FREE + PAID)
+        window.resetAppForm = function () {
+            document.getElementById("editAppId").value = "";
+            document.getElementById("appForm").reset();
+            document.getElementById("appIsPaid").checked = false;
+            document.getElementById("appPrice").value = "29";
+            toggleAppPriceInput();
+            document.getElementById("appFormHeading").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add New App';
+            document.getElementById("cancelAppEditBtn").style.display = "none";
+            setStatus("appFormStatus", "");
         };
 
-        // APPS SECTION (UNCHANGED)
-        window.openUploadTab = () => {
-            document.getElementById('editAppId').value = '';
-            document.getElementById('addAppForm').reset();
-            document.getElementById('formHeading').innerText = 'Upload New App';
-            document.getElementById('formSubtext').innerText = 'Naya app store mein publish karne ke liye details bharein.';
-            document.getElementById('submitBtn').innerHTML = '<i class="fa-solid fa-rocket"></i> Publish to Store';
-            document.getElementById('cancelEditBtn').style.display = 'none';
-            window.switchTab('upload');
+        window.startEditApp = function (id) {
+            const item = cachedApps.find(a => a.id === id);
+            if (!item) return;
+            document.getElementById("editAppId").value = item.id;
+            document.getElementById("appName").value = item.name || "";
+            document.getElementById("appCategory").value = item.category || "";
+            document.getElementById("appLogoUrl").value = item.logoUrl || "";
+            document.getElementById("appDownloadUrl").value = item.downloadUrl || "";
+            document.getElementById("appDesc").value = item.description || "";
+            document.getElementById("appIsPaid").checked = Boolean(item.isPaid);
+            document.getElementById("appPrice").value = item.price || 29;
+            toggleAppPriceInput();
+
+            document.getElementById("appFormHeading").innerHTML = '<i class="fa-solid fa-pen"></i> Edit App';
+            document.getElementById("cancelAppEditBtn").style.display = "inline-flex";
+            window.switchTab("appsTab");
+            window.scrollTo({ top: 0, behavior: "smooth" });
         };
 
-        window.cancelEdit = () => {
-            window.openUploadTab();
-            window.switchTab('apps');
+        window.deleteAppDoc = async function (id) {
+            if (!confirm("Is app ko delete karna hai?")) return;
+            await deleteDoc(doc(db, "apps", id));
         };
 
-        window.startEditApp = (id) => {
-            const data = appsCache[id];
-            if (!data) return;
-            document.getElementById('editAppId').value = id;
-            document.getElementById('appName').value = data.name || '';
-            document.getElementById('appCategory').value = data.category || 'General';
-            document.getElementById('appLogo').value = data.logoUrl || '';
-            document.getElementById('appLink').value = data.downloadUrl || '';
-            document.getElementById('appDesc').value = data.description || '';
-            document.getElementById('formHeading').innerText = 'Edit App Details';
-            document.getElementById('formSubtext').innerText = 'App ki details update karke save karein.';
-            document.getElementById('submitBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update App';
-            document.getElementById('cancelEditBtn').style.display = 'inline-flex';
-            window.switchTab('upload');
-        };
-
-        document.getElementById('addAppForm').addEventListener('submit', async (e) => {
+        document.getElementById("appForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const editId = document.getElementById('editAppId').value.trim();
-            const btn = document.getElementById('submitBtn');
-            btn.innerHTML = editId ? 'Updating...' : 'Publishing...';
-            btn.disabled = true;
+            const editId = document.getElementById("editAppId").value.trim();
+            const isPaid = document.getElementById("appIsPaid").checked;
+            const price = isPaid ? Math.max(1, Number(document.getElementById("appPrice").value || 29)) : 0;
 
             const payload = {
-                name: document.getElementById('appName').value.trim(),
-                category: document.getElementById('appCategory').value.trim() || 'General',
-                logoUrl: cleanUrl(document.getElementById('appLogo').value),
-                downloadUrl: cleanUrl(document.getElementById('appLink').value),
-                description: document.getElementById('appDesc').value.trim()
+                name: document.getElementById("appName").value.trim(),
+                category: document.getElementById("appCategory").value.trim() || "General",
+                logoUrl: cleanUrl(document.getElementById("appLogoUrl").value),
+                downloadUrl: cleanUrl(document.getElementById("appDownloadUrl").value),
+                description: document.getElementById("appDesc").value.trim(),
+                isPaid,
+                price
             };
 
             try {
                 if (editId) {
-                    await withTimeout(updateDoc(doc(db, "apps", editId), payload));
-                    showToast('App Updated!');
+                    await updateDoc(doc(db, "apps", editId), payload);
+                    setStatus("appFormStatus", "App updated successfully!");
                 } else {
-                    await withTimeout(addDoc(collection(db, "apps"), {
-                        ...payload,
-                        createdAt: serverTimestamp()
-                    }));
-                    showToast('App Published!');
+                    await addDoc(collection(db, "apps"), payload);
+                    setStatus("appFormStatus", "App added successfully!");
                 }
-                window.openUploadTab();
-                window.switchTab('apps');
-            } catch (error) {
-                alert("Error: " + error.message);
-            } finally {
-                btn.disabled = false;
+                resetAppForm();
+            } catch (err) {
+                setStatus("appFormStatus", err.message, true);
             }
         });
 
         function renderAdminApps() {
-            const list = document.getElementById('adminAppList');
-            const filterTerm = (adminSearchInput.value || '').toLowerCase();
-            list.innerHTML = '';
-
-            const entries = Object.entries(appsCache).filter(([, data]) =>
-                (data.name || '').toLowerCase().includes(filterTerm) ||
-                (data.category || '').toLowerCase().includes(filterTerm)
-            );
-
-            if (entries.length === 0) {
-                list.innerHTML = '<p style="color: var(--muted); grid-column: 1/-1; text-align:center; padding:20px;">Koi app nahi mila.</p>';
+            const container = document.getElementById("adminAppsList");
+            container.innerHTML = "";
+            if (cachedApps.length === 0) {
+                container.innerHTML = '<p style="color:var(--muted);">Koi app nahi mila.</p>';
                 return;
             }
 
-            entries.forEach(([id, data]) => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
+            cachedApps.forEach(item => {
+                const isPaid = Boolean(item.isPaid);
+                const card = document.createElement("div");
+                card.className = "admin-item-card";
                 card.innerHTML = `
-                    <div class="app-top">
-                        <img src="${FALLBACK_APP}" referrerpolicy="no-referrer">
+                    <div class="item-top">
+                        <img src="${cleanUrl(item.logoUrl) || FALLBACK_ICON}" class="item-thumb" alt="Icon">
                         <div style="min-width:0; flex:1;">
-                            <div class="app-title">${data.name || 'Unnamed App'}</div>
-                            <div class="badge-row">
-                                <span class="app-cat-pill">${data.category || 'General'}</span>
-                            </div>
+                            <span class="badge badge-cat">${item.category || "General"}</span>
+                            <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
+                                ${isPaid ? `PAID • ₹${item.price || 29}` : "FREE"}
+                            </span>
+                            <div style="font-weight:700; margin-top:3px;">${item.name || "App"}</div>
                         </div>
                     </div>
-                    <div class="app-btns">
-                        <button class="action-chip edit" onclick="startEditApp('${id}')">
+                    <div class="item-actions">
+                        <button type="button" class="btn btn-ghost" onclick="startEditApp('${item.id}')">
                             <i class="fa-solid fa-pen"></i> Edit
                         </button>
-                        <button class="action-chip del" onclick="deleteApp('${id}')">
+                        <button type="button" class="btn btn-danger" onclick="deleteAppDoc('${item.id}')">
                             <i class="fa-solid fa-trash"></i> Delete
                         </button>
                     </div>
                 `;
-                setDirectImage(card.querySelector('img'), data.logoUrl, FALLBACK_APP);
-                list.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        adminSearchInput.addEventListener('input', renderAdminApps);
-
-        onSnapshot(collection(db, "apps"), (snapshot) => {
-            appsCache = {};
-            snapshot.forEach((docSnap) => {
-                appsCache[docSnap.id] = docSnap.data();
-            });
-            document.getElementById('statAppsCount').innerText = snapshot.size;
-            document.getElementById('navAppsBadge').innerText = snapshot.size;
-            renderAdminApps();
-        }, (err) => {
-            document.getElementById('adminAppList').innerHTML = `<p style="color:var(--danger);">Error: ${err.message}</p>`;
-        });
-
-        window.deleteApp = async (id) => {
-            if (confirm("Delete this app from MAGGIE STORE?")) {
-                try {
-                    await withTimeout(deleteDoc(doc(db, "apps", id)));
-                    showToast('App Deleted!');
-                } catch (err) {
-                    alert("Delete Error: " + err.message);
-                }
-            }
+        // XML & TEMPLATES CRUD
+        window.resetXmlForm = function () {
+            document.getElementById("editXmlId").value = "";
+            document.getElementById("xmlForm").reset();
+            document.getElementById("xmlIsPaid").checked = true;
+            document.getElementById("xmlPrice").value = "9";
+            toggleXmlPriceInput();
+            document.getElementById("xmlFormHeading").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add XML / Template';
+            document.getElementById("cancelXmlEditBtn").style.display = "none";
+            setStatus("xmlFormStatus", "");
         };
 
-        // XML & TEMPLATES MANAGER (PAID / FREE + MULTIPLE PHOTOS + EDIT + PROTECTED LINK)
-        window.resetXmlForm = () => {
-            document.getElementById('editXmlId').value = '';
-            document.getElementById('xmlForm').reset();
-            document.getElementById('xmlGallery').value = '';
-            document.getElementById('xmlAccess').value = 'free';
-            window.togglePriceInput();
-            document.getElementById('xmlFormTitle').innerText = 'Add XML / Template';
-            document.getElementById('xmlSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> Save XML / Template';
-            document.getElementById('xmlCancelBtn').style.display = 'none';
-        };
-
-        window.startEditXml = (id) => {
-            const item = xmlCache[id];
+        window.startEditXml = function (id) {
+            const item = cachedXmls.find(x => x.id === id);
             if (!item) return;
-            document.getElementById('editXmlId').value = id;
-            document.getElementById('xmlTitle').value = item.title || '';
-            document.getElementById('xmlType').value = item.type || 'XML';
-            document.getElementById('xmlAccess').value = item.isPaid ? 'paid' : 'free';
-            window.togglePriceInput();
-            document.getElementById('xmlPrice').value = item.isPaid ? (item.price || 49) : '';
-            document.getElementById('xmlThumb').value = item.thumbUrl || '';
-            const photos = Array.isArray(item.photos) ? item.photos : (item.thumbUrl ? [item.thumbUrl] : []);
-            document.getElementById('xmlGallery').value = photos.join('\n');
-            document.getElementById('xmlLink').value = item.protectedLink || '';
-            document.getElementById('xmlDesc').value = item.description || '';
-            document.getElementById('xmlFormTitle').innerText = 'Edit XML / Template';
-            document.getElementById('xmlSubmitBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update XML / Template';
-            document.getElementById('xmlCancelBtn').style.display = 'inline-flex';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById("editXmlId").value = item.id;
+            document.getElementById("xmlTitle").value = item.title || "";
+            document.getElementById("xmlType").value = item.type || "XML";
+            document.getElementById("xmlThumbUrl").value = item.thumbUrl || "";
+            document.getElementById("xmlProtectedLink").value = item.protectedLink || "";
+            document.getElementById("xmlPhotos").value = Array.isArray(item.photos) ? item.photos.join("\n") : "";
+            document.getElementById("xmlDesc").value = item.description || "";
+            document.getElementById("xmlIsPaid").checked = Boolean(item.isPaid);
+            document.getElementById("xmlPrice").value = item.price || 9;
+            toggleXmlPriceInput();
+
+            document.getElementById("xmlFormHeading").innerHTML = '<i class="fa-solid fa-pen"></i> Edit XML / Template';
+            document.getElementById("cancelXmlEditBtn").style.display = "inline-flex";
+            window.switchTab("xmlTab");
+            window.scrollTo({ top: 0, behavior: "smooth" });
         };
 
-        document.getElementById('xmlForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const editId = document.getElementById('editXmlId').value.trim();
-            const isPaid = document.getElementById('xmlAccess').value === 'paid';
-            const priceVal = isPaid ? Math.max(1, Number(document.getElementById('xmlPrice').value || 49)) : 0;
-            const thumbUrl = cleanUrl(document.getElementById('xmlThumb').value);
-            const photos = parsePhotoUrls(document.getElementById('xmlGallery').value, thumbUrl);
-            const btn = document.getElementById('xmlSubmitBtn');
+        window.deleteXmlDoc = async function (id) {
+            if (!confirm("Is item ko delete karna hai?")) return;
+            await deleteDoc(doc(db, "xmlTemplates", id));
+        };
 
-            btn.innerText = editId ? 'Updating...' : 'Saving...';
-            btn.disabled = true;
+        document.getElementById("xmlForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const editId = document.getElementById("editXmlId").value.trim();
+            const isPaid = document.getElementById("xmlIsPaid").checked;
+            const price = isPaid ? Math.max(1, Number(document.getElementById("xmlPrice").value || 9)) : 0;
+
+            const rawPhotos = document.getElementById("xmlPhotos").value
+                .split(/[\n,]+/)
+                .map(cleanUrl)
+                .filter(Boolean);
+
+            const thumb = cleanUrl(document.getElementById("xmlThumbUrl").value) || rawPhotos[0] || "";
+            if (thumb && !rawPhotos.includes(thumb)) {
+                rawPhotos.unshift(thumb);
+            }
 
             const payload = {
-                title: document.getElementById('xmlTitle').value.trim(),
-                type: document.getElementById('xmlType').value,
+                title: document.getElementById("xmlTitle").value.trim(),
+                type: document.getElementById("xmlType").value,
+                thumbUrl: thumb,
+                photos: rawPhotos,
+                protectedLink: cleanUrl(document.getElementById("xmlProtectedLink").value),
+                description: document.getElementById("xmlDesc").value.trim(),
                 isPaid,
-                price: priceVal,
-                thumbUrl: thumbUrl || photos[0] || '',
-                photos,
-                protectedLink: cleanUrl(document.getElementById('xmlLink').value),
-                description: document.getElementById('xmlDesc').value.trim()
+                price
             };
 
             try {
                 if (editId) {
-                    await withTimeout(updateDoc(doc(db, "xmlTemplates", editId), payload));
-                    showToast('XML / Template Updated!');
+                    await updateDoc(doc(db, "xmlTemplates", editId), payload);
+                    setStatus("xmlFormStatus", "XML / Template updated!");
                 } else {
-                    await withTimeout(addDoc(collection(db, "xmlTemplates"), {
-                        ...payload,
-                        createdAt: serverTimestamp()
-                    }));
-                    showToast('XML / Template Saved!');
+                    await addDoc(collection(db, "xmlTemplates"), payload);
+                    setStatus("xmlFormStatus", "XML / Template added!");
                 }
-                window.resetXmlForm();
+                resetXmlForm();
             } catch (err) {
-                alert("XML Save Error: " + err.message);
-            } finally {
-                btn.disabled = false;
+                setStatus("xmlFormStatus", err.message, true);
             }
         });
 
-        function renderAdminXml() {
-            const list = document.getElementById('adminXmlList');
-            const term = (xmlSearchInput.value || '').toLowerCase();
-            list.innerHTML = '';
-
-            const entries = Object.entries(xmlCache).filter(([, item]) =>
-                (item.title || '').toLowerCase().includes(term) ||
-                (item.type || '').toLowerCase().includes(term)
-            );
-
-            if (entries.length === 0) {
-                list.innerHTML = '<p style="color:var(--muted); grid-column:1/-1; text-align:center; padding:18px;">Koi XML ya Template nahi mila.</p>';
+        function renderAdminXmls() {
+            const container = document.getElementById("adminXmlList");
+            container.innerHTML = "";
+            if (cachedXmls.length === 0) {
+                container.innerHTML = '<p style="color:var(--muted);">Koi XML / Template nahi mila.</p>';
                 return;
             }
 
-            entries.forEach(([id, item]) => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                const photoCount = Array.isArray(item.photos) && item.photos.length > 0 ? item.photos.length : (item.thumbUrl ? 1 : 0);
-                const badgeHtml = item.isPaid
-                    ? `<span class="price-pill paid">Paid ₹${item.price || 49}</span>`
-                    : `<span class="price-pill free">Free</span>`;
-
+            cachedXmls.forEach(item => {
+                const isPaid = Boolean(item.isPaid);
+                const shotCount = Array.isArray(item.photos) ? item.photos.length : 0;
+                const card = document.createElement("div");
+                card.className = "admin-item-card";
                 card.innerHTML = `
-                    <div class="app-top">
-                        <img src="${FALLBACK_APP}" referrerpolicy="no-referrer">
+                    <div class="item-top">
+                        <img src="${cleanUrl(item.thumbUrl) || FALLBACK_ICON}" class="item-thumb" alt="Thumb">
                         <div style="min-width:0; flex:1;">
-                            <div class="app-title">${item.title || 'Untitled'}</div>
-                            <div class="badge-row">
-                                <span class="app-cat-pill">${item.type || 'XML'}</span>
-                                ${badgeHtml}
-                                <span class="app-cat-pill"><i class="fa-solid fa-images"></i> ${photoCount}</span>
-                            </div>
+                            <span class="badge badge-cat">${item.type || "XML"}</span>
+                            <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
+                                ${isPaid ? `PAID • ₹${item.price || 9}` : "FREE"}
+                            </span>
+                            <span class="badge badge-cat">${shotCount} Photos</span>
+                            <div style="font-weight:700; margin-top:3px;">${item.title || "Untitled"}</div>
                         </div>
                     </div>
-                    <div class="app-btns">
-                        <button class="action-chip edit" onclick="startEditXml('${id}')">
+                    <div class="item-actions">
+                        <button type="button" class="btn btn-ghost" onclick="startEditXml('${item.id}')">
                             <i class="fa-solid fa-pen"></i> Edit
                         </button>
-                        <button class="action-chip del" onclick="deleteXml('${id}')">
+                        <button type="button" class="btn btn-danger" onclick="deleteXmlDoc('${item.id}')">
                             <i class="fa-solid fa-trash"></i> Delete
                         </button>
                     </div>
                 `;
-                setDirectImage(card.querySelector('img'), item.thumbUrl || (item.photos && item.photos[0]), FALLBACK_APP);
-                list.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        xmlSearchInput.addEventListener('input', renderAdminXml);
-
-        onSnapshot(collection(db, "xmlTemplates"), (snapshot) => {
-            xmlCache = {};
-            let paidCount = 0;
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                xmlCache[docSnap.id] = data;
-                if (data.isPaid) paidCount++;
-            });
-
-            document.getElementById('statXmlCount').innerText = snapshot.size;
-            document.getElementById('navXmlBadge').innerText = snapshot.size;
-            document.getElementById('statPaidCount').innerText = paidCount;
-            renderAdminXml();
-        });
-
-        window.deleteXml = async (id) => {
-            if (confirm("Delete this XML / Template?")) {
-                try {
-                    await withTimeout(deleteDoc(doc(db, "xmlTemplates", id)));
-                    showToast('Deleted!');
-                } catch (err) {
-                    alert("Delete Error: " + err.message);
-                }
-            }
-        };
-
-        // SOCIAL HANDLES
-        document.getElementById('socialForm').addEventListener('submit', async (e) => {
+        // SETTINGS & SOCIALS
+        document.getElementById("settingsForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('socialBtn');
-            btn.innerText = 'Adding...';
-            btn.disabled = true;
             try {
-                await withTimeout(addDoc(collection(db, "socials"), {
-                    platform: document.getElementById('socialPlatform').value.trim(),
-                    url: cleanUrl(document.getElementById('socialUrl').value)
-                }));
-                e.target.reset();
-                showToast('Social Handle Added!');
-            } catch (error) {
-                alert("Social Error: " + error.message);
-            } finally {
-                btn.innerText = '+ Add Handle';
-                btn.disabled = false;
+                await setDoc(doc(db, "settings", "general"), {
+                    storeName: document.getElementById("storeNameInput").value.trim() || "MAGGIE STORE",
+                    logoUrl: cleanUrl(document.getElementById("storeLogoInput").value)
+                }, { merge: true });
+                setStatus("settingsStatus", "Store settings saved!");
+            } catch (err) {
+                setStatus("settingsStatus", err.message, true);
             }
         });
 
-        onSnapshot(collection(db, "socials"), (snapshot) => {
-            const socialList = document.getElementById('socialList');
-            socialList.innerHTML = '';
-            document.getElementById('statSocialsCount').innerText = snapshot.size;
-            document.getElementById('navSocialBadge').innerText = snapshot.size;
-
-            if (snapshot.empty) {
-                socialList.innerHTML = '<p style="color:var(--muted); font-size:0.84rem;">Abhi koi social handle add nahi hai.</p>';
-                return;
+        document.getElementById("socialForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            try {
+                await addDoc(collection(db, "socials"), {
+                    platform: document.getElementById("socialPlatform").value.trim(),
+                    url: cleanUrl(document.getElementById("socialUrl").value)
+                });
+                document.getElementById("socialForm").reset();
+                setStatus("socialStatus", "Social link added!");
+            } catch (err) {
+                setStatus("socialStatus", err.message, true);
             }
-
-            snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                const item = document.createElement('div');
-                item.className = 'social-item';
-                item.innerHTML = `
-                    <div style="min-width:0;">
-                        <strong style="display:block; font-size:0.9rem;">${data.platform}</strong>
-                        <a href="${data.url}" target="_blank" style="color:var(--accent); font-size:0.76rem; text-decoration:none;">Open Link</a>
-                    </div>
-                    <button class="action-chip del" style="padding:6px 9px;" onclick="deleteSocial('${docSnap.id}')">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                `;
-                socialList.appendChild(item);
-            });
         });
 
-        window.deleteSocial = async (id) => {
-            if (confirm("Remove this social media handle?")) {
-                await deleteDoc(doc(db, "socials", id));
-                showToast('Social Handle Removed!');
-            }
+        window.deleteSocialDoc = async function (id) {
+            await deleteDoc(doc(db, "socials", id));
         };
     </script>
 </body>
