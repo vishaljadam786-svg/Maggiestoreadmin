@@ -371,6 +371,12 @@
             margin-bottom: 6px;
         }
 
+        .hint-txt {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
         input, select, textarea {
             width: 100%;
             padding: 11px 14px;
@@ -393,7 +399,7 @@
             box-shadow: 0 0 0 3px var(--primary-glow);
         }
 
-        textarea { min-height: 84px; resize: vertical; }
+        textarea { min-height: 82px; resize: vertical; }
 
         .btn {
             width: 100%;
@@ -790,7 +796,7 @@
                 <button class="tile-btn" onclick="switchTab('xmltemplates')">
                     <i class="fa-solid fa-code"></i>
                     <strong>XML & Templates</strong>
-                    <span>Paid ya Free XML/templates add, edit aur protected link set karein</span>
+                    <span>Multiple preview photos, Paid/Free mode aur protected link set karein</span>
                 </button>
                 <button class="tile-btn" onclick="switchTab('gateway')">
                     <i class="fa-solid fa-wallet"></i>
@@ -867,11 +873,11 @@
             </div>
         </section>
 
-        <!-- 4. XML & TEMPLATES (PAID / FREE + EDIT + PROTECTED LINK) -->
+        <!-- 4. XML & TEMPLATES (PAID / FREE + MULTIPLE PHOTOS + EDIT + PROTECTED LINK) -->
         <section id="view-xmltemplates" class="view-pane">
             <div class="section-head">
                 <h2>XML & Templates Manager</h2>
-                <p>XML ya Templates ko Free ya Paid mark karein, price set karein, edit karein, aur FamGateway payment ke baad khulne wali link daalein.</p>
+                <p>XML ya Templates ko Free ya Paid mark karein, multiple preview photos add karein, edit karein, aur payment ke baad khulne wali link daalein.</p>
             </div>
 
             <div class="xml-layout">
@@ -908,8 +914,14 @@
                         </div>
 
                         <div class="field">
-                            <label>Preview / Thumbnail URL *</label>
+                            <label>Card Thumbnail / Cover URL *</label>
                             <input type="text" id="xmlThumb" placeholder="https://i.ibb.co/..." required>
+                        </div>
+
+                        <div class="field">
+                            <label>Preview Photos URLs (Ek Se Jyada Photos — 1 Link Per Line)</label>
+                            <textarea id="xmlGallery" placeholder="https://i.ibb.co/photo1.jpg&#10;https://i.ibb.co/photo2.jpg&#10;https://i.ibb.co/photo3.jpg"></textarea>
+                            <div class="hint-txt">Jab user is XML/Template par click karega, toh ye sabhi photos gallery mein dikhengi.</div>
                         </div>
 
                         <div class="field">
@@ -1168,6 +1180,18 @@
                 return 'https://' + val;
             }
             return val;
+        }
+
+        function parsePhotoUrls(rawText, fallbackThumb = '') {
+            const parts = (rawText || '')
+                .split(/[\n,]+/)
+                .map(s => cleanUrl(s))
+                .filter(Boolean);
+            const unique = Array.from(new Set(parts));
+            if (unique.length === 0 && cleanUrl(fallbackThumb)) {
+                return [cleanUrl(fallbackThumb)];
+            }
+            return unique;
         }
 
         function setDirectImage(imgEl, rawUrl, fallbackUrl) {
@@ -1432,10 +1456,11 @@
             }
         };
 
-        // XML & TEMPLATES MANAGER (PAID / FREE + EDIT + PROTECTED LINK)
+        // XML & TEMPLATES MANAGER (PAID / FREE + MULTIPLE PHOTOS + EDIT + PROTECTED LINK)
         window.resetXmlForm = () => {
             document.getElementById('editXmlId').value = '';
             document.getElementById('xmlForm').reset();
+            document.getElementById('xmlGallery').value = '';
             document.getElementById('xmlAccess').value = 'free';
             window.togglePriceInput();
             document.getElementById('xmlFormTitle').innerText = 'Add XML / Template';
@@ -1453,6 +1478,8 @@
             window.togglePriceInput();
             document.getElementById('xmlPrice').value = item.isPaid ? (item.price || 49) : '';
             document.getElementById('xmlThumb').value = item.thumbUrl || '';
+            const photos = Array.isArray(item.photos) ? item.photos : (item.thumbUrl ? [item.thumbUrl] : []);
+            document.getElementById('xmlGallery').value = photos.join('\n');
             document.getElementById('xmlLink').value = item.protectedLink || '';
             document.getElementById('xmlDesc').value = item.description || '';
             document.getElementById('xmlFormTitle').innerText = 'Edit XML / Template';
@@ -1466,6 +1493,8 @@
             const editId = document.getElementById('editXmlId').value.trim();
             const isPaid = document.getElementById('xmlAccess').value === 'paid';
             const priceVal = isPaid ? Math.max(1, Number(document.getElementById('xmlPrice').value || 49)) : 0;
+            const thumbUrl = cleanUrl(document.getElementById('xmlThumb').value);
+            const photos = parsePhotoUrls(document.getElementById('xmlGallery').value, thumbUrl);
             const btn = document.getElementById('xmlSubmitBtn');
 
             btn.innerText = editId ? 'Updating...' : 'Saving...';
@@ -1476,7 +1505,8 @@
                 type: document.getElementById('xmlType').value,
                 isPaid,
                 price: priceVal,
-                thumbUrl: cleanUrl(document.getElementById('xmlThumb').value),
+                thumbUrl: thumbUrl || photos[0] || '',
+                photos,
                 protectedLink: cleanUrl(document.getElementById('xmlLink').value),
                 description: document.getElementById('xmlDesc').value.trim()
             };
@@ -1518,6 +1548,7 @@
             entries.forEach(([id, item]) => {
                 const card = document.createElement('div');
                 card.className = 'app-card';
+                const photoCount = Array.isArray(item.photos) && item.photos.length > 0 ? item.photos.length : (item.thumbUrl ? 1 : 0);
                 const badgeHtml = item.isPaid
                     ? `<span class="price-pill paid">Paid ₹${item.price || 49}</span>`
                     : `<span class="price-pill free">Free</span>`;
@@ -1530,6 +1561,7 @@
                             <div class="badge-row">
                                 <span class="app-cat-pill">${item.type || 'XML'}</span>
                                 ${badgeHtml}
+                                <span class="app-cat-pill"><i class="fa-solid fa-images"></i> ${photoCount}</span>
                             </div>
                         </div>
                     </div>
@@ -1542,7 +1574,7 @@
                         </button>
                     </div>
                 `;
-                setDirectImage(card.querySelector('img'), item.thumbUrl, FALLBACK_APP);
+                setDirectImage(card.querySelector('img'), item.thumbUrl || (item.photos && item.photos[0]), FALLBACK_APP);
                 list.appendChild(card);
             });
         }
