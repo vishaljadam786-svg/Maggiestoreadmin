@@ -137,30 +137,6 @@
             padding: 0 20px;
         }
 
-        /* LOGIN CARD */
-        .login-card {
-            max-width: 400px;
-            margin: 60px auto;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 28px 24px;
-            box-shadow: var(--shadow);
-        }
-
-        .login-card h1 {
-            font-family: 'Fraunces', serif;
-            font-size: 1.6rem;
-            margin-bottom: 6px;
-        }
-
-        .login-card p {
-            color: var(--muted);
-            font-size: 0.85rem;
-            margin-bottom: 18px;
-        }
-
-        /* TABS */
         .tabs-row {
             display: flex;
             gap: 8px;
@@ -231,7 +207,6 @@
         }
 
         input[type="text"],
-        input[type="password"],
         input[type="number"],
         input[type="url"],
         select,
@@ -284,7 +259,6 @@
             cursor: pointer;
         }
 
-        /* LIST ITEMS */
         .items-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -361,7 +335,7 @@
     <header>
         <div class="brand-wrap">
             <span class="brand-title">MAGGIE ADMIN</span>
-            <span class="role-pill">Control Panel</span>
+            <span class="role-pill">Direct Access</span>
         </div>
         <div class="header-actions">
             <a href="index.html" class="btn btn-ghost">
@@ -370,40 +344,11 @@
             <button type="button" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
                 <i id="themeIcon" class="fa-solid fa-sun"></i>
             </button>
-            <button type="button" id="logoutBtn" class="btn btn-danger" style="display:none;" onclick="logoutAdmin()">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </button>
         </div>
     </header>
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="wrap">
-        <div class="login-card">
-            <div style="color:var(--accent); font-size:0.75rem; font-weight:800; text-transform:uppercase; margin-bottom:6px;">
-                <i class="fa-solid fa-shield-halved"></i> Admin Sign In
-            </div>
-            <h1>Welcome Back</h1>
-            <p>Apne Firebase Admin email aur password se login karein.</p>
-
-            <form id="loginForm" style="display:flex; flex-direction:column; gap:14px;">
-                <div class="field">
-                    <label for="adminEmail">Admin Email</label>
-                    <input type="text" id="adminEmail" placeholder="admin@example.com" required>
-                </div>
-                <div class="field">
-                    <label for="adminPass">Password</label>
-                    <input type="password" id="adminPass" placeholder="••••••••" required>
-                </div>
-                <button type="submit" id="loginSubmitBtn" class="btn btn-primary" style="padding:11px;">
-                    <i class="fa-solid fa-right-to-bracket"></i> Login to Panel
-                </button>
-            </form>
-            <div id="loginError" class="toast-msg" style="color:var(--danger);"></div>
-        </div>
-    </div>
-
-    <!-- DASHBOARD SCREEN -->
-    <div id="dashboardScreen" class="wrap" style="display:none;">
+    <!-- DIRECT DASHBOARD (NO LOGIN SCREEN) -->
+    <div id="dashboardScreen" class="wrap">
         <div class="tabs-row">
             <button type="button" class="tab-btn active" data-tab="appsTab" onclick="switchTab('appsTab')">
                 <i class="fa-solid fa-mobile-screen"></i> Apps (Free / Paid)
@@ -445,7 +390,7 @@
                             <div class="paid-toggle-box">
                                 <label class="checkbox-label">
                                     <input type="checkbox" id="appIsPaid" onchange="toggleAppPriceInput()">
-                                    <span>Paid App (UPI Payment ke baad Download Link khulega)</span>
+                                    <span>Paid App (Payment ke baad Download Link khulega; unchecked = Free App)</span>
                                 </label>
                                 <div id="appPriceWrap" style="display:none; align-items:center; gap:8px;">
                                     <label for="appPrice" style="margin:0;">Price (₹):</label>
@@ -638,7 +583,6 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import {
             getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -654,7 +598,6 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
         const FALLBACK_ICON = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFjMjMzMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjI2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZmlsbD0iIzlhYTRiOCI+TUFHR0lFPC90ZXh0Pjwvc3ZnPg==";
@@ -678,96 +621,55 @@
             el.innerText = msg;
         }
 
-        // AUTH
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const email = document.getElementById("adminEmail").value.trim();
-            const pass = document.getElementById("adminPass").value;
-            const btn = document.getElementById("loginSubmitBtn");
-            btn.disabled = true;
-            setStatus("loginError", "");
+        // APPS LIST
+        onSnapshot(collection(db, "apps"), (snap) => {
+            cachedApps = [];
+            snap.forEach(d => cachedApps.push({ id: d.id, ...d.data() }));
+            renderAdminApps();
+        }, (err) => {
+            setStatus("appFormStatus", err.message, true);
+        });
 
-            try {
-                await signInWithEmailAndPassword(auth, email, pass);
-            } catch (err) {
-                setStatus("loginError", err.message, true);
-            } finally {
-                btn.disabled = false;
+        // XML & TEMPLATES LIST
+        onSnapshot(collection(db, "xmlTemplates"), (snap) => {
+            cachedXmls = [];
+            snap.forEach(d => cachedXmls.push({ id: d.id, ...d.data() }));
+            renderAdminXmls();
+        }, (err) => {
+            setStatus("xmlFormStatus", err.message, true);
+        });
+
+        // SETTINGS
+        onSnapshot(doc(db, "settings", "general"), (snap) => {
+            if (snap.exists()) {
+                const s = snap.data();
+                if (s.storeName) document.getElementById("storeNameInput").value = s.storeName;
+                if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
             }
         });
 
-        window.logoutAdmin = async () => {
-            await signOut(auth);
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            const loginScreen = document.getElementById("loginScreen");
-            const dashScreen = document.getElementById("dashboardScreen");
-            const logoutBtn = document.getElementById("logoutBtn");
-
-            if (user) {
-                loginScreen.style.display = "none";
-                dashScreen.style.display = "block";
-                logoutBtn.style.display = "inline-flex";
-                startListeners();
-            } else {
-                loginScreen.style.display = "block";
-                dashScreen.style.display = "none";
-                logoutBtn.style.display = "none";
-            }
+        // SOCIALS
+        onSnapshot(collection(db, "socials"), (snap) => {
+            const list = document.getElementById("adminSocialsList");
+            list.innerHTML = "";
+            snap.forEach(d => {
+                const data = d.data();
+                const div = document.createElement("div");
+                div.className = "admin-item-card";
+                div.innerHTML = `
+                    <div>
+                        <div style="font-weight:700;">${data.platform || "Link"}</div>
+                        <div style="font-size:0.78rem; color:var(--muted); word-break:break-all;">${data.url || ""}</div>
+                    </div>
+                    <div class="item-actions">
+                        <button type="button" class="btn btn-danger" onclick="deleteSocialDoc('${d.id}')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
         });
-
-        let listenersStarted = false;
-        function startListeners() {
-            if (listenersStarted) return;
-            listenersStarted = true;
-
-            // APPS LIST
-            onSnapshot(collection(db, "apps"), (snap) => {
-                cachedApps = [];
-                snap.forEach(d => cachedApps.push({ id: d.id, ...d.data() }));
-                renderAdminApps();
-            });
-
-            // XML & TEMPLATES LIST
-            onSnapshot(collection(db, "xmlTemplates"), (snap) => {
-                cachedXmls = [];
-                snap.forEach(d => cachedXmls.push({ id: d.id, ...d.data() }));
-                renderAdminXmls();
-            });
-
-            // SETTINGS
-            onSnapshot(doc(db, "settings", "general"), (snap) => {
-                if (snap.exists()) {
-                    const s = snap.data();
-                    if (s.storeName) document.getElementById("storeNameInput").value = s.storeName;
-                    if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
-                }
-            });
-
-            // SOCIALS
-            onSnapshot(collection(db, "socials"), (snap) => {
-                const list = document.getElementById("adminSocialsList");
-                list.innerHTML = "";
-                snap.forEach(d => {
-                    const data = d.data();
-                    const div = document.createElement("div");
-                    div.className = "admin-item-card";
-                    div.innerHTML = `
-                        <div>
-                            <div style="font-weight:700;">${data.platform || "Link"}</div>
-                            <div style="font-size:0.78rem; color:var(--muted); word-break:break-all;">${data.url || ""}</div>
-                        </div>
-                        <div class="item-actions">
-                            <button type="button" class="btn btn-danger" onclick="deleteSocialDoc('${d.id}')">
-                                <i class="fa-solid fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    `;
-                    list.appendChild(div);
-                });
-            });
-        }
 
         // APPS CRUD (FREE + PAID)
         window.resetAppForm = function () {
@@ -798,6 +700,19 @@
             document.getElementById("cancelAppEditBtn").style.display = "inline-flex";
             window.switchTab("appsTab");
             window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+
+        window.quickToggleAppPaid = async function (id) {
+            const item = cachedApps.find(a => a.id === id);
+            if (!item) return;
+            const nextPaid = !Boolean(item.isPaid);
+            const nextPrice = nextPaid ? Math.max(1, Number(item.price || 29)) : 0;
+            try {
+                await updateDoc(doc(db, "apps", id), { isPaid: nextPaid, price: nextPrice });
+                setStatus("appFormStatus", `${item.name || "App"} ab ${nextPaid ? `Paid (₹${nextPrice})` : "Free"} set ho gaya!`);
+            } catch (err) {
+                setStatus("appFormStatus", err.message, true);
+            }
         };
 
         window.deleteAppDoc = async function (id) {
@@ -859,6 +774,9 @@
                         </div>
                     </div>
                     <div class="item-actions">
+                        <button type="button" class="btn ${isPaid ? "btn-primary" : "btn-warm"}" onclick="quickToggleAppPaid('${item.id}')">
+                            <i class="fa-solid fa-repeat"></i> Make ${isPaid ? "Free" : "Paid"}
+                        </button>
                         <button type="button" class="btn btn-ghost" onclick="startEditApp('${item.id}')">
                             <i class="fa-solid fa-pen"></i> Edit
                         </button>
