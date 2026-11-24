@@ -19,6 +19,8 @@
             --primary-strong: #9333ea;
             --primary-glow: rgba(168, 85, 247, 0.36);
             --accent: #38bdf8;
+            --success: #34d399;
+            --amber: #fbbf24;
             --danger: #fb7185;
             --text: #faf5ff;
             --muted: #cbb7eb;
@@ -37,6 +39,8 @@
             --primary-strong: #6b21a8;
             --primary-glow: rgba(126, 34, 206, 0.2);
             --accent: #0284c7;
+            --success: #059669;
+            --amber: #d97706;
             --danger: #e11d48;
             --text: #1e1035;
             --muted: #5b4b7a;
@@ -85,9 +89,8 @@
             background: var(--glow-b);
         }
 
-        /* Sidebar */
         .sidebar {
-            width: 266px;
+            width: 268px;
             background: var(--glass);
             backdrop-filter: blur(22px);
             -webkit-backdrop-filter: blur(22px);
@@ -148,7 +151,7 @@
             border: 1px solid transparent;
             background: transparent;
             color: var(--muted);
-            font-size: 0.86rem;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -212,11 +215,10 @@
             transform: translateY(-1px);
         }
 
-        /* Workspace */
         .workspace {
             flex: 1;
             padding: 24px 26px 84px;
-            max-width: 1060px;
+            max-width: 1080px;
             margin: 0 auto;
             width: 100%;
             position: relative;
@@ -265,8 +267,8 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
             margin-bottom: 18px;
         }
 
@@ -283,36 +285,37 @@
         .stat-box {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .stat-icon {
-            width: 46px;
-            height: 46px;
+            width: 44px;
+            height: 44px;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             background: rgba(168, 85, 247, 0.2);
             color: var(--primary);
+            flex-shrink: 0;
         }
 
         .stat-num {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             line-height: 1.1;
         }
 
         .stat-txt {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: var(--muted);
         }
 
         .tile-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
             gap: 14px;
         }
 
@@ -354,6 +357,12 @@
 
         .field { margin-bottom: 14px; }
 
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
         label {
             display: block;
             font-size: 0.82rem;
@@ -362,7 +371,7 @@
             margin-bottom: 6px;
         }
 
-        input, textarea {
+        input, select, textarea {
             width: 100%;
             padding: 11px 14px;
             border-radius: 13px;
@@ -374,7 +383,12 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus, textarea:focus {
+        select option {
+            background: var(--bg-2);
+            color: var(--text);
+        }
+
+        input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-glow);
         }
@@ -459,15 +473,40 @@
             text-overflow: ellipsis;
         }
 
+        .badge-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
         .app-cat-pill {
             display: inline-block;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: var(--primary);
             background: rgba(168, 85, 247, 0.16);
             padding: 2px 8px;
             border-radius: 7px;
-            margin-top: 4px;
+        }
+
+        .price-pill.free {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--success);
+            background: rgba(52, 211, 153, 0.16);
+            padding: 2px 8px;
+            border-radius: 7px;
+        }
+
+        .price-pill.paid {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(251, 191, 36, 0.18);
+            padding: 2px 8px;
+            border-radius: 7px;
         }
 
         .app-btns {
@@ -497,6 +536,13 @@
 
         .action-chip.del { color: var(--danger); }
         .action-chip.del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+        .xml-layout {
+            display: grid;
+            grid-template-columns: 1.05fr 1.25fr;
+            gap: 18px;
+            align-items: start;
+        }
 
         .branding-layout {
             display: grid;
@@ -543,6 +589,29 @@
             gap: 10px;
         }
 
+        .txn-table-wrap {
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        table.txn-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        .txn-table th, .txn-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .txn-table th {
+            color: var(--muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
         .mobile-nav {
             display: none;
             position: fixed;
@@ -552,7 +621,7 @@
             background: var(--glass);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--border);
-            padding: 8px 6px;
+            padding: 8px 4px;
             z-index: 120;
             justify-content: space-around;
         }
@@ -561,17 +630,17 @@
             background: transparent;
             border: none;
             color: var(--muted);
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 600;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
-            padding: 4px 6px;
+            padding: 4px 5px;
         }
 
-        .m-btn i { font-size: 1.05rem; }
+        .m-btn i { font-size: 1rem; }
         .m-btn.active { color: var(--primary); }
 
         .toast {
@@ -589,14 +658,22 @@
             box-shadow: 0 10px 24px var(--primary-glow);
         }
 
+        @media (max-width: 940px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .xml-layout { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 860px) {
             .sidebar { display: none; }
             .mobile-header { display: flex; }
             .mobile-nav { display: flex; }
             .workspace { padding: 16px 14px 86px; }
-            .stats-grid { grid-template-columns: 1fr; }
             .branding-layout { grid-template-columns: 1fr; }
-            .social-row { grid-template-columns: 1fr; }
+            .social-row, .row-2 { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 520px) {
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -622,6 +699,13 @@
                 </button>
                 <button class="nav-btn" data-tab="upload" onclick="openUploadTab()">
                     <span class="nav-left"><i class="fa-solid fa-cloud-arrow-up"></i> Upload New App</span>
+                </button>
+                <button class="nav-btn" data-tab="xmltemplates" onclick="switchTab('xmltemplates')">
+                    <span class="nav-left"><i class="fa-solid fa-code"></i> XML & Templates</span>
+                    <span class="nav-pill" id="navXmlBadge">0</span>
+                </button>
+                <button class="nav-btn" data-tab="gateway" onclick="switchTab('gateway')">
+                    <span class="nav-left"><i class="fa-solid fa-wallet"></i> FamGateway</span>
                 </button>
                 <button class="nav-btn" data-tab="branding" onclick="switchTab('branding')">
                     <span class="nav-left"><i class="fa-solid fa-palette"></i> Website Logo & Name</span>
@@ -658,7 +742,7 @@
         <section id="view-overview" class="view-pane active">
             <div class="section-head">
                 <h2>Dashboard Overview</h2>
-                <p>Har section alag rakha gaya hai taaki aap aasani se apps, logo, aur social handles manage kar sakein.</p>
+                <p>Apps, Paid/Free XML & Templates, FamGateway UPI, Logo, aur Social Handles yahan se manage karein.</p>
             </div>
 
             <div class="stats-grid">
@@ -670,10 +754,17 @@
                     </div>
                 </div>
                 <div class="glass-card stat-box">
-                    <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="stat-icon"><i class="fa-solid fa-code"></i></div>
                     <div>
-                        <div class="stat-num" id="statCatsCount">0</div>
-                        <div class="stat-txt">Categories</div>
+                        <div class="stat-num" id="statXmlCount">0</div>
+                        <div class="stat-txt">XML & Templates</div>
+                    </div>
+                </div>
+                <div class="glass-card stat-box">
+                    <div class="stat-icon"><i class="fa-solid fa-crown"></i></div>
+                    <div>
+                        <div class="stat-num" id="statPaidCount">0</div>
+                        <div class="stat-txt">Paid Items</div>
                     </div>
                 </div>
                 <div class="glass-card stat-box">
@@ -689,27 +780,27 @@
                 <button class="tile-btn" onclick="switchTab('apps')">
                     <i class="fa-solid fa-grid-2"></i>
                     <strong>Uploaded Apps</strong>
-                    <span>Dekhein kaun-kaun se apps upload hain, edit ya delete karein</span>
+                    <span>Apne uploaded apps dekhein, edit ya delete karein</span>
                 </button>
                 <button class="tile-btn" onclick="openUploadTab()">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     <strong>Upload New App</strong>
-                    <span>Naya app naam, logo aur download link ke saath publish karein</span>
+                    <span>Naya app store mein publish karein</span>
                 </button>
-                <button class="tile-btn" onclick="switchTab('branding')">
-                    <i class="fa-solid fa-palette"></i>
-                    <strong>Website Logo & Name</strong>
-                    <span>Apne store ka logo URL aur naam badlein</span>
+                <button class="tile-btn" onclick="switchTab('xmltemplates')">
+                    <i class="fa-solid fa-code"></i>
+                    <strong>XML & Templates</strong>
+                    <span>Paid ya Free XML/templates add, edit aur protected link set karein</span>
                 </button>
-                <button class="tile-btn" onclick="switchTab('socials')">
-                    <i class="fa-solid fa-hashtag"></i>
-                    <strong>Social Handles</strong>
-                    <span>Instagram, Telegram, Discord ya YouTube links add karein</span>
+                <button class="tile-btn" onclick="switchTab('gateway')">
+                    <i class="fa-solid fa-wallet"></i>
+                    <strong>FamGateway UPI</strong>
+                    <span>API key config aur recent UPI transactions dekhein</span>
                 </button>
             </div>
         </section>
 
-        <!-- 2. UPLOADED APPS -->
+        <!-- 2. UPLOADED APPS (UNCHANGED) -->
         <section id="view-apps" class="view-pane">
             <div class="section-head">
                 <h2>Uploaded Apps</h2>
@@ -729,7 +820,7 @@
             </div>
         </section>
 
-        <!-- 3. UPLOAD NEW APP -->
+        <!-- 3. UPLOAD NEW APP (UNCHANGED) -->
         <section id="view-upload" class="view-pane">
             <div class="section-head">
                 <h2 id="formHeading">Upload New App</h2>
@@ -776,7 +867,132 @@
             </div>
         </section>
 
-        <!-- 4. WEBSITE LOGO & NAME -->
+        <!-- 4. XML & TEMPLATES (PAID / FREE + EDIT + PROTECTED LINK) -->
+        <section id="view-xmltemplates" class="view-pane">
+            <div class="section-head">
+                <h2>XML & Templates Manager</h2>
+                <p>XML ya Templates ko Free ya Paid mark karein, price set karein, edit karein, aur FamGateway payment ke baad khulne wali link daalein.</p>
+            </div>
+
+            <div class="xml-layout">
+                <div class="glass-card">
+                    <h3 id="xmlFormTitle" style="font-family:'Outfit',sans-serif; margin-bottom:14px;">Add XML / Template</h3>
+                    <form id="xmlForm">
+                        <input type="hidden" id="editXmlId">
+
+                        <div class="field">
+                            <label>Item Title *</label>
+                            <input type="text" id="xmlTitle" placeholder="e.g. Alight Motion Shake XML" required>
+                        </div>
+
+                        <div class="row-2">
+                            <div class="field">
+                                <label>Type *</label>
+                                <select id="xmlType">
+                                    <option value="XML">XML File</option>
+                                    <option value="Template">Template</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Access Mode *</label>
+                                <select id="xmlAccess" onchange="togglePriceInput()">
+                                    <option value="free">Free</option>
+                                    <option value="paid">Paid (FamGateway UPI)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="field" id="priceFieldWrap" style="display:none;">
+                            <label>Price (INR ₹) *</label>
+                            <input type="number" id="xmlPrice" min="1" step="1" placeholder="e.g. 49">
+                        </div>
+
+                        <div class="field">
+                            <label>Preview / Thumbnail URL *</label>
+                            <input type="text" id="xmlThumb" placeholder="https://i.ibb.co/..." required>
+                        </div>
+
+                        <div class="field">
+                            <label id="xmlLinkLabel">Download / Protected Unlock Link *</label>
+                            <input type="text" id="xmlLink" placeholder="https://drive.google.com/... or https://..." required>
+                        </div>
+
+                        <div class="field">
+                            <label>Short Details (Optional)</label>
+                            <textarea id="xmlDesc" placeholder="XML/Template details..."></textarea>
+                        </div>
+
+                        <button type="submit" id="xmlSubmitBtn" class="btn">
+                            <i class="fa-solid fa-check"></i> Save XML / Template
+                        </button>
+                        <button type="button" id="xmlCancelBtn" class="btn btn-ghost" style="display:none;" onclick="resetXmlForm()">
+                            Cancel Edit
+                        </button>
+                    </form>
+                </div>
+
+                <div class="glass-card">
+                    <div class="apps-toolbar">
+                        <h3 style="font-family:'Outfit',sans-serif;">Uploaded XML & Templates</h3>
+                        <input type="text" id="xmlSearch" class="search-box" placeholder="Search XML / template...">
+                    </div>
+                    <div id="adminXmlList" class="apps-list-grid">
+                        <p style="color:var(--muted);">Loading XML & templates...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FAMGATEWAY UPI CONFIG & TRANSACTIONS -->
+        <section id="view-gateway" class="view-pane">
+            <div class="section-head">
+                <h2>FamGateway UPI Settings</h2>
+                <p>0% fee automated UPI collection config aur recent transactions yahan se check karein.</p>
+            </div>
+
+            <div class="glass-card" style="margin-bottom:18px;">
+                <form id="gatewayForm">
+                    <div class="row-2">
+                        <div class="field">
+                            <label>FamGateway API Key *</label>
+                            <input type="text" id="fgApiKeyInput" value="fam_95a256e60ea571df5923128a187d7659d00c5716" required>
+                        </div>
+                        <div class="field">
+                            <label>Backend Order Endpoint (Optional)</label>
+                            <input type="text" id="fgBackendUrlInput" placeholder="https://yourdomain.com/create_order.php">
+                        </div>
+                    </div>
+                    <button type="submit" id="fgSaveBtn" class="btn" style="width:auto;">
+                        <i class="fa-solid fa-floppy-disk"></i> Save FamGateway Config
+                    </button>
+                </form>
+            </div>
+
+            <div class="glass-card">
+                <div class="apps-toolbar">
+                    <h3 style="font-family:'Outfit',sans-serif;">Recent FamGateway Transactions</h3>
+                    <button type="button" class="action-chip edit" onclick="loadFamTransactions()">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                </div>
+                <div id="fgTxnStatus" style="font-size:0.82rem; color:var(--muted);">Click Refresh to fetch latest transactions.</div>
+                <div class="txn-table-wrap">
+                    <table class="txn-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>UTR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fgTxnBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. WEBSITE LOGO & NAME -->
         <section id="view-branding" class="view-pane">
             <div class="section-head">
                 <h2>Website Logo & Name</h2>
@@ -792,7 +1008,7 @@
                         </div>
                         <div class="field">
                             <label>Website Logo Image URL *</label>
-                            <input type="text" id="custLogo" placeholder="https://.../store-logo.png" required>
+                            <input type="text" id="custLogo" placeholder="https://i.ibb.co/..." required>
                         </div>
                         <button type="submit" id="custBtn" class="btn">
                             <i class="fa-solid fa-check"></i> Save Website Branding
@@ -808,7 +1024,7 @@
             </div>
         </section>
 
-        <!-- 5. SOCIAL HANDLES -->
+        <!-- 7. SOCIAL HANDLES -->
         <section id="view-socials" class="view-pane">
             <div class="section-head">
                 <h2>Social Media Handles</h2>
@@ -847,11 +1063,14 @@
         <button class="m-btn" data-tab="upload" onclick="openUploadTab()">
             <i class="fa-solid fa-circle-plus"></i><span>Upload</span>
         </button>
+        <button class="m-btn" data-tab="xmltemplates" onclick="switchTab('xmltemplates')">
+            <i class="fa-solid fa-code"></i><span>XML</span>
+        </button>
+        <button class="m-btn" data-tab="gateway" onclick="switchTab('gateway')">
+            <i class="fa-solid fa-wallet"></i><span>UPI</span>
+        </button>
         <button class="m-btn" data-tab="branding" onclick="switchTab('branding')">
             <i class="fa-solid fa-palette"></i><span>Logo</span>
-        </button>
-        <button class="m-btn" data-tab="socials" onclick="switchTab('socials')">
-            <i class="fa-solid fa-share-nodes"></i><span>Social</span>
         </button>
     </nav>
 
@@ -897,6 +1116,24 @@
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
+
+        window.togglePriceInput = function () {
+            const mode = document.getElementById('xmlAccess').value;
+            const wrap = document.getElementById('priceFieldWrap');
+            const priceInput = document.getElementById('xmlPrice');
+            const linkLabel = document.getElementById('xmlLinkLabel');
+
+            if (mode === 'paid') {
+                wrap.style.display = 'block';
+                priceInput.required = true;
+                linkLabel.innerText = 'Protected Link (FamGateway Payment Ke Baad Khulega) *';
+            } else {
+                wrap.style.display = 'none';
+                priceInput.required = false;
+                priceInput.value = '';
+                linkLabel.innerText = 'Free Download Link *';
+            }
+        };
     </script>
 
     <script type="module">
@@ -920,8 +1157,9 @@
         const FALLBACK_APP = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmQxYjUzIi8+PHRleHQgeD0iNTAlIiB5PSI1NSUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMjYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmaWxsPSIjY2JiN2ViIj5BUFA8L3RleHQ+PC9zdmc+";
 
         let appsCache = {};
-        const resolvedUrlCache = new Map();
+        let xmlCache = {};
         const adminSearchInput = document.getElementById('adminSearch');
+        const xmlSearchInput = document.getElementById('xmlSearch');
 
         function cleanUrl(raw) {
             const val = (raw || '').trim();
@@ -932,46 +1170,14 @@
             return val;
         }
 
-        async function extractDirectImageUrl(rawUrl) {
-            const url = cleanUrl(rawUrl);
-            if (!url) return '';
-            if (resolvedUrlCache.has(url)) return resolvedUrlCache.get(url);
-
-            const ibbPageMatch = url.match(/^https?:\/\/(?:www\.)?ibb\.co\/([a-zA-Z0-9_-]+)\/?$/i);
-            if (ibbPageMatch) {
-                const proxies = [
-                    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-                    `https://corsproxy.io/?${encodeURIComponent(url)}`
-                ];
-                for (const proxyUrl of proxies) {
-                    try {
-                        const res = await fetch(proxyUrl);
-                        if (!res.ok) continue;
-                        const html = await res.text();
-                        const match = html.match(/https?:\/\/i\.ibb\.co\/[a-zA-Z0-9_-]+\/[^"'\s<>\\]+/i);
-                        if (match && match[0]) {
-                            resolvedUrlCache.set(url, match[0]);
-                            return match[0];
-                        }
-                    } catch (_) {}
-                }
-            }
-
-            resolvedUrlCache.set(url, url);
-            return url;
-        }
-
-        async function setSmartImage(imgEl, rawUrl, fallbackUrl) {
+        function setDirectImage(imgEl, rawUrl, fallbackUrl) {
             if (!imgEl) return;
-            imgEl.src = fallbackUrl;
-            const resolved = await extractDirectImageUrl(rawUrl);
-            if (!resolved) return;
-
-            const testImg = new Image();
-            testImg.referrerPolicy = 'no-referrer';
-            testImg.onload = () => { imgEl.src = resolved; };
-            testImg.onerror = () => { imgEl.src = fallbackUrl; };
-            testImg.src = resolved;
+            const url = cleanUrl(rawUrl);
+            imgEl.onerror = () => {
+                imgEl.onerror = null;
+                imgEl.src = fallbackUrl;
+            };
+            imgEl.src = url || fallbackUrl;
         }
 
         const toast = document.getElementById('toast');
@@ -988,6 +1194,7 @@
             ]);
         }
 
+        // BRANDING
         onSnapshot(doc(db, "settings", "general"), (docSnap) => {
             if (docSnap.exists()) {
                 const settings = docSnap.data();
@@ -1000,9 +1207,9 @@
                 if (settings.logoUrl) {
                     const url = cleanUrl(settings.logoUrl);
                     document.getElementById('custLogo').value = url;
-                    setSmartImage(document.getElementById('sidebarLogo'), url, FALLBACK_STORE);
-                    setSmartImage(document.getElementById('mobileLogo'), url, FALLBACK_STORE);
-                    setSmartImage(document.getElementById('brandingPreviewImg'), url, FALLBACK_STORE);
+                    setDirectImage(document.getElementById('sidebarLogo'), url, FALLBACK_STORE);
+                    setDirectImage(document.getElementById('mobileLogo'), url, FALLBACK_STORE);
+                    setDirectImage(document.getElementById('brandingPreviewImg'), url, FALLBACK_STORE);
                 }
             }
         });
@@ -1025,6 +1232,73 @@
             }
         });
 
+        // FAMGATEWAY CONFIG & TRANSACTIONS
+        onSnapshot(doc(db, "settings", "famgateway"), (docSnap) => {
+            if (docSnap.exists()) {
+                const g = docSnap.data();
+                if (g.apiKey) document.getElementById('fgApiKeyInput').value = g.apiKey;
+                if (g.backendOrderUrl !== undefined) document.getElementById('fgBackendUrlInput').value = g.backendOrderUrl;
+            }
+        });
+
+        document.getElementById('gatewayForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('fgSaveBtn');
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
+            try {
+                await withTimeout(setDoc(doc(db, "settings", "famgateway"), {
+                    apiKey: document.getElementById('fgApiKeyInput').value.trim(),
+                    backendOrderUrl: document.getElementById('fgBackendUrlInput').value.trim()
+                }));
+                showToast('FamGateway config saved!');
+            } catch (err) {
+                alert("Gateway Save Error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save FamGateway Config';
+            }
+        });
+
+        window.loadFamTransactions = async () => {
+            const statusEl = document.getElementById('fgTxnStatus');
+            const tbody = document.getElementById('fgTxnBody');
+            const apiKey = document.getElementById('fgApiKeyInput').value.trim() || "fam_95a256e60ea571df5923128a187d7659d00c5716";
+            statusEl.innerText = "Fetching transactions from FamGateway...";
+            tbody.innerHTML = "";
+
+            try {
+                const res = await fetch("https://famgateway.in/api/get-transactions.php?filter=all&date=30days&limit=25&page=1", {
+                    headers: { "X-Api-Key": apiKey }
+                });
+                const json = await res.json();
+                const rows = Array.isArray(json.data) ? json.data : (Array.isArray(json.transactions) ? json.transactions : []);
+
+                if (!res.ok) {
+                    throw new Error(json.message || "Could not fetch transactions.");
+                }
+                if (rows.length === 0) {
+                    statusEl.innerText = "No transactions found in the last 30 days.";
+                    return;
+                }
+
+                statusEl.innerText = `Showing ${rows.length} recent transactions.`;
+                rows.forEach((tx) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${tx.order_id || "-"}</td>
+                        <td>₹${tx.amount || "0"}</td>
+                        <td>${tx.status || "-"}</td>
+                        <td>${tx.utr || "-"}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                statusEl.innerHTML = `<span style="color:var(--danger);">${err.message}</span>`;
+            }
+        };
+
+        // APPS SECTION (UNCHANGED)
         window.openUploadTab = () => {
             document.getElementById('editAppId').value = '';
             document.getElementById('addAppForm').reset();
@@ -1114,7 +1388,9 @@
                         <img src="${FALLBACK_APP}" referrerpolicy="no-referrer">
                         <div style="min-width:0; flex:1;">
                             <div class="app-title">${data.name || 'Unnamed App'}</div>
-                            <span class="app-cat-pill">${data.category || 'General'}</span>
+                            <div class="badge-row">
+                                <span class="app-cat-pill">${data.category || 'General'}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="app-btns">
@@ -1126,7 +1402,7 @@
                         </button>
                     </div>
                 `;
-                setSmartImage(card.querySelector('img'), data.logoUrl, FALLBACK_APP);
+                setDirectImage(card.querySelector('img'), data.logoUrl, FALLBACK_APP);
                 list.appendChild(card);
             });
         }
@@ -1135,17 +1411,11 @@
 
         onSnapshot(collection(db, "apps"), (snapshot) => {
             appsCache = {};
-            const cats = new Set();
-
             snapshot.forEach((docSnap) => {
-                const data = docSnap.data();
-                appsCache[docSnap.id] = data;
-                if (data.category) cats.add(data.category);
+                appsCache[docSnap.id] = docSnap.data();
             });
-
             document.getElementById('statAppsCount').innerText = snapshot.size;
             document.getElementById('navAppsBadge').innerText = snapshot.size;
-            document.getElementById('statCatsCount').innerText = cats.size;
             renderAdminApps();
         }, (err) => {
             document.getElementById('adminAppList').innerHTML = `<p style="color:var(--danger);">Error: ${err.message}</p>`;
@@ -1162,6 +1432,150 @@
             }
         };
 
+        // XML & TEMPLATES MANAGER (PAID / FREE + EDIT + PROTECTED LINK)
+        window.resetXmlForm = () => {
+            document.getElementById('editXmlId').value = '';
+            document.getElementById('xmlForm').reset();
+            document.getElementById('xmlAccess').value = 'free';
+            window.togglePriceInput();
+            document.getElementById('xmlFormTitle').innerText = 'Add XML / Template';
+            document.getElementById('xmlSubmitBtn').innerHTML = '<i class="fa-solid fa-check"></i> Save XML / Template';
+            document.getElementById('xmlCancelBtn').style.display = 'none';
+        };
+
+        window.startEditXml = (id) => {
+            const item = xmlCache[id];
+            if (!item) return;
+            document.getElementById('editXmlId').value = id;
+            document.getElementById('xmlTitle').value = item.title || '';
+            document.getElementById('xmlType').value = item.type || 'XML';
+            document.getElementById('xmlAccess').value = item.isPaid ? 'paid' : 'free';
+            window.togglePriceInput();
+            document.getElementById('xmlPrice').value = item.isPaid ? (item.price || 49) : '';
+            document.getElementById('xmlThumb').value = item.thumbUrl || '';
+            document.getElementById('xmlLink').value = item.protectedLink || '';
+            document.getElementById('xmlDesc').value = item.description || '';
+            document.getElementById('xmlFormTitle').innerText = 'Edit XML / Template';
+            document.getElementById('xmlSubmitBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update XML / Template';
+            document.getElementById('xmlCancelBtn').style.display = 'inline-flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        document.getElementById('xmlForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const editId = document.getElementById('editXmlId').value.trim();
+            const isPaid = document.getElementById('xmlAccess').value === 'paid';
+            const priceVal = isPaid ? Math.max(1, Number(document.getElementById('xmlPrice').value || 49)) : 0;
+            const btn = document.getElementById('xmlSubmitBtn');
+
+            btn.innerText = editId ? 'Updating...' : 'Saving...';
+            btn.disabled = true;
+
+            const payload = {
+                title: document.getElementById('xmlTitle').value.trim(),
+                type: document.getElementById('xmlType').value,
+                isPaid,
+                price: priceVal,
+                thumbUrl: cleanUrl(document.getElementById('xmlThumb').value),
+                protectedLink: cleanUrl(document.getElementById('xmlLink').value),
+                description: document.getElementById('xmlDesc').value.trim()
+            };
+
+            try {
+                if (editId) {
+                    await withTimeout(updateDoc(doc(db, "xmlTemplates", editId), payload));
+                    showToast('XML / Template Updated!');
+                } else {
+                    await withTimeout(addDoc(collection(db, "xmlTemplates"), {
+                        ...payload,
+                        createdAt: serverTimestamp()
+                    }));
+                    showToast('XML / Template Saved!');
+                }
+                window.resetXmlForm();
+            } catch (err) {
+                alert("XML Save Error: " + err.message);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        function renderAdminXml() {
+            const list = document.getElementById('adminXmlList');
+            const term = (xmlSearchInput.value || '').toLowerCase();
+            list.innerHTML = '';
+
+            const entries = Object.entries(xmlCache).filter(([, item]) =>
+                (item.title || '').toLowerCase().includes(term) ||
+                (item.type || '').toLowerCase().includes(term)
+            );
+
+            if (entries.length === 0) {
+                list.innerHTML = '<p style="color:var(--muted); grid-column:1/-1; text-align:center; padding:18px;">Koi XML ya Template nahi mila.</p>';
+                return;
+            }
+
+            entries.forEach(([id, item]) => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                const badgeHtml = item.isPaid
+                    ? `<span class="price-pill paid">Paid ₹${item.price || 49}</span>`
+                    : `<span class="price-pill free">Free</span>`;
+
+                card.innerHTML = `
+                    <div class="app-top">
+                        <img src="${FALLBACK_APP}" referrerpolicy="no-referrer">
+                        <div style="min-width:0; flex:1;">
+                            <div class="app-title">${item.title || 'Untitled'}</div>
+                            <div class="badge-row">
+                                <span class="app-cat-pill">${item.type || 'XML'}</span>
+                                ${badgeHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-btns">
+                        <button class="action-chip edit" onclick="startEditXml('${id}')">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button class="action-chip del" onclick="deleteXml('${id}')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                setDirectImage(card.querySelector('img'), item.thumbUrl, FALLBACK_APP);
+                list.appendChild(card);
+            });
+        }
+
+        xmlSearchInput.addEventListener('input', renderAdminXml);
+
+        onSnapshot(collection(db, "xmlTemplates"), (snapshot) => {
+            xmlCache = {};
+            let paidCount = 0;
+            snapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                xmlCache[docSnap.id] = data;
+                if (data.isPaid) paidCount++;
+            });
+
+            document.getElementById('statXmlCount').innerText = snapshot.size;
+            document.getElementById('navXmlBadge').innerText = snapshot.size;
+            document.getElementById('statPaidCount').innerText = paidCount;
+            renderAdminXml();
+        });
+
+        window.deleteXml = async (id) => {
+            if (confirm("Delete this XML / Template?")) {
+                try {
+                    await withTimeout(deleteDoc(doc(db, "xmlTemplates", id)));
+                    showToast('Deleted!');
+                } catch (err) {
+                    alert("Delete Error: " + err.message);
+                }
+            }
+        };
+
+        // SOCIAL HANDLES
         document.getElementById('socialForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('socialBtn');
