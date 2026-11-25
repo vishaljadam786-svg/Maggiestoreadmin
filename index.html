@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAGGIE STORE - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Noto+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root, [data-theme="dark"] {
@@ -39,7 +39,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif;
+        }
+
+        .styled-name-text {
+            font-family: 'Noto Sans', 'Plus Jakarta Sans', 'DejaVu Sans', 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
+            text-transform: none !important;
+            line-height: 1.45;
+            font-variant-ligatures: none;
         }
 
         body {
@@ -370,7 +377,7 @@
                     <div class="form-grid">
                         <div class="field">
                             <label for="appName">App Name *</label>
-                            <input type="text" id="appName" placeholder="e.g. Alight Motion Pro" required>
+                            <input type="text" id="appName" class="styled-name-text" placeholder="e.g. Alight Motion Pro" required>
                         </div>
                         <div class="field">
                             <label for="appCategory">Category *</label>
@@ -385,7 +392,6 @@
                             <input type="url" id="appDownloadUrl" placeholder="https://github.com/..." required>
                         </div>
 
-                        <!-- PAID / FREE APP CONTROLS -->
                         <div class="field full">
                             <div class="paid-toggle-box">
                                 <label class="checkbox-label">
@@ -401,7 +407,7 @@
 
                         <div class="field full">
                             <label for="appDesc">Description</label>
-                            <textarea id="appDesc" placeholder="App details, version, features..."></textarea>
+                            <textarea id="appDesc" class="styled-name-text" placeholder="App details, version, features..."></textarea>
                         </div>
                     </div>
 
@@ -434,7 +440,7 @@
                     <div class="form-grid">
                         <div class="field">
                             <label for="xmlTitle">Title *</label>
-                            <input type="text" id="xmlTitle" placeholder="e.g. 4K CC XML Pack" required>
+                            <input type="text" id="xmlTitle" class="styled-name-text" placeholder="e.g. 4K CC XML Pack" required>
                         </div>
                         <div class="field">
                             <label for="xmlType">Type *</label>
@@ -473,7 +479,7 @@
 
                         <div class="field full">
                             <label for="xmlDesc">Description</label>
-                            <textarea id="xmlDesc" placeholder="XML / Template details..."></textarea>
+                            <textarea id="xmlDesc" class="styled-name-text" placeholder="XML / Template details..."></textarea>
                         </div>
                     </div>
 
@@ -505,7 +511,7 @@
                     <div class="form-grid">
                         <div class="field">
                             <label for="storeNameInput">Store Name</label>
-                            <input type="text" id="storeNameInput" placeholder="MAGGIE STORE" required>
+                            <input type="text" id="storeNameInput" class="styled-name-text" placeholder="MAGGIE STORE" required>
                         </div>
                         <div class="field">
                             <label for="storeLogoInput">Store Logo URL (imgbb)</label>
@@ -526,11 +532,11 @@
                     <div class="form-grid">
                         <div class="field">
                             <label for="gameUidInput">Game UID (Khali chhodne par hide ho jayega)</label>
-                            <input type="text" id="gameUidInput" placeholder="e.g. 1234567890">
+                            <input type="text" id="gameUidInput" class="styled-name-text" placeholder="e.g. 1234567890">
                         </div>
                         <div class="field">
-                            <label for="gameLabelInput">Game Name / Tag (Optional)</label>
-                            <input type="text" id="gameLabelInput" placeholder="e.g. Free Fire UID">
+                            <label for="gameLabelInput">Game Name / Styled Font (Optional)</label>
+                            <input type="text" id="gameLabelInput" class="styled-name-text" placeholder="e.g. Mᴀ፝֟፝ɢɢɪᴇㅤᥫ᭡">
                         </div>
                         <div class="field full">
                             <label for="gameMainPhotoInput">Main Profile Photo URL (Hata doge toh sirf extra photos ya UID dikhega)</label>
@@ -560,7 +566,7 @@
                     <div class="form-grid">
                         <div class="field">
                             <label for="socialPlatform">Platform Name</label>
-                            <input type="text" id="socialPlatform" placeholder="Instagram / Telegram / YouTube / Discord" required>
+                            <input type="text" id="socialPlatform" class="styled-name-text" placeholder="Instagram / Telegram / YouTube / Discord" required>
                         </div>
                         <div class="field">
                             <label for="socialUrl">Profile / Channel URL</label>
@@ -699,7 +705,7 @@
                 div.className = "admin-item-card";
                 div.innerHTML = `
                     <div>
-                        <div style="font-weight:700;">${data.platform || "Link"}</div>
+                        <div class="styled-name-text" style="font-weight:700;">${data.platform || "Link"}</div>
                         <div style="font-size:0.78rem; color:var(--muted); word-break:break-all;">${data.url || ""}</div>
                     </div>
                     <div class="item-actions">
@@ -811,7 +817,7 @@
                             <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
                                 ${isPaid ? `PAID • ₹${item.price || 29}` : "FREE"}
                             </span>
-                            <div style="font-weight:700; margin-top:3px;">${item.name || "App"}</div>
+                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${item.name || "App"}</div>
                         </div>
                     </div>
                     <div class="item-actions">
@@ -930,7 +936,7 @@
                                 ${isPaid ? `PAID • ₹${item.price || 9}` : "FREE"}
                             </span>
                             <span class="badge badge-cat">${shotCount} Photos</span>
-                            <div style="font-weight:700; margin-top:3px;">${item.title || "Untitled"}</div>
+                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${item.title || "Untitled"}</div>
                         </div>
                     </div>
                     <div class="item-actions">
