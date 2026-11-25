@@ -497,7 +497,7 @@
             </div>
         </div>
 
-        <!-- TAB 3: STORE & SOCIALS -->
+        <!-- TAB 3: STORE, GAME PROFILE & SOCIALS -->
         <div id="settingsTab" class="tab-panel">
             <div class="panel-card">
                 <h2>Store General Settings</h2>
@@ -516,6 +516,41 @@
                         <i class="fa-solid fa-check"></i> Save Store Settings
                     </button>
                     <div id="settingsStatus" class="toast-msg"></div>
+                </form>
+            </div>
+
+            <!-- GAME UID & PROFILE PHOTOS (BOTTOM OF WEBSITE) -->
+            <div class="panel-card">
+                <h2><i class="fa-solid fa-gamepad"></i> Game UID & Profile Photos (Bottom Section)</h2>
+                <form id="gameProfileForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="gameUidInput">Game UID (Khali chhodne par hide ho jayega)</label>
+                            <input type="text" id="gameUidInput" placeholder="e.g. 1234567890">
+                        </div>
+                        <div class="field">
+                            <label for="gameLabelInput">Game Name / Tag (Optional)</label>
+                            <input type="text" id="gameLabelInput" placeholder="e.g. Free Fire UID">
+                        </div>
+                        <div class="field full">
+                            <label for="gameMainPhotoInput">Main Profile Photo URL (Hata doge toh sirf extra photos ya UID dikhega)</label>
+                            <input type="url" id="gameMainPhotoInput" placeholder="https://i.ibb.co/main-profile.jpg">
+                        </div>
+                        <div class="field full">
+                            <label for="gameExtraPhotosInput">Extra Profile Photos URLs (Main photo ke neeche — ek line mein ek URL ya comma se alag karein; hata doge toh kuch nahi dikhega)</label>
+                            <textarea id="gameExtraPhotosInput" placeholder="https://i.ibb.co/extra1.jpg&#10;https://i.ibb.co/extra2.jpg"></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Game Profile
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="clearGameProfileData()">
+                            <i class="fa-solid fa-trash"></i> Remove All Game Info
+                        </button>
+                    </div>
+                    <div id="gameProfileStatus" class="toast-msg"></div>
                 </form>
             </div>
 
@@ -639,12 +674,18 @@
             setStatus("xmlFormStatus", err.message, true);
         });
 
-        // SETTINGS
+        // SETTINGS & GAME PROFILE
         onSnapshot(doc(db, "settings", "general"), (snap) => {
             if (snap.exists()) {
                 const s = snap.data();
                 if (s.storeName) document.getElementById("storeNameInput").value = s.storeName;
                 if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
+                document.getElementById("gameUidInput").value = s.gameUid || "";
+                document.getElementById("gameLabelInput").value = s.gameLabel || "";
+                document.getElementById("gameMainPhotoInput").value = s.gameMainPhoto || "";
+                document.getElementById("gameExtraPhotosInput").value = Array.isArray(s.gameExtraPhotos)
+                    ? s.gameExtraPhotos.join("\n")
+                    : "";
             }
         });
 
@@ -905,7 +946,7 @@
             });
         }
 
-        // SETTINGS & SOCIALS
+        // SETTINGS, GAME PROFILE & SOCIALS
         document.getElementById("settingsForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             try {
@@ -918,6 +959,48 @@
                 setStatus("settingsStatus", err.message, true);
             }
         });
+
+        document.getElementById("gameProfileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const gameUid = document.getElementById("gameUidInput").value.trim();
+            const gameLabel = document.getElementById("gameLabelInput").value.trim();
+            const gameMainPhoto = cleanUrl(document.getElementById("gameMainPhotoInput").value);
+            const gameExtraPhotos = document.getElementById("gameExtraPhotosInput").value
+                .split(/[\n,]+/)
+                .map(cleanUrl)
+                .filter(Boolean);
+
+            try {
+                await setDoc(doc(db, "settings", "general"), {
+                    gameUid,
+                    gameLabel,
+                    gameMainPhoto,
+                    gameExtraPhotos
+                }, { merge: true });
+                setStatus("gameProfileStatus", "Game UID & profile photos saved!");
+            } catch (err) {
+                setStatus("gameProfileStatus", err.message, true);
+            }
+        });
+
+        window.clearGameProfileData = async function () {
+            if (!confirm("Game UID aur saari profile photos hata dein?")) return;
+            try {
+                await setDoc(doc(db, "settings", "general"), {
+                    gameUid: "",
+                    gameLabel: "",
+                    gameMainPhoto: "",
+                    gameExtraPhotos: []
+                }, { merge: true });
+                document.getElementById("gameUidInput").value = "";
+                document.getElementById("gameLabelInput").value = "";
+                document.getElementById("gameMainPhotoInput").value = "";
+                document.getElementById("gameExtraPhotosInput").value = "";
+                setStatus("gameProfileStatus", "Game UID & photos removed. Website par ab kuch nahi dikhega.");
+            } catch (err) {
+                setStatus("gameProfileStatus", err.message, true);
+            }
+        };
 
         document.getElementById("socialForm").addEventListener("submit", async (e) => {
             e.preventDefault();
