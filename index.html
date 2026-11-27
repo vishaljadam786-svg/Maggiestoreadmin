@@ -1,28 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAGGIE STORE — Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Noto+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>MAGGIE STORE - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
+        :root, [data-theme="dark"] {
             --bg: #07090e;
-            --sidebar-bg: rgba(13, 17, 26, 0.92);
-            --card: rgba(18, 23, 35, 0.86);
-            --card-2: rgba(255, 255, 255, 0.04);
+            --surface: #121722;
+            --surface-2: #19202f;
             --ink: #f4f6fb;
             --muted: #98a4b8;
+            --accent: #10b981;
+            --accent-ink: #04130d;
             --coral: #ff4d5a;
             --coral-soft: rgba(255, 77, 90, 0.16);
-            --gold: #f5b921;
-            --gold-soft: rgba(245, 185, 33, 0.16);
-            --violet: #a78bfa;
-            --emerald: #10b981;
+            --warm: #f59e0b;
+            --danger: #ef4444;
             --border: rgba(255, 255, 255, 0.09);
             --inset: rgba(255, 255, 255, 0.08);
-            --shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+            --shadow: 0 18px 44px rgba(0, 0, 0, 0.48);
+        }
+
+        [data-theme="light"] {
+            --bg: #eef2f7;
+            --surface: #ffffff;
+            --surface-2: #e6ecf4;
+            --ink: #141820;
+            --muted: #5b6475;
+            --accent: #059669;
+            --accent-ink: #ffffff;
+            --coral: #e11d48;
+            --coral-soft: rgba(225, 29, 72, 0.12);
+            --warm: #d97706;
+            --danger: #dc2626;
+            --border: rgba(20, 24, 32, 0.11);
+            --inset: rgba(255, 255, 255, 0.85);
+            --shadow: 0 14px 32px rgba(20, 24, 32, 0.09);
         }
 
         * {
@@ -30,976 +46,1443 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .styled-name-text {
             font-family: 'Noto Sans', 'Plus Jakarta Sans', 'DejaVu Sans', 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
             text-transform: none !important;
+            line-height: 1.4;
         }
 
         body {
-            background: radial-gradient(circle at 75% 15%, rgba(255, 77, 90, 0.11), transparent 42%),
-                        radial-gradient(circle at 20% 80%, rgba(245, 185, 33, 0.07), transparent 45%),
+            background: radial-gradient(circle at 78% 12%, rgba(255, 77, 90, 0.10), transparent 42%),
+                        radial-gradient(circle at 18% 82%, rgba(245, 158, 11, 0.08), transparent 45%),
                         var(--bg);
             color: var(--ink);
             min-height: 100vh;
-            display: flex;
+            padding-bottom: 60px;
+            transition: background 0.25s ease, color 0.25s ease;
             overflow-x: clip;
         }
 
-        @keyframes dashFadeUp {
-            from { opacity: 0; transform: translate3d(0, 14px, 0); }
-            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        @keyframes portalEnter {
+            from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.99); }
+            to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
 
-        .dash-anim {
-            animation: dashFadeUp 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 12px rgba(255, 77, 90, 0.28); }
+            100% { box-shadow: 0 0 24px rgba(255, 77, 90, 0.58); }
         }
 
-        /* Left Sidebar */
-        .sidebar {
-            width: 248px;
-            flex-shrink: 0;
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
-            box-shadow: inset -1px 0 0 var(--inset);
-            padding: 20px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+        .portal-enter {
+            animation: portalEnter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        header {
             position: sticky;
             top: 0;
-            height: 100vh;
             z-index: 90;
-            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .brand-box {
+            background: color-mix(in srgb, var(--surface) 88%, transparent);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 5%;
             display: flex;
             align-items: center;
-            gap: 11px;
-            padding: 4px 8px;
+            justify-content: space-between;
+            gap: 12px;
         }
 
-        .brand-mark {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--coral), #ff7a59);
+        .brand-wrap {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 800;
-            font-size: 1rem;
-            box-shadow: 0 6px 18px rgba(255, 77, 90, 0.35);
+            gap: 10px;
         }
 
         .brand-title {
             font-family: 'Fraunces', serif;
-            font-size: 1.08rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            line-height: 1.1;
         }
 
-        .brand-sub {
+        .role-pill {
             font-size: 0.7rem;
-            color: var(--muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: color-mix(in srgb, var(--accent) 16%, transparent);
+            color: var(--accent);
+            padding: 3px 9px;
+            border-radius: 7px;
         }
 
-        .nav-list {
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 11px;
+            padding: 9px 15px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: transform 0.16s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover { opacity: 0.94; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .btn-primary { background: var(--accent); color: var(--accent-ink); }
+        .btn-coral {
+            background: linear-gradient(135deg, var(--coral), #ff6f7a);
+            color: #fff;
+            animation: pulseGlow 2.4s ease-in-out infinite alternate;
+        }
+        .btn-warm { background: var(--warm); color: #141820; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--ink);
+            border: 1px solid var(--border);
+        }
+        .btn-upload {
+            background: var(--surface);
+            color: var(--accent);
+            border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrap {
+            max-width: 1160px;
+            margin: 22px auto 0;
+            padding: 0 20px;
+        }
+
+        /* Portal Hero Header (Video inspired) */
+        .portal-hero-head {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .portal-kicker {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .portal-main-heading {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Portal Frame Window */
+        .portal-window {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow), inset 0 1px 0 var(--inset);
+            border-radius: 24px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            margin-bottom: 22px;
+        }
+
+        .portal-sidebar {
+            background: color-mix(in srgb, var(--surface-2) 72%, var(--surface));
+            border-right: 1px solid var(--border);
+            padding: 16px 12px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            flex: 1;
+            gap: 14px;
         }
 
-        .nav-btn {
+        .portal-side-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 4px 8px;
+        }
+
+        .portal-side-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--coral), #ff7b54);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+
+        .portal-nav-btn {
             width: 100%;
             background: transparent;
             border: 1px solid transparent;
             color: var(--muted);
-            padding: 10px 12px;
-            border-radius: 13px;
-            font-size: 0.84rem;
+            padding: 9px 11px;
+            border-radius: 11px;
+            font-size: 0.81rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 9px;
             text-align: left;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.18s ease, border-color 0.2s ease;
         }
 
-        .nav-btn i {
-            width: 18px;
-            text-align: center;
-            font-size: 0.88rem;
-        }
-
-        .nav-btn:hover {
-            background: var(--card-2);
+        .portal-nav-btn:hover {
+            background: var(--surface);
             color: var(--ink);
             transform: translateX(2px);
         }
 
-        .nav-btn.active {
-            background: linear-gradient(90deg, var(--coral-soft), transparent);
-            color: #fff;
-            border-color: rgba(255, 77, 90, 0.35);
+        .portal-nav-btn.active {
+            background: var(--coral-soft);
+            color: var(--ink);
+            border-color: color-mix(in srgb, var(--coral) 45%, transparent);
             box-shadow: inset 3px 0 0 var(--coral);
         }
 
-        .nav-btn.active i {
+        .portal-nav-btn.active i {
             color: var(--coral);
         }
 
-        .sidebar-footer-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .admin-avatar-dot {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            background: var(--gold-soft);
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-        }
-
-        /* Main Workspace */
-        .main-shell {
-            flex: 1;
+        .portal-body {
+            padding: 18px 20px;
             min-width: 0;
-            padding: 20px 24px 64px;
-            max-width: 1260px;
-            margin: 0 auto;
         }
 
-        .topbar {
+        .portal-topbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 22px;
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .menu-toggle-btn {
-            display: none;
-            width: 38px;
-            height: 38px;
-            border-radius: 11px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--ink);
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-
-        .page-heading {
-            font-family: 'Fraunces', serif;
-            font-size: 1.55rem;
-            font-weight: 700;
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            margin-bottom: 16px;
         }
 
-        .search-input {
-            background: var(--card);
-            border: 1px solid var(--border);
-            color: var(--ink);
-            padding: 9px 14px;
-            border-radius: 12px;
-            font-size: 0.82rem;
-            width: 210px;
-            outline: none;
-            transition: border-color 0.2s ease;
+        .portal-search {
+            max-width: 230px;
+            padding: 8px 12px !important;
+            border-radius: 10px !important;
+            font-size: 0.8rem !important;
         }
 
-        .search-input:focus {
-            border-color: var(--coral);
-        }
-
-        .primary-cta {
-            background: linear-gradient(135deg, var(--coral), #ff6b6b);
-            color: #fff;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            box-shadow: 0 8px 20px rgba(255, 77, 90, 0.32);
-            transition: transform 0.16s ease, filter 0.2s ease;
-        }
-
-        .primary-cta:hover {
-            filter: brightness(1.06);
-            transform: translateY(-1px);
-        }
-
-        .secondary-btn {
-            background: var(--card);
-            color: var(--ink);
-            border: 1px solid var(--border);
-            padding: 9px 14px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: border-color 0.2s ease, background 0.2s ease;
-        }
-
-        .secondary-btn:hover {
-            border-color: var(--gold);
-            background: var(--card-2);
-        }
-
-        /* KPI Grid */
-        .kpi-grid {
+        .kpi-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-bottom: 18px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
-        .kpi-card {
-            background: var(--card);
+        .kpi-box {
+            background: var(--surface-2);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow), inset 0 1px 0 var(--inset);
-            border-radius: 20px;
-            padding: 16px 18px;
+            border-radius: 16px;
+            padding: 13px 15px;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .kpi-card:hover {
+        .kpi-box:hover {
             transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.18);
+            border-color: color-mix(in srgb, var(--coral) 40%, var(--border));
         }
 
-        .kpi-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin-bottom: 10px;
-        }
-
-        .kpi-icon-badge {
-            width: 30px;
-            height: 30px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.82rem;
-        }
-
-        .kpi-num {
-            font-family: 'Fraunces', serif;
-            font-size: 1.65rem;
-            font-weight: 700;
-            line-height: 1.1;
-        }
-
-        .kpi-sub {
-            font-size: 0.74rem;
-            color: var(--muted);
-            margin-top: 6px;
-        }
-
-        /* Analytics Row: Bar Chart + Donut Ring */
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: 1.55fr 1fr;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .panel-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow), inset 0 1px 0 var(--inset);
-            border-radius: 22px;
-            padding: 18px 20px;
-        }
-
-        .panel-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .panel-title {
-            font-family: 'Fraunces', serif;
-            font-size: 1.08rem;
-            font-weight: 700;
-        }
-
-        .bar-chart-wrap {
-            height: 175px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            gap: 14px;
-            padding: 14px 10px 4px;
-            border-radius: 16px;
-            background: var(--card-2);
-            border: 1px solid var(--border);
-        }
-
-        .bar-col {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            height: 100%;
-            gap: 7px;
-        }
-
-        .bar-fill {
-            width: 100%;
-            max-width: 68px;
-            height: 0%;
-            border-radius: 12px 12px 6px 6px;
-            background: linear-gradient(180deg, #ff6b6b, var(--coral));
-            box-shadow: 0 0 18px rgba(255, 77, 90, 0.35);
-            transition: height 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-            position: relative;
-        }
-
-        .bar-fill.gold-bar {
-            background: linear-gradient(180deg, #ffd35a, var(--gold));
-            box-shadow: 0 0 18px rgba(245, 185, 33, 0.35);
-        }
-
-        .bar-fill.violet-bar {
-            background: linear-gradient(180deg, #c4b5fd, var(--violet));
-            box-shadow: 0 0 18px rgba(167, 139, 250, 0.35);
-        }
-
-        .bar-val {
-            font-size: 0.76rem;
-            font-weight: 800;
-            color: var(--ink);
-        }
-
-        .bar-label {
+        .kpi-label {
             font-size: 0.72rem;
             color: var(--muted);
             font-weight: 600;
         }
 
-        .ring-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 18px;
-            min-height: 175px;
-            flex-wrap: wrap;
-        }
-
-        .ring-svg {
-            width: 132px;
-            height: 132px;
-            transform: rotate(-90deg);
-        }
-
-        .ring-circle-bg {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.08);
-            stroke-width: 12;
-        }
-
-        .ring-circle-fg {
-            fill: none;
-            stroke: var(--coral);
-            stroke-width: 12;
-            stroke-linecap: round;
-            stroke-dasharray: 326.7;
-            stroke-dashoffset: 326.7;
-            transition: stroke-dashoffset 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .ring-center-box {
-            position: relative;
-            width: 132px;
-            height: 132px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ring-percent {
-            position: absolute;
+        .kpi-val {
             font-family: 'Fraunces', serif;
             font-size: 1.45rem;
             font-weight: 700;
+            margin-top: 4px;
         }
 
-        /* Section Tabs & Forms */
-        .section-tabs {
+        .charts-split {
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 12px;
+        }
+
+        .sub-chart-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px;
+        }
+
+        .bars-stage {
+            height: 145px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 12px;
+            padding-top: 12px;
+        }
+
+        .bar-item {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .bar-pillar {
+            width: 100%;
+            max-width: 58px;
+            height: 10%;
+            border-radius: 10px 10px 4px 4px;
+            background: linear-gradient(180deg, #ff6f7a, var(--coral));
+            box-shadow: 0 0 16px rgba(255, 77, 90, 0.35);
+            transition: height 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .bar-pillar.gold {
+            background: linear-gradient(180deg, #fcd34d, var(--warm));
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.32);
+        }
+
+        .bar-pillar.mint {
+            background: linear-gradient(180deg, #34d399, var(--accent));
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.32);
+        }
+
+        .ring-stage {
+            height: 145px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .ring-holder {
+            position: relative;
+            width: 112px;
+            height: 112px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ring-svg {
+            width: 112px;
+            height: 112px;
+            transform: rotate(-90deg);
+        }
+
+        .ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.10);
+            stroke-width: 11;
+        }
+
+        .ring-fg {
+            fill: none;
+            stroke: var(--coral);
+            stroke-width: 11;
+            stroke-linecap: round;
+            stroke-dasharray: 289.03;
+            stroke-dashoffset: 289.03;
+            transition: stroke-dashoffset 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .ring-num {
+            position: absolute;
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* Code Preview Window (Video inspired bottom card) */
+        .code-preview-card {
+            background: #0d1118;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+
+        .code-win-bar {
+            background: #151b26;
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            border-bottom: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.74rem;
+            color: var(--muted);
+        }
+
+        .mac-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .code-pre {
+            padding: 14px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.76rem;
+            line-height: 1.55;
+            color: #d6deeb;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* Existing Tabs & Forms */
+        .tabs-row {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            padding-bottom: 2px;
+            scrollbar-width: none;
         }
+        .tabs-row::-webkit-scrollbar { display: none; }
 
-        .sec-tab-btn {
-            background: var(--card);
+        .tab-btn {
+            background: var(--surface);
             color: var(--muted);
             border: 1px solid var(--border);
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 0.78rem;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 0.83rem;
             font-weight: 700;
             cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
             transition: all 0.2s ease;
         }
 
-        .sec-tab-btn.active {
-            background: var(--coral);
-            color: #fff;
-            border-color: var(--coral);
-            box-shadow: 0 0 16px rgba(255, 77, 90, 0.38);
+        .tab-btn.active {
+            background: var(--accent);
+            color: var(--accent-ink);
+            border-color: var(--accent);
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active {
+            display: block;
+            animation: portalEnter 0.28s ease both;
+        }
+
+        .panel-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            margin-bottom: 22px;
+        }
+
+        .panel-card h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
+            margin-bottom: 14px;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
+            gap: 14px;
         }
 
-        .field-group {
+        .field {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
-        .field-label {
-            font-size: 0.74rem;
+        .field.full { grid-column: 1 / -1; }
+
+        label {
+            font-size: 0.78rem;
             font-weight: 700;
             color: var(--muted);
         }
 
-        .input-ctrl, .textarea-ctrl, .select-ctrl {
-            background: var(--card-2);
+        .url-upload-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .url-upload-row input[type="url"],
+        .url-upload-row input[type="text"] {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .multi-upload-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .upload-status-mini {
+            font-size: 0.76rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .helper-note {
+            font-size: 0.73rem;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        select,
+        textarea {
+            background: var(--surface-2);
             border: 1px solid var(--border);
             color: var(--ink);
-            padding: 10px 12px;
             border-radius: 12px;
-            font-size: 0.83rem;
+            padding: 10px 13px;
+            font-size: 0.88rem;
             outline: none;
             width: 100%;
         }
 
-        .textarea-ctrl {
-            min-height: 78px;
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        textarea {
+            min-height: 85px;
             resize: vertical;
         }
 
-        .input-ctrl:focus, .textarea-ctrl:focus, .select-ctrl:focus {
-            border-color: var(--coral);
-        }
-
-        .checkbox-row {
+        .paid-toggle-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            margin-top: 8px;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--ink);
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--warm);
+            cursor: pointer;
         }
 
         .items-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 12px;
-            margin-top: 14px;
+            gap: 15px;
         }
 
-        .data-item-card {
-            background: var(--card-2);
+        .admin-item-card {
+            background: var(--surface-2);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 13px 14px;
+            border-radius: 18px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .admin-item-card:hover {
+            transform: translateY(-2px);
+            border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+        }
+
+        .item-top {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            animation: dashFadeUp 0.28s ease both;
+            gap: 12px;
         }
 
-        .data-item-title {
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-
-        .data-item-meta {
-            font-size: 0.74rem;
-            color: var(--muted);
-            margin-top: 3px;
-            word-break: break-all;
-        }
-
-        .btn-row {
-            display: flex;
-            gap: 6px;
+        .item-thumb {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: var(--surface);
+            border: 1px solid var(--border);
             flex-shrink: 0;
         }
 
-        .mini-btn {
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: var(--ink);
-            padding: 6px 10px;
-            border-radius: 9px;
-            font-size: 0.74rem;
+        .badge {
+            display: inline-block;
+            font-size: 0.68rem;
             font-weight: 700;
-            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
         }
 
-        .mini-btn.del {
-            color: #ff6b6b;
-            border-color: rgba(255, 77, 90, 0.35);
+        .badge-free {
+            background: color-mix(in srgb, var(--accent) 15%, transparent);
+            color: var(--accent);
+        }
+
+        .badge-paid {
+            background: color-mix(in srgb, var(--warm) 18%, transparent);
+            color: var(--warm);
+        }
+
+        .badge-cat {
+            background: var(--surface);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
         }
 
         .toast-msg {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #182030;
-            color: #fff;
-            border: 1px solid var(--coral);
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
-            padding: 11px 16px;
-            border-radius: 13px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            z-index: 500;
-            display: none;
+            margin-top: 12px;
+            font-size: 0.84rem;
+            font-weight: 600;
         }
 
-        .backdrop-mobile {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 80;
+        @media (max-width: 860px) {
+            .portal-window { grid-template-columns: 1fr; }
+            .portal-sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+            .kpi-row, .charts-split { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 900px) {
-            .analytics-grid, .kpi-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 780px) {
-            .sidebar {
-                position: fixed;
-                left: 0;
-                top: 0;
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .backdrop-mobile.open {
-                display: block;
-            }
-            .menu-toggle-btn {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .main-shell {
-                padding: 16px 14px 64px;
-            }
-            .search-input {
-                width: 150px;
-            }
+        @media (max-width: 540px) {
+            .url-upload-row { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
 <body>
 
-    <div id="mobileBackdrop" class="backdrop-mobile" onclick="toggleSidebar(false)"></div>
+    <header>
+        <div class="brand-wrap">
+            <span class="brand-title">MAGGIE ADMIN</span>
+            <span class="role-pill">Direct Access</span>
+        </div>
+        <div class="header-actions">
+            <a href="index.html" class="btn btn-ghost">
+                <i class="fa-solid fa-store"></i> View Store
+            </a>
+            <button type="button" class="icon-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i id="themeIcon" class="fa-solid fa-sun"></i>
+            </button>
+        </div>
+    </header>
 
-    <aside id="adminSidebar" class="sidebar">
-        <div class="brand-box">
-            <div class="brand-mark"><i class="fa-solid fa-crown"></i></div>
-            <div>
-                <div id="sideStoreName" class="brand-title styled-name-text">MAGGIE STORE</div>
-                <div class="brand-sub">Admin Portal</div>
+    <div id="dashboardScreen" class="wrap portal-enter">
+        <div class="portal-hero-head">
+            <div class="portal-kicker">APPS · XML &amp; TEMPLATES · PROFILE &amp; SOCIALS</div>
+            <h1 class="portal-main-heading">MAGGIE STORE Portal</h1>
+        </div>
+
+        <!-- Portal Dashboard Window -->
+        <section class="portal-window" aria-label="Dashboard Overview">
+            <aside class="portal-sidebar">
+                <div class="portal-side-brand">
+                    <span class="portal-side-badge"><i class="fa-solid fa-crown"></i></span>
+                    <div>
+                        <div id="portalBrandLabel" class="styled-name-text" style="font-weight:800; font-size:0.86rem;">MAGGIE STORE</div>
+                        <div style="font-size:0.68rem; color:var(--muted);">Portal Control</div>
+                    </div>
+                </div>
+                <button type="button" class="portal-nav-btn active" data-pnav="overview" onclick="selectPortalNav('overview', this)">
+                    <i class="fa-solid fa-chart-pie"></i> Visão geral
+                </button>
+                <button type="button" class="portal-nav-btn" data-pnav="apps" onclick="selectPortalNav('apps', this)">
+                    <i class="fa-solid fa-mobile-screen"></i> Apps (Free / Paid)
+                </button>
+                <button type="button" class="portal-nav-btn" data-pnav="xml" onclick="selectPortalNav('xml', this)">
+                    <i class="fa-solid fa-layer-group"></i> XML &amp; Templates
+                </button>
+                <button type="button" class="portal-nav-btn" data-pnav="settings" onclick="selectPortalNav('settings', this)">
+                    <i class="fa-solid fa-sliders"></i> Store &amp; Socials
+                </button>
+            </aside>
+
+            <div class="portal-body">
+                <div class="portal-topbar">
+                    <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                        <h2 id="portalViewTitle" style="font-family:'Fraunces',serif; font-size:1.25rem; margin:0;">Visão geral</h2>
+                        <input type="text" id="portalQuickFilter" class="portal-search" placeholder="Buscar app / XML...">
+                    </div>
+                    <button type="button" class="btn btn-coral" onclick="focusQuickNewItem()">
+                        <i class="fa-solid fa-plus"></i> Novo item
+                    </button>
+                </div>
+
+                <div class="kpi-row">
+                    <div class="kpi-box">
+                        <div class="kpi-label">Total Apps</div>
+                        <div id="portalAppsCount" class="kpi-val">0</div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-label">XML &amp; Templates</div>
+                        <div id="portalXmlCount" class="kpi-val" style="color:var(--warm);">0</div>
+                    </div>
+                    <div class="kpi-box">
+                        <div class="kpi-label">Paid Catalog Items</div>
+                        <div id="portalPaidCount" class="kpi-val" style="color:var(--coral);">0</div>
+                    </div>
+                </div>
+
+                <div class="charts-split">
+                    <div class="sub-chart-card">
+                        <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; margin-bottom:4px;">
+                            <span>Catalog Overview</span>
+                            <span style="color:var(--muted);">Firestore Live</span>
+                        </div>
+                        <div class="bars-stage">
+                            <div class="bar-item">
+                                <span id="pBarAppsNum" style="font-size:0.74rem; font-weight:700;">0</span>
+                                <div id="pBarApps" class="bar-pillar mint"></div>
+                                <span style="font-size:0.7rem; color:var(--muted);">Apps</span>
+                            </div>
+                            <div class="bar-item">
+                                <span id="pBarXmlNum" style="font-size:0.74rem; font-weight:700;">0</span>
+                                <div id="pBarXml" class="bar-pillar gold"></div>
+                                <span style="font-size:0.7rem; color:var(--muted);">XML/Temp</span>
+                            </div>
+                            <div class="bar-item">
+                                <span id="pBarPaidNum" style="font-size:0.74rem; font-weight:700;">0</span>
+                                <div id="pBarPaid" class="bar-pillar"></div>
+                                <span style="font-size:0.7rem; color:var(--muted);">Paid</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-chart-card">
+                        <div style="display:flex; justify-content:space-between; font-size:0.78rem; font-weight:700; margin-bottom:4px;">
+                            <span>Paid Share</span>
+                            <span id="pRingCaption" style="color:var(--muted);">0 / 0</span>
+                        </div>
+                        <div class="ring-stage">
+                            <div class="ring-holder">
+                                <svg class="ring-svg" viewBox="0 0 112 112">
+                                    <circle class="ring-bg" cx="56" cy="56" r="46"></circle>
+                                    <circle id="pRingCircle" class="ring-fg" cx="56" cy="56" r="46"></circle>
+                                </svg>
+                                <span id="pRingPct" class="ring-num">0%</span>
+                            </div>
+                            <div style="font-size:0.75rem; color:var(--muted); line-height:1.55;">
+                                <div>Paid: <strong id="pRingPaid" style="color:var(--coral);">0</strong></div>
+                                <div>Free: <strong id="pRingFree" style="color:var(--accent);">0</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Preview Card (Video inspired) -->
+        <section class="code-preview-card" aria-label="Live Store State Snippet">
+            <div class="code-win-bar">
+                <span class="mac-dot" style="background:#ff5f56;"></span>
+                <span class="mac-dot" style="background:#ffbd2e;"></span>
+                <span class="mac-dot" style="background:#27c93f;"></span>
+                <span style="margin-left:6px;">store-sync.js</span>
+            </div>
+            <pre id="liveCodeSnippet" class="code-pre">const apps = await db.collection("apps").get();
+const xmlPacks = await db.collection("xmlTemplates").get();
+syncPortalMetrics({ apps: apps.size, xmlPacks: xmlPacks.size });</pre>
+        </section>
+
+        <div class="tabs-row">
+            <button type="button" class="tab-btn active" data-tab="appsTab" onclick="switchTab('appsTab')">
+                <i class="fa-solid fa-mobile-screen"></i> Apps (Free / Paid)
+            </button>
+            <button type="button" class="tab-btn" data-tab="xmlTab" onclick="switchTab('xmlTab')">
+                <i class="fa-solid fa-layer-group"></i> XML &amp; Templates
+            </button>
+            <button type="button" class="tab-btn" data-tab="settingsTab" onclick="switchTab('settingsTab')">
+                <i class="fa-solid fa-sliders"></i> Store &amp; Socials
+            </button>
+        </div>
+
+        <!-- TAB 1: APPS -->
+        <div id="appsTab" class="tab-panel active">
+            <div class="panel-card">
+                <h2 id="appFormHeading"><i class="fa-solid fa-plus-circle"></i> Add New App</h2>
+                <form id="appForm">
+                    <input type="hidden" id="editAppId">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="appName">App Name *</label>
+                            <input type="text" id="appName" class="styled-name-text" placeholder="e.g. Alight Motion Pro" required>
+                        </div>
+                        <div class="field">
+                            <label for="appCategory">Category *</label>
+                            <input type="text" id="appCategory" placeholder="e.g. Editing, Games, Tools" required>
+                        </div>
+                        <div class="field full">
+                            <label for="appLogoUrl">App Icon (URL ya Upload Image to imgbb) *</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="appLogoUrl" placeholder="https://i.ibb.co/... ya Upload Image dabayein" required>
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('appLogoUrl', 'appLogoUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="appLogoUploadStatus" class="upload-status-mini"></span>
+                        </div>
+                        <div class="field full">
+                            <label for="appDownloadUrl">Download / File URL (GitHub / Direct) *</label>
+                            <input type="url" id="appDownloadUrl" placeholder="https://github.com/..." required>
+                        </div>
+
+                        <div class="field full">
+                            <div class="paid-toggle-box">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="appIsPaid" onchange="toggleAppPriceInput()">
+                                    <span>Paid App (Payment ke baad Download Link khulega; unchecked = Free App)</span>
+                                </label>
+                                <div id="appPriceWrap" style="display:none; align-items:center; gap:8px;">
+                                    <label for="appPrice" style="margin:0;">Price (₹):</label>
+                                    <input type="number" id="appPrice" min="1" value="29" style="width:110px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="appDesc">Description</label>
+                            <textarea id="appDesc" class="styled-name-text" placeholder="App details, version, features..."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+                        <button type="submit" id="saveAppBtn" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> Save App
+                        </button>
+                        <button type="button" id="cancelAppEditBtn" class="btn btn-ghost" style="display:none;" onclick="resetAppForm()">
+                            Cancel Edit
+                        </button>
+                    </div>
+                    <div id="appFormStatus" class="toast-msg"></div>
+                </form>
+            </div>
+
+            <div class="panel-card">
+                <h2>All Apps</h2>
+                <div id="adminAppsList" class="items-list">
+                    <p style="color:var(--muted);">Loading apps...</p>
+                </div>
             </div>
         </div>
 
-        <nav class="nav-list">
-            <button type="button" class="nav-btn active" data-tab="overview" onclick="switchAdminTab('overview', this)">
-                <i class="fa-solid fa-chart-pie"></i> Visão Geral
-            </button>
-            <button type="button" class="nav-btn" data-tab="apps" onclick="switchAdminTab('apps', this)">
-                <i class="fa-solid fa-mobile-screen"></i> Applications
-            </button>
-            <button type="button" class="nav-btn" data-tab="xml" onclick="switchAdminTab('xml', this)">
-                <i class="fa-solid fa-code"></i> XML & Templates
-            </button>
-            <button type="button" class="nav-btn" data-tab="profile" onclick="switchAdminTab('profile', this)">
-                <i class="fa-solid fa-id-badge"></i> Profile & Gallery
-            </button>
-            <button type="button" class="nav-btn" data-tab="socials" onclick="switchAdminTab('socials', this)">
-                <i class="fa-solid fa-share-nodes"></i> Social Links
-            </button>
-            <button type="button" class="nav-btn" data-tab="settings" onclick="switchAdminTab('settings', this)">
-                <i class="fa-solid fa-gear"></i> Store Settings
-            </button>
-        </nav>
+        <!-- TAB 2: XML & TEMPLATES -->
+        <div id="xmlTab" class="tab-panel">
+            <div class="panel-card">
+                <h2 id="xmlFormHeading"><i class="fa-solid fa-plus-circle"></i> Add XML / Template</h2>
+                <form id="xmlForm">
+                    <input type="hidden" id="editXmlId">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="xmlTitle">Title *</label>
+                            <input type="text" id="xmlTitle" class="styled-name-text" placeholder="e.g. 4K CC XML Pack" required>
+                        </div>
+                        <div class="field">
+                            <label for="xmlType">Type *</label>
+                            <select id="xmlType">
+                                <option value="XML">XML</option>
+                                <option value="Template">Template</option>
+                                <option value="Preset">Preset</option>
+                            </select>
+                        </div>
+                        <div class="field full">
+                            <label for="xmlThumbUrl">Thumbnail / Cover Photo (URL ya Upload Image to imgbb)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="xmlThumbUrl" placeholder="https://i.ibb.co/... ya Upload Image dabayein">
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('xmlThumbUrl', 'xmlThumbUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="xmlThumbUploadStatus" class="upload-status-mini"></span>
+                        </div>
 
-        <div class="sidebar-footer-card">
-            <div class="admin-avatar-dot">M</div>
-            <div style="min-width:0;">
-                <div style="font-size:0.8rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Store Manager</div>
-                <div style="font-size:0.69rem; color:var(--emerald);"><i class="fa-solid fa-circle" style="font-size:0.48rem;"></i> Firestore Sync Live</div>
+                        <div class="field">
+                            <label for="cloudinaryCloudName">Cloudinary Cloud Name</label>
+                            <input type="text" id="cloudinaryCloudName" placeholder="e.g. dxyz123abc">
+                        </div>
+                        <div class="field">
+                            <label for="cloudinaryUploadPreset">Cloudinary Upload Preset (Unsigned)</label>
+                            <input type="text" id="cloudinaryUploadPreset" placeholder="e.g. ml_default">
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlVideoUrl">Video Preview (Upload Video dabayein — link khud yahan aa jayega)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="xmlVideoUrl" placeholder="Upload Video dabayein ya video URL paste karein">
+                                <button type="button" class="btn btn-upload" id="btnUploadVideo" onclick="triggerVideoUpload('xmlVideoUrl', 'xmlVideoUploadStatus')">
+                                    <i class="fa-solid fa-video"></i> Upload Video
+                                </button>
+                            </div>
+                            <span id="xmlVideoUploadStatus" class="upload-status-mini"></span>
+                            <span class="helper-note">Cloudinary API Key: <code>4FZC2hmy01N7N-SL363oTK9FCCI</code>. Pehli baar Cloud Name aur Unsigned Preset daalein (ya prompt mein enter karein)—video upload hote hi link apne aap upar ke box mein set ho jayega.</span>
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlProtectedLink">Protected Download / Drive / GitHub Link *</label>
+                            <input type="url" id="xmlProtectedLink" placeholder="https://..." required>
+                        </div>
+
+                        <div class="field full">
+                            <div class="paid-toggle-box">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="xmlIsPaid" checked onchange="toggleXmlPriceInput()">
+                                    <span>Paid Item (Payment ke baad link unlock hoga)</span>
+                                </label>
+                                <div id="xmlPriceWrap" style="display:flex; align-items:center; gap:8px;">
+                                    <label for="xmlPrice" style="margin:0;">Price (₹):</label>
+                                    <input type="number" id="xmlPrice" min="1" value="9" style="width:110px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlPhotos">All Screenshots (URLs ek line mein ek ya Upload Images se add karein)</label>
+                            <textarea id="xmlPhotos" placeholder="https://i.ibb.co/shot1.jpg&#10;https://i.ibb.co/shot2.jpg"></textarea>
+                            <div class="multi-upload-bar">
+                                <span id="xmlShotsUploadStatus" class="upload-status-mini"></span>
+                                <button type="button" class="btn btn-upload" onclick="triggerMultiUpload('xmlPhotos', 'xmlShotsUploadStatus')">
+                                    <i class="fa-solid fa-images"></i> Upload Screenshots
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlDesc">Description</label>
+                            <textarea id="xmlDesc" class="styled-name-text" placeholder="XML / Template details..."></textarea>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+                        <button type="submit" id="saveXmlBtn" class="btn btn-warm">
+                            <i class="fa-solid fa-floppy-disk"></i> Save XML / Template
+                        </button>
+                        <button type="button" id="cancelXmlEditBtn" class="btn btn-ghost" style="display:none;" onclick="resetXmlForm()">
+                            Cancel Edit
+                        </button>
+                    </div>
+                    <div id="xmlFormStatus" class="toast-msg"></div>
+                </form>
+            </div>
+
+            <div class="panel-card">
+                <h2>All XML &amp; Templates</h2>
+                <div id="adminXmlList" class="items-list">
+                    <p style="color:var(--muted);">Loading XML &amp; templates...</p>
+                </div>
             </div>
         </div>
-    </aside>
 
-    <main class="main-shell dash-anim">
-        <header class="topbar">
-            <div class="topbar-left">
-                <button type="button" class="menu-toggle-btn" onclick="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div>
-                    <h1 id="activeSectionHeading" class="page-heading">Visão Geral</h1>
-                </div>
-            </div>
-
-            <div class="topbar-right">
-                <input type="text" id="adminSearch" class="search-input" placeholder="Filter items...">
-                <a href="index.html" target="_blank" class="secondary-btn" style="text-decoration:none;">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> User Store
-                </a>
-                <button type="button" class="primary-cta" onclick="quickAddFocus()">
-                    <i class="fa-solid fa-plus"></i> Novo Item
-                </button>
-            </div>
-        </header>
-
-        <!-- KPI Summary Cards -->
-        <section class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-top">
-                    <span>Total Applications</span>
-                    <span class="kpi-icon-badge" style="background:var(--coral-soft); color:var(--coral);">
-                        <i class="fa-solid fa-mobile-screen"></i>
-                    </span>
-                </div>
-                <div id="kpiAppsCount" class="kpi-num">0</div>
-                <div id="kpiAppsSub" class="kpi-sub">Free & Paid apps synced</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-top">
-                    <span>XML & Templates</span>
-                    <span class="kpi-icon-badge" style="background:var(--gold-soft); color:var(--gold);">
-                        <i class="fa-solid fa-layer-group"></i>
-                    </span>
-                </div>
-                <div id="kpiXmlCount" class="kpi-num">0</div>
-                <div id="kpiXmlSub" class="kpi-sub">Packs & showcase items</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-top">
-                    <span>Paid Items Ratio</span>
-                    <span class="kpi-icon-badge" style="background:rgba(167,139,250,0.16); color:var(--violet);">
-                        <i class="fa-solid fa-lock"></i>
-                    </span>
-                </div>
-                <div id="kpiPaidCount" class="kpi-num">0</div>
-                <div id="kpiPaidSub" class="kpi-sub">Monetized catalog items</div>
-            </div>
-        </section>
-
-        <!-- Portal Bar Chart + Donut Ring -->
-        <section id="overviewSection" class="analytics-grid">
+        <!-- TAB 3: STORE, GAME PROFILE & SOCIALS -->
+        <div id="settingsTab" class="tab-panel">
             <div class="panel-card">
-                <div class="panel-head">
-                    <h2 class="panel-title">Catalog Breakdown</h2>
-                    <span style="font-size:0.74rem; color:var(--muted);">Live Firestore</span>
-                </div>
-                <div class="bar-chart-wrap">
-                    <div class="bar-col">
-                        <span id="barAppsVal" class="bar-val">0</span>
-                        <div id="barAppsFill" class="bar-fill"></div>
-                        <span class="bar-label">Apps</span>
+                <h2>Store General Settings</h2>
+                <form id="settingsForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="storeNameInput">Store Name</label>
+                            <input type="text" id="storeNameInput" class="styled-name-text" placeholder="MAGGIE STORE" required>
+                        </div>
+                        <div class="field full">
+                            <label for="storeLogoInput">Store Logo (URL ya Upload Image to imgbb)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="storeLogoInput" placeholder="https://i.ibb.co/... ya Upload Image dabayein">
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('storeLogoInput', 'storeLogoUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="storeLogoUploadStatus" class="upload-status-mini"></span>
+                        </div>
                     </div>
-                    <div class="bar-col">
-                        <span id="barXmlVal" class="bar-val">0</span>
-                        <div id="barXmlFill" class="bar-fill gold-bar"></div>
-                        <span class="bar-label">XML / Temp</span>
-                    </div>
-                    <div class="bar-col">
-                        <span id="barPaidVal" class="bar-val">0</span>
-                        <div id="barPaidFill" class="bar-fill violet-bar"></div>
-                        <span class="bar-label">Paid</span>
-                    </div>
-                </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top:14px;">
+                        <i class="fa-solid fa-check"></i> Save Store Settings
+                    </button>
+                    <div id="settingsStatus" class="toast-msg"></div>
+                </form>
             </div>
 
             <div class="panel-card">
-                <div class="panel-head">
-                    <h2 class="panel-title">Paid Share</h2>
-                    <span style="font-size:0.74rem; color:var(--muted);">% of Catalog</span>
-                </div>
-                <div class="ring-wrap">
-                    <div class="ring-center-box">
-                        <svg class="ring-svg" viewBox="0 0 120 120">
-                            <circle class="ring-circle-bg" cx="60" cy="60" r="52"></circle>
-                            <circle id="paidRingCircle" class="ring-circle-fg" cx="60" cy="60" r="52"></circle>
-                        </svg>
-                        <span id="paidRingText" class="ring-percent">0%</span>
+                <h2><i class="fa-solid fa-gamepad"></i> Game UID &amp; Profile Photos</h2>
+                <form id="gameProfileForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="gameUidInput">Game UID (Khali chhodne par hide ho jayega)</label>
+                            <input type="text" id="gameUidInput" class="styled-name-text" placeholder="e.g. 2371945485">
+                        </div>
+                        <div class="field">
+                            <label for="gameLabelInput">Game Name / Styled Font (Optional)</label>
+                            <input type="text" id="gameLabelInput" class="styled-name-text" placeholder="e.g. MAGGIE">
+                        </div>
+                        <div class="field full">
+                            <label for="gameMainPhotoInput">Main Profile Photo (URL ya Upload Image to imgbb)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="gameMainPhotoInput" placeholder="https://i.ibb.co/main-profile.jpg ya Upload Image dabayein">
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('gameMainPhotoInput', 'gameMainUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="gameMainUploadStatus" class="upload-status-mini"></span>
+                        </div>
+                        <div class="field full">
+                            <label for="gameExtraPhotosInput">Extra Profile Photos (URLs ek line mein ek ya Upload Images se add karein)</label>
+                            <textarea id="gameExtraPhotosInput" placeholder="https://i.ibb.co/extra1.jpg&#10;https://i.ibb.co/extra2.jpg"></textarea>
+                            <div class="multi-upload-bar">
+                                <span id="gameExtraUploadStatus" class="upload-status-mini"></span>
+                                <button type="button" class="btn btn-upload" onclick="triggerMultiUpload('gameExtraPhotosInput', 'gameExtraUploadStatus')">
+                                    <i class="fa-solid fa-images"></i> Upload Photos
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div style="font-size:0.78rem; color:var(--muted); line-height:1.6;">
-                        <div><strong style="color:var(--ink);">Total Items:</strong> <span id="ringTotalText">0</span></div>
-                        <div><strong style="color:var(--coral);">Paid Items:</strong> <span id="ringPaidText">0</span></div>
-                        <div><strong style="color:var(--gold);">Free Items:</strong> <span id="ringFreeText">0</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Applications Manager -->
-        <section id="tab-apps" class="panel-card" style="margin-bottom:18px;">
-            <div class="panel-head">
-                <h2 class="panel-title"><i class="fa-solid fa-mobile-screen" style="color:var(--coral);"></i> Manage Applications</h2>
-                <button type="button" class="secondary-btn" onclick="resetAppForm()">Clear Form</button>
-            </div>
-
-            <form id="appForm">
-                <input type="hidden" id="appEditId">
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label class="field-label">App Name</label>
-                        <input type="text" id="appName" class="input-ctrl" placeholder="e.g. Capcut Pro" required>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Game Profile
+                        </button>
+                        <button type="button" class="btn btn-ghost" onclick="cleanGameNameInput()">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Fix Box Symbols (▯)
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="clearGameProfileData()">
+                            <i class="fa-solid fa-trash"></i> Remove All Game Info
+                        </button>
                     </div>
-                    <div class="field-group">
-                        <label class="field-label">Category</label>
-                        <input type="text" id="appCategory" class="input-ctrl" placeholder="e.g. Editor">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Icon / Logo URL</label>
-                        <input type="text" id="appLogoUrl" class="input-ctrl" placeholder="https://...">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Download URL</label>
-                        <input type="text" id="appDownloadUrl" class="input-ctrl" placeholder="https://..." required>
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Price (₹)</label>
-                        <input type="number" id="appPrice" class="input-ctrl" placeholder="49" min="1">
-                    </div>
-                </div>
-                <div class="field-group" style="margin-top:10px;">
-                    <label class="field-label">Description</label>
-                    <textarea id="appDesc" class="textarea-ctrl" placeholder="Short description..."></textarea>
-                </div>
-                <label class="checkbox-row">
-                    <input type="checkbox" id="appIsPaid"> Paid Application (Checkout unlock)
-                </label>
-                <div style="margin-top:12px;">
-                    <button type="submit" id="appSubmitBtn" class="primary-cta">
-                        <i class="fa-solid fa-floppy-disk"></i> Save App
-                    </button>
-                </div>
-            </form>
-
-            <div id="adminAppsList" class="items-list"></div>
-        </section>
-
-        <!-- XML & Templates Manager -->
-        <section id="tab-xml" class="panel-card" style="margin-bottom:18px;">
-            <div class="panel-head">
-                <h2 class="panel-title"><i class="fa-solid fa-code" style="color:var(--gold);"></i> Manage XML & Templates</h2>
-                <button type="button" class="secondary-btn" onclick="resetXmlForm()">Clear Form</button>
+                    <div id="gameProfileStatus" class="toast-msg"></div>
+                </form>
             </div>
 
-            <form id="xmlForm">
-                <input type="hidden" id="xmlEditId">
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label class="field-label">Title</label>
-                        <input type="text" id="xmlTitle" class="input-ctrl" placeholder="e.g. 4K CC Pack" required>
+            <div class="panel-card">
+                <h2>Social Media Links</h2>
+                <form id="socialForm">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="socialPlatform">Platform Name</label>
+                            <input type="text" id="socialPlatform" class="styled-name-text" placeholder="Instagram / Telegram / YouTube / Discord" required>
+                        </div>
+                        <div class="field">
+                            <label for="socialUrl">Profile / Channel URL</label>
+                            <input type="url" id="socialUrl" placeholder="https://..." required>
+                        </div>
                     </div>
-                    <div class="field-group">
-                        <label class="field-label">Type</label>
-                        <select id="xmlType" class="select-ctrl">
-                            <option value="XML">XML</option>
-                            <option value="Template">Template</option>
-                        </select>
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Cover / Thumb URL</label>
-                        <input type="text" id="xmlThumbUrl" class="input-ctrl" placeholder="https://...">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Protected Download Link</label>
-                        <input type="text" id="xmlProtectedLink" class="input-ctrl" placeholder="https://..." required>
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Video Preview URL (Optional)</label>
-                        <input type="text" id="xmlVideoUrl" class="input-ctrl" placeholder="https://.../demo.mp4">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Price (₹)</label>
-                        <input type="number" id="xmlPrice" class="input-ctrl" placeholder="9" min="1">
-                    </div>
-                </div>
-                <div class="field-group" style="margin-top:10px;">
-                    <label class="field-label">Preview Photos (One URL per line)</label>
-                    <textarea id="xmlPhotos" class="textarea-ctrl" placeholder="https://photo1.jpg&#10;https://photo2.jpg"></textarea>
-                </div>
-                <div class="field-group" style="margin-top:10px;">
-                    <label class="field-label">Description</label>
-                    <textarea id="xmlDesc" class="textarea-ctrl" placeholder="Pack details..."></textarea>
-                </div>
-                <label class="checkbox-row">
-                    <input type="checkbox" id="xmlIsPaid" checked> Paid Pack
-                </label>
-                <div style="margin-top:12px;">
-                    <button type="submit" id="xmlSubmitBtn" class="primary-cta">
-                        <i class="fa-solid fa-floppy-disk"></i> Save XML / Template
-                    </button>
-                </div>
-            </form>
-
-            <div id="adminXmlList" class="items-list"></div>
-        </section>
-
-        <!-- Profile & Gallery -->
-        <section id="tab-profile" class="panel-card" style="margin-bottom:18px;">
-            <div class="panel-head">
-                <h2 class="panel-title"><i class="fa-solid fa-id-badge" style="color:var(--violet);"></i> Profile, UID & Gallery</h2>
-            </div>
-            <form id="profileForm">
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label class="field-label">Profile Display Name</label>
-                        <input type="text" id="gameLabelInput" class="input-ctrl" placeholder="MAGGIE">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">UID</label>
-                        <input type="text" id="gameUidInput" class="input-ctrl" placeholder="2371945485">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Profile Avatar URL</label>
-                        <input type="text" id="gameMainPhotoInput" class="input-ctrl" placeholder="https://...">
-                    </div>
-                </div>
-                <div class="field-group" style="margin-top:10px;">
-                    <label class="field-label">Gallery Photos (One URL per line)</label>
-                    <textarea id="gameExtraPhotosInput" class="textarea-ctrl" placeholder="https://img1.jpg&#10;https://img2.jpg"></textarea>
-                </div>
-                <div style="margin-top:12px;">
-                    <button type="submit" class="primary-cta">
-                        <i class="fa-solid fa-check"></i> Save Profile & Gallery
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- Social Links -->
-        <section id="tab-socials" class="panel-card" style="margin-bottom:18px;">
-            <div class="panel-head">
-                <h2 class="panel-title"><i class="fa-solid fa-share-nodes" style="color:var(--emerald);"></i> Social Links</h2>
-            </div>
-            <form id="socialForm">
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label class="field-label">Platform</label>
-                        <input type="text" id="socialPlatform" class="input-ctrl" placeholder="Instagram / Telegram / YouTube" required>
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">URL</label>
-                        <input type="text" id="socialUrl" class="input-ctrl" placeholder="https://..." required>
-                    </div>
-                </div>
-                <div style="margin-top:12px;">
-                    <button type="submit" class="primary-cta">
+                    <button type="submit" class="btn btn-primary" style="margin-top:14px;">
                         <i class="fa-solid fa-plus"></i> Add Social Link
                     </button>
-                </div>
-            </form>
-            <div id="adminSocialsList" class="items-list"></div>
-        </section>
+                    <div id="socialStatus" class="toast-msg"></div>
+                </form>
 
-        <!-- General Store Settings -->
-        <section id="tab-settings" class="panel-card">
-            <div class="panel-head">
-                <h2 class="panel-title"><i class="fa-solid fa-gear" style="color:var(--gold);"></i> Store General Settings</h2>
+                <div id="adminSocialsList" class="items-list" style="margin-top:18px;"></div>
             </div>
-            <form id="settingsForm">
-                <div class="form-grid">
-                    <div class="field-group">
-                        <label class="field-label">Store Name</label>
-                        <input type="text" id="storeNameInput" class="input-ctrl" placeholder="MAGGIE STORE">
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Store Logo URL</label>
-                        <input type="text" id="storeLogoInput" class="input-ctrl" placeholder="https://...">
-                    </div>
-                </div>
-                <div style="margin-top:12px;">
-                    <button type="submit" class="primary-cta">
-                        <i class="fa-solid fa-floppy-disk"></i> Save Store Settings
-                    </button>
-                </div>
-            </form>
-        </section>
-    </main>
+        </div>
+    </div>
 
-    <div id="toastBox" class="toast-msg"></div>
+    <input type="file" id="imgbbSinglePicker" accept="image/*" style="display:none;">
+    <input type="file" id="imgbbMultiPicker" accept="image/*" multiple style="display:none;">
+    <input type="file" id="cloudinaryVideoPicker" accept="video/*" style="display:none;">
+
+    <script>
+        const IMGBB_API_KEY = "780dc15b619fbfd202530d9ee62682db";
+        const CLOUDINARY_API_KEY = "4FZC2hmy01N7N-SL363oTK9FCCI";
+
+        (function initTheme() {
+            const t = localStorage.getItem("maggie_theme") || "dark";
+            document.documentElement.setAttribute("data-theme", t);
+            updateThemeIcon(t);
+        })();
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById("themeIcon");
+            if (icon) {
+                icon.className = theme === "dark" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+            }
+        }
+
+        window.toggleTheme = function () {
+            const cur = document.documentElement.getAttribute("data-theme") || "dark";
+            const next = cur === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("maggie_theme", next);
+            updateThemeIcon(next);
+        };
+
+        window.sanitizeDisplayText = function (raw) {
+            if (!raw) return "";
+            return String(raw)
+                .replace(/[\u0300-\u036f\u0483-\u0489\u1ab0-\u1aff\u1dc0-\u1dff\u20d0-\u20ff\ufe20-\ufe2f]/g, "")
+                .replace(/[\u200b-\u200d\ufeff]/g, "")
+                .replace(/\s{2,}/g, " ")
+                .trim();
+        };
+
+        window.cleanGameNameInput = function () {
+            const inp = document.getElementById("gameLabelInput");
+            if (!inp) return;
+            inp.value = window.sanitizeDisplayText(inp.value);
+            const st = document.getElementById("gameProfileStatus");
+            if (st) {
+                st.style.color = "var(--accent)";
+                st.innerText = "Broken marks remove kar diye gaye hain. Ab Save Game Profile par click karein.";
+            }
+        };
+
+        window.switchTab = function (tabId) {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-tab") === tabId));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === tabId));
+        };
+
+        window.selectPortalNav = function (navKey, btnEl) {
+            document.querySelectorAll(".portal-nav-btn").forEach(b => b.classList.remove("active"));
+            if (btnEl) btnEl.classList.add("active");
+
+            const titleMap = {
+                overview: "Visão geral",
+                apps: "Apps (Free / Paid)",
+                xml: "XML & Templates",
+                settings: "Store & Socials"
+            };
+            const tabMap = {
+                apps: "appsTab",
+                xml: "xmlTab",
+                settings: "settingsTab"
+            };
+
+            const titleEl = document.getElementById("portalViewTitle");
+            if (titleEl) titleEl.innerText = titleMap[navKey] || "Visão geral";
+
+            if (tabMap[navKey]) {
+                window.switchTab(tabMap[navKey]);
+                const panel = document.getElementById(tabMap[navKey]);
+                if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        };
+
+        window.focusQuickNewItem = function () {
+            window.switchTab("xmlTab");
+            window.selectPortalNav("xml", document.querySelector('.portal-nav-btn[data-pnav="xml"]'));
+            const titleInput = document.getElementById("xmlTitle");
+            if (titleInput) {
+                titleInput.scrollIntoView({ behavior: "smooth", block: "center" });
+                setTimeout(() => titleInput.focus(), 220);
+            }
+        };
+
+        window.refreshPortalDashboard = function (appsList = [], xmlList = []) {
+            const appsCount = appsList.length;
+            const xmlCount = xmlList.length;
+            const paidApps = appsList.filter(a => Boolean(a.isPaid)).length;
+            const paidXml = xmlList.filter(x => Boolean(x.isPaid)).length;
+            const paidTotal = paidApps + paidXml;
+            const totalItems = appsCount + xmlCount;
+            const freeTotal = Math.max(0, totalItems - paidTotal);
+            const paidPct = totalItems > 0 ? Math.round((paidTotal / totalItems) * 100) : 0;
+
+            document.getElementById("portalAppsCount").innerText = appsCount;
+            document.getElementById("portalXmlCount").innerText = xmlCount;
+            document.getElementById("portalPaidCount").innerText = paidTotal;
+
+            document.getElementById("pBarAppsNum").innerText = appsCount;
+            document.getElementById("pBarXmlNum").innerText = xmlCount;
+            document.getElementById("pBarPaidNum").innerText = paidTotal;
+
+            const maxVal = Math.max(1, appsCount, xmlCount, paidTotal);
+            requestAnimationFrame(() => {
+                document.getElementById("pBarApps").style.height = `${Math.max(14, Math.round((appsCount / maxVal) * 100))}%`;
+                document.getElementById("pBarXml").style.height = `${Math.max(14, Math.round((xmlCount / maxVal) * 100))}%`;
+                document.getElementById("pBarPaid").style.height = `${Math.max(10, Math.round((paidTotal / maxVal) * 100))}%`;
+
+                const circumference = 289.03;
+                const offset = circumference - (paidPct / 100) * circumference;
+                document.getElementById("pRingCircle").style.strokeDashoffset = String(offset);
+            });
+
+            document.getElementById("pRingPct").innerText = `${paidPct}%`;
+            document.getElementById("pRingCaption").innerText = `${paidTotal} / ${totalItems}`;
+            document.getElementById("pRingPaid").innerText = paidTotal;
+            document.getElementById("pRingFree").innerText = freeTotal;
+
+            const codeEl = document.getElementById("liveCodeSnippet");
+            if (codeEl) {
+                codeEl.textContent =
+`const apps = await db.collection("apps").get();       // ${appsCount} items (${paidApps} paid)
+const packs = await db.collection("xmlTemplates").get(); // ${xmlCount} items (${paidXml} paid)
+updatePortalRing({ paidTotal: ${paidTotal}, freeTotal: ${freeTotal}, sharePct: ${paidPct} });`;
+            }
+        };
+
+        document.getElementById("portalQuickFilter").addEventListener("input", (e) => {
+            const q = e.target.value.toLowerCase().trim();
+            document.querySelectorAll("#adminAppsList .admin-item-card").forEach(card => {
+                card.style.display = !q || card.innerText.toLowerCase().includes(q) ? "" : "none";
+            });
+            document.querySelectorAll("#adminXmlList .admin-item-card").forEach(card => {
+                card.style.display = !q || card.innerText.toLowerCase().includes(q) ? "" : "none";
+            });
+        });
+
+        window.toggleAppPriceInput = function () {
+            const checked = document.getElementById("appIsPaid").checked;
+            document.getElementById("appPriceWrap").style.display = checked ? "flex" : "none";
+        };
+
+        window.toggleXmlPriceInput = function () {
+            const checked = document.getElementById("xmlIsPaid").checked;
+            document.getElementById("xmlPriceWrap").style.display = checked ? "flex" : "none";
+        };
+
+        async function uploadFileToImgbb(file) {
+            const formData = new FormData();
+            formData.append("key", IMGBB_API_KEY);
+            formData.append("image", file);
+
+            const res = await fetch("https://api.imgbb.com/1/upload", {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success || !data.data) {
+                throw new Error(data?.error?.message || "imgbb upload failed");
+            }
+            return data.data.display_url || data.data.url;
+        }
+
+        function ensureCloudinaryConfig() {
+            const cloudInput = document.getElementById("cloudinaryCloudName");
+            const presetInput = document.getElementById("cloudinaryUploadPreset");
+
+            let cloudName = (cloudInput?.value || localStorage.getItem("maggie_cloud_name") || "").trim();
+            let preset = (presetInput?.value || localStorage.getItem("maggie_cloud_preset") || "").trim();
+
+            if (!cloudName) {
+                const enteredCloud = prompt("Cloudinary Cloud Name enter karein:");
+                if (enteredCloud && enteredCloud.trim()) {
+                    cloudName = enteredCloud.trim();
+                    if (cloudInput) cloudInput.value = cloudName;
+                    localStorage.setItem("maggie_cloud_name", cloudName);
+                }
+            } else {
+                localStorage.setItem("maggie_cloud_name", cloudName);
+            }
+
+            if (!preset) {
+                const enteredPreset = prompt("Cloudinary Unsigned Upload Preset enter karein:");
+                if (enteredPreset && enteredPreset.trim()) {
+                    preset = enteredPreset.trim();
+                    if (presetInput) presetInput.value = preset;
+                    localStorage.setItem("maggie_cloud_preset", preset);
+                }
+            } else {
+                localStorage.setItem("maggie_cloud_preset", preset);
+            }
+
+            if (!cloudName) throw new Error("Cloudinary Cloud Name zaroori hai");
+            if (!preset) throw new Error("Cloudinary Upload Preset zaroori hai");
+
+            return { cloudName, preset };
+        }
+
+        async function uploadVideoToCloudinary(file) {
+            const { cloudName, preset } = ensureCloudinaryConfig();
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", preset);
+            formData.append("api_key", CLOUDINARY_API_KEY);
+
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(cloudName)}/video/upload`, {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+            if (!res.ok || !data.secure_url) {
+                throw new Error(data?.error?.message || "Cloudinary video upload failed");
+            }
+            return data.secure_url;
+        }
+
+        let activeSingleTarget = null;
+        let activeMultiTarget = null;
+        let activeVideoTarget = null;
+
+        window.triggerSingleUpload = function (inputId, statusId) {
+            activeSingleTarget = { inputId, statusId };
+            const picker = document.getElementById("imgbbSinglePicker");
+            picker.value = "";
+            picker.click();
+        };
+
+        window.triggerMultiUpload = function (textareaId, statusId) {
+            activeMultiTarget = { textareaId, statusId };
+            const picker = document.getElementById("imgbbMultiPicker");
+            picker.value = "";
+            picker.click();
+        };
+
+        window.triggerVideoUpload = function (inputId, statusId) {
+            activeVideoTarget = { inputId, statusId };
+            const picker = document.getElementById("cloudinaryVideoPicker");
+            picker.value = "";
+            picker.click();
+        };
+
+        document.getElementById("imgbbSinglePicker").addEventListener("change", async (e) => {
+            const file = e.target.files?.[0];
+            if (!file || !activeSingleTarget) return;
+            const { inputId, statusId } = activeSingleTarget;
+            const inputEl = document.getElementById(inputId);
+            const statusEl = document.getElementById(statusId);
+
+            if (statusEl) {
+                statusEl.style.color = "var(--warm)";
+                statusEl.innerText = `Uploading "${file.name}" to imgbb...`;
+            }
+
+            try {
+                const url = await uploadFileToImgbb(file);
+                if (inputEl) inputEl.value = url;
+                if (statusEl) {
+                    statusEl.style.color = "var(--accent)";
+                    statusEl.innerText = "Uploaded to imgbb! URL set ho gaya.";
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.style.color = "var(--danger)";
+                    statusEl.innerText = `Upload failed: ${err.message}`;
+                }
+            }
+        });
+
+        document.getElementById("imgbbMultiPicker").addEventListener("change", async (e) => {
+            const files = Array.from(e.target.files || []);
+            if (!files.length || !activeMultiTarget) return;
+            const { textareaId, statusId } = activeMultiTarget;
+            const areaEl = document.getElementById(textareaId);
+            const statusEl = document.getElementById(statusId);
+
+            const uploadedUrls = [];
+            for (let i = 0; i < files.length; i++) {
+                const f = files[i];
+                if (statusEl) {
+                    statusEl.style.color = "var(--warm)";
+                    statusEl.innerText = `Uploading ${i + 1}/${files.length} to imgbb...`;
+                }
+                try {
+                    const url = await uploadFileToImgbb(f);
+                    uploadedUrls.push(url);
+                } catch (err) {
+                    if (statusEl) {
+                        statusEl.style.color = "var(--danger)";
+                        statusEl.innerText = `Error on image ${i + 1}: ${err.message}`;
+                    }
+                    return;
+                }
+            }
+
+            if (areaEl && uploadedUrls.length > 0) {
+                const existing = areaEl.value.trim();
+                areaEl.value = existing
+                    ? `${existing}\n${uploadedUrls.join("\n")}`
+                    : uploadedUrls.join("\n");
+            }
+            if (statusEl) {
+                statusEl.style.color = "var(--accent)";
+                statusEl.innerText = `${uploadedUrls.length} image(s) uploaded to imgbb!`;
+            }
+        });
+
+        document.getElementById("cloudinaryVideoPicker").addEventListener("change", async (e) => {
+            const file = e.target.files?.[0];
+            if (!file || !activeVideoTarget) return;
+            const { inputId, statusId } = activeVideoTarget;
+            const inputEl = document.getElementById(inputId);
+            const statusEl = document.getElementById(statusId);
+            const btn = document.getElementById("btnUploadVideo");
+
+            if (btn) btn.disabled = true;
+            if (statusEl) {
+                statusEl.style.color = "var(--warm)";
+                statusEl.innerText = `Uploading "${file.name}" to Cloudinary...`;
+            }
+
+            try {
+                const videoUrl = await uploadVideoToCloudinary(file);
+                if (inputEl) inputEl.value = videoUrl;
+                if (statusEl) {
+                    statusEl.style.color = "var(--accent)";
+                    statusEl.innerText = "Cloudinary upload complete! Video link set ho gaya.";
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.style.color = "var(--danger)";
+                    statusEl.innerText = `Upload failed: ${err.message}`;
+                }
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        });
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import {
-            getFirestore, collection, onSnapshot, doc, setDoc, addDoc, updateDoc, deleteDoc
+            getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, onSnapshot
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -1015,322 +1498,418 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let appsData = [];
-        let xmlData = [];
-        let socialsData = [];
-        let currentGeneralSettings = {};
+        const FALLBACK_ICON = "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2788%27%20height%3D%2788%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%231c2330%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2758%25%27%20dominant-baseline%3D%27middle%27%20text-anchor%3D%27middle%27%20font-size%3D%2726%27%20font-family%3D%27Arial%2Csans-serif%27%20font-weight%3D%27bold%27%20fill%3D%27%239aa4b8%27%3EMAGGIE%3C/text%3E%3C/svg%3E";
 
-        function showToast(msg) {
-            const box = document.getElementById("toastBox");
-            box.innerText = msg;
-            box.style.display = "block";
-            clearTimeout(window._toastTimer);
-            window._toastTimer = setTimeout(() => { box.style.display = "none"; }, 2400);
-        }
+        let cachedApps = [];
+        let cachedXmls = [];
 
-        window.toggleSidebar = function (forceState) {
-            const sb = document.getElementById("adminSidebar");
-            const bd = document.getElementById("mobileBackdrop");
-            const next = typeof forceState === "boolean" ? forceState : !sb.classList.contains("open");
-            sb.classList.toggle("open", next);
-            bd.classList.toggle("open", next);
-        };
-
-        window.switchAdminTab = function (tabName, btnEl) {
-            document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-            if (btnEl) {
-                btnEl.classList.add("active");
-            } else {
-                const match = document.querySelector(`.nav-btn[data-tab="${tabName}"]`);
-                if (match) match.classList.add("active");
+        function cleanUrl(raw) {
+            const val = (raw || "").trim();
+            if (!val) return "";
+            if (!val.startsWith("http://") && !val.startsWith("https://") && !val.startsWith("data:image/")) {
+                return "https://" + val;
             }
-
-            const headingMap = {
-                overview: "Visão Geral",
-                apps: "Applications Manager",
-                xml: "XML & Templates Manager",
-                profile: "Profile & Gallery",
-                socials: "Social Links",
-                settings: "Store Settings"
-            };
-            document.getElementById("activeSectionHeading").innerText = headingMap[tabName] || "Dashboard";
-            window.toggleSidebar(false);
-
-            const targetId = tabName === "overview" ? "overviewSection" : `tab-${tabName}`;
-            document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
-        };
-
-        window.quickAddFocus = function () {
-            window.switchAdminTab("xml");
-            document.getElementById("xmlTitle")?.focus();
-        };
-
-        function updatePortalAnalytics() {
-            const appCount = appsData.length;
-            const xmlCount = xmlData.length;
-            const paidApps = appsData.filter(a => Boolean(a.isPaid)).length;
-            const paidXml = xmlData.filter(x => Boolean(x.isPaid)).length;
-            const paidTotal = paidApps + paidXml;
-            const totalItems = appCount + xmlCount;
-            const freeTotal = Math.max(0, totalItems - paidTotal);
-            const paidPct = totalItems > 0 ? Math.round((paidTotal / totalItems) * 100) : 0;
-
-            document.getElementById("kpiAppsCount").innerText = appCount;
-            document.getElementById("kpiXmlCount").innerText = xmlCount;
-            document.getElementById("kpiPaidCount").innerText = paidTotal;
-            document.getElementById("kpiPaidSub").innerText = `${paidApps} paid apps • ${paidXml} paid XML/packs`;
-
-            document.getElementById("barAppsVal").innerText = appCount;
-            document.getElementById("barXmlVal").innerText = xmlCount;
-            document.getElementById("barPaidVal").innerText = paidTotal;
-
-            const maxVal = Math.max(1, appCount, xmlCount, paidTotal);
-            requestAnimationFrame(() => {
-                document.getElementById("barAppsFill").style.height = `${Math.max(12, Math.round((appCount / maxVal) * 100))}%`;
-                document.getElementById("barXmlFill").style.height = `${Math.max(12, Math.round((xmlCount / maxVal) * 100))}%`;
-                document.getElementById("barPaidFill").style.height = `${Math.max(8, Math.round((paidTotal / maxVal) * 100))}%`;
-
-                const circumference = 326.7;
-                const offset = circumference - (paidPct / 100) * circumference;
-                document.getElementById("paidRingCircle").style.strokeDashoffset = String(offset);
-            });
-
-            document.getElementById("paidRingText").innerText = `${paidPct}%`;
-            document.getElementById("ringTotalText").innerText = totalItems;
-            document.getElementById("ringPaidText").innerText = paidTotal;
-            document.getElementById("ringFreeText").innerText = freeTotal;
+            return val;
         }
 
-        function renderAppsList() {
-            const q = (document.getElementById("adminSearch").value || "").toLowerCase().trim();
-            const listEl = document.getElementById("adminAppsList");
-            listEl.innerHTML = "";
+        function setStatus(elId, msg, isError = false) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.style.color = isError ? "var(--danger)" : "var(--accent)";
+            el.innerText = msg;
+        }
 
-            appsData
-                .filter(a => !q || (a.name || "").toLowerCase().includes(q) || (a.category || "").toLowerCase().includes(q))
-                .forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "data-item-card";
-                    div.innerHTML = `
-                        <div style="min-width:0;">
-                            <div class="data-item-title styled-name-text">${item.name || "App"} ${item.isPaid ? `• ₹${item.price || 49}` : "• Free"}</div>
-                            <div class="data-item-meta">${item.downloadUrl || ""}</div>
-                        </div>
-                        <div class="btn-row">
-                            <button type="button" class="mini-btn" onclick="editApp('${item.id}')">Edit</button>
-                            <button type="button" class="mini-btn del" onclick="deleteDocItem('apps', '${item.id}')">Del</button>
-                        </div>
-                    `;
-                    listEl.appendChild(div);
+        function clearMiniStatuses() {
+            ["appLogoUploadStatus", "xmlThumbUploadStatus", "xmlVideoUploadStatus", "xmlShotsUploadStatus", "storeLogoUploadStatus", "gameMainUploadStatus", "gameExtraUploadStatus"]
+                .forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = "";
                 });
         }
 
-        function renderXmlList() {
-            const q = (document.getElementById("adminSearch").value || "").toLowerCase().trim();
-            const listEl = document.getElementById("adminXmlList");
-            listEl.innerHTML = "";
+        onSnapshot(collection(db, "apps"), (snap) => {
+            cachedApps = [];
+            snap.forEach(d => cachedApps.push({ id: d.id, ...d.data() }));
+            renderAdminApps();
+            window.refreshPortalDashboard(cachedApps, cachedXmls);
+        }, (err) => {
+            setStatus("appFormStatus", err.message, true);
+        });
 
-            xmlData
-                .filter(x => !q || (x.title || "").toLowerCase().includes(q) || (x.type || "").toLowerCase().includes(q))
-                .forEach(item => {
-                    const div = document.createElement("div");
-                    div.className = "data-item-card";
-                    div.innerHTML = `
-                        <div style="min-width:0;">
-                            <div class="data-item-title styled-name-text">${item.title || "Pack"} [${item.type || "XML"}] ${item.isPaid ? `• ₹${item.price || 9}` : "• Free"}</div>
-                            <div class="data-item-meta">${(item.photos || []).length} photos ${item.videoUrl ? "• Video" : ""}</div>
-                        </div>
-                        <div class="btn-row">
-                            <button type="button" class="mini-btn" onclick="editXml('${item.id}')">Edit</button>
-                            <button type="button" class="mini-btn del" onclick="deleteDocItem('xmlTemplates', '${item.id}')">Del</button>
-                        </div>
-                    `;
-                    listEl.appendChild(div);
-                });
-        }
+        onSnapshot(collection(db, "xmlTemplates"), (snap) => {
+            cachedXmls = [];
+            snap.forEach(d => cachedXmls.push({ id: d.id, ...d.data() }));
+            renderAdminXmls();
+            window.refreshPortalDashboard(cachedApps, cachedXmls);
+        }, (err) => {
+            setStatus("xmlFormStatus", err.message, true);
+        });
 
-        function renderSocialsList() {
-            const listEl = document.getElementById("adminSocialsList");
-            listEl.innerHTML = "";
-            socialsData.forEach(s => {
+        onSnapshot(doc(db, "settings", "general"), (snap) => {
+            if (snap.exists()) {
+                const s = snap.data();
+                if (s.storeName) {
+                    const cleanStore = window.sanitizeDisplayText(s.storeName);
+                    document.getElementById("storeNameInput").value = cleanStore;
+                    const pBrand = document.getElementById("portalBrandLabel");
+                    if (pBrand) pBrand.innerText = cleanStore;
+                }
+                if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
+                if (s.cloudinaryCloudName) {
+                    document.getElementById("cloudinaryCloudName").value = s.cloudinaryCloudName;
+                    localStorage.setItem("maggie_cloud_name", s.cloudinaryCloudName);
+                }
+                if (s.cloudinaryUploadPreset) {
+                    document.getElementById("cloudinaryUploadPreset").value = s.cloudinaryUploadPreset;
+                    localStorage.setItem("maggie_cloud_preset", s.cloudinaryUploadPreset);
+                }
+                document.getElementById("gameUidInput").value = window.sanitizeDisplayText(s.gameUid || "");
+                document.getElementById("gameLabelInput").value = window.sanitizeDisplayText(s.gameLabel || "");
+                document.getElementById("gameMainPhotoInput").value = s.gameMainPhoto || "";
+                document.getElementById("gameExtraPhotosInput").value = Array.isArray(s.gameExtraPhotos)
+                    ? s.gameExtraPhotos.join("\n")
+                    : "";
+            }
+        });
+
+        onSnapshot(collection(db, "socials"), (snap) => {
+            const list = document.getElementById("adminSocialsList");
+            list.innerHTML = "";
+            snap.forEach(d => {
+                const data = d.data();
                 const div = document.createElement("div");
-                div.className = "data-item-card";
+                div.className = "admin-item-card";
                 div.innerHTML = `
-                    <div style="min-width:0;">
-                        <div class="data-item-title">${s.platform || "Link"}</div>
-                        <div class="data-item-meta">${s.url || ""}</div>
+                    <div>
+                        <div class="styled-name-text" style="font-weight:700;">${window.sanitizeDisplayText(data.platform || "Link")}</div>
+                        <div style="font-size:0.78rem; color:var(--muted); word-break:break-all;">${data.url || ""}</div>
                     </div>
-                    <button type="button" class="mini-btn del" onclick="deleteDocItem('socials', '${s.id}')">Del</button>
+                    <div class="item-actions">
+                        <button type="button" class="btn btn-danger" onclick="deleteSocialDoc('${d.id}')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
                 `;
-                listEl.appendChild(div);
+                list.appendChild(div);
             });
-        }
+        });
 
-        window.resetAppForm = () => {
-            document.getElementById("appEditId").value = "";
+        window.resetAppForm = function () {
+            document.getElementById("editAppId").value = "";
             document.getElementById("appForm").reset();
+            document.getElementById("appIsPaid").checked = false;
+            document.getElementById("appPrice").value = "29";
+            toggleAppPriceInput();
+            clearMiniStatuses();
+            document.getElementById("appFormHeading").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add New App';
+            document.getElementById("cancelAppEditBtn").style.display = "none";
+            setStatus("appFormStatus", "");
         };
 
-        window.editApp = (id) => {
-            const item = appsData.find(a => a.id === id);
+        window.startEditApp = function (id) {
+            const item = cachedApps.find(a => a.id === id);
             if (!item) return;
-            document.getElementById("appEditId").value = item.id;
-            document.getElementById("appName").value = item.name || "";
+            document.getElementById("editAppId").value = item.id;
+            document.getElementById("appName").value = window.sanitizeDisplayText(item.name || "");
             document.getElementById("appCategory").value = item.category || "";
             document.getElementById("appLogoUrl").value = item.logoUrl || "";
             document.getElementById("appDownloadUrl").value = item.downloadUrl || "";
-            document.getElementById("appPrice").value = item.price || 49;
-            document.getElementById("appDesc").value = item.description || "";
+            document.getElementById("appDesc").value = window.sanitizeDisplayText(item.description || "");
             document.getElementById("appIsPaid").checked = Boolean(item.isPaid);
-            window.switchAdminTab("apps");
+            document.getElementById("appPrice").value = item.price || 29;
+            toggleAppPriceInput();
+
+            document.getElementById("appFormHeading").innerHTML = '<i class="fa-solid fa-pen"></i> Edit App';
+            document.getElementById("cancelAppEditBtn").style.display = "inline-flex";
+            window.switchTab("appsTab");
+            window.scrollTo({ top: 0, behavior: "smooth" });
         };
 
-        window.resetXmlForm = () => {
-            document.getElementById("xmlEditId").value = "";
-            document.getElementById("xmlForm").reset();
-            document.getElementById("xmlIsPaid").checked = true;
-        };
-
-        window.editXml = (id) => {
-            const item = xmlData.find(x => x.id === id);
+        window.quickToggleAppPaid = async function (id) {
+            const item = cachedApps.find(a => a.id === id);
             if (!item) return;
-            document.getElementById("xmlEditId").value = item.id;
-            document.getElementById("xmlTitle").value = item.title || "";
-            document.getElementById("xmlType").value = item.type || "XML";
-            document.getElementById("xmlThumbUrl").value = item.thumbUrl || "";
-            document.getElementById("xmlProtectedLink").value = item.protectedLink || "";
-            document.getElementById("xmlVideoUrl").value = item.videoUrl || "";
-            document.getElementById("xmlPrice").value = item.price || 9;
-            document.getElementById("xmlPhotos").value = Array.isArray(item.photos) ? item.photos.join("\n") : "";
-            document.getElementById("xmlDesc").value = item.description || "";
-            document.getElementById("xmlIsPaid").checked = Boolean(item.isPaid);
-            window.switchAdminTab("xml");
+            const nextPaid = !Boolean(item.isPaid);
+            const nextPrice = nextPaid ? Math.max(1, Number(item.price || 29)) : 0;
+            try {
+                await updateDoc(doc(db, "apps", id), { isPaid: nextPaid, price: nextPrice });
+                setStatus("appFormStatus", `${window.sanitizeDisplayText(item.name || "App")} ab ${nextPaid ? `Paid (₹${nextPrice})` : "Free"} set ho gaya!`);
+            } catch (err) {
+                setStatus("appFormStatus", err.message, true);
+            }
         };
 
-        window.deleteDocItem = async (colName, id) => {
-            await deleteDoc(doc(db, colName, id));
-            showToast("Deleted");
+        window.deleteAppDoc = async function (id) {
+            if (!confirm("Is app ko delete karna hai?")) return;
+            await deleteDoc(doc(db, "apps", id));
         };
 
         document.getElementById("appForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const editId = document.getElementById("appEditId").value;
+            const editId = document.getElementById("editAppId").value.trim();
+            const isPaid = document.getElementById("appIsPaid").checked;
+            const price = isPaid ? Math.max(1, Number(document.getElementById("appPrice").value || 29)) : 0;
+
             const payload = {
-                name: document.getElementById("appName").value.trim(),
-                category: document.getElementById("appCategory").value.trim(),
-                logoUrl: document.getElementById("appLogoUrl").value.trim(),
-                downloadUrl: document.getElementById("appDownloadUrl").value.trim(),
-                price: Number(document.getElementById("appPrice").value || 49),
-                description: document.getElementById("appDesc").value.trim(),
-                isPaid: document.getElementById("appIsPaid").checked
+                name: window.sanitizeDisplayText(document.getElementById("appName").value),
+                category: document.getElementById("appCategory").value.trim() || "General",
+                logoUrl: cleanUrl(document.getElementById("appLogoUrl").value),
+                downloadUrl: cleanUrl(document.getElementById("appDownloadUrl").value),
+                description: window.sanitizeDisplayText(document.getElementById("appDesc").value),
+                isPaid,
+                price
             };
-            if (editId) await updateDoc(doc(db, "apps", editId), payload);
-            else await addDoc(collection(db, "apps"), payload);
-            window.resetAppForm();
-            showToast("App saved");
+
+            try {
+                if (editId) {
+                    await updateDoc(doc(db, "apps", editId), payload);
+                    setStatus("appFormStatus", "App updated successfully!");
+                } else {
+                    await addDoc(collection(db, "apps"), payload);
+                    setStatus("appFormStatus", "App added successfully!");
+                }
+                resetAppForm();
+            } catch (err) {
+                setStatus("appFormStatus", err.message, true);
+            }
         });
+
+        function renderAdminApps() {
+            const container = document.getElementById("adminAppsList");
+            container.innerHTML = "";
+            if (cachedApps.length === 0) {
+                container.innerHTML = '<p style="color:var(--muted);">Koi app nahi mila.</p>';
+                return;
+            }
+
+            cachedApps.forEach(item => {
+                const isPaid = Boolean(item.isPaid);
+                const card = document.createElement("div");
+                card.className = "admin-item-card";
+                card.innerHTML = `
+                    <div class="item-top">
+                        <img src="${cleanUrl(item.logoUrl) || FALLBACK_ICON}" class="item-thumb" alt="Icon" onerror="this.src='${FALLBACK_ICON}'">
+                        <div style="min-width:0; flex:1;">
+                            <span class="badge badge-cat">${item.category || "General"}</span>
+                            <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
+                                ${isPaid ? `PAID • ₹${item.price || 29}` : "FREE"}
+                            </span>
+                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${window.sanitizeDisplayText(item.name || "App")}</div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button type="button" class="btn ${isPaid ? "btn-primary" : "btn-warm"}" onclick="quickToggleAppPaid('${item.id}')">
+                            <i class="fa-solid fa-repeat"></i> Make ${isPaid ? "Free" : "Paid"}
+                        </button>
+                        <button type="button" class="btn btn-ghost" onclick="startEditApp('${item.id}')">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="deleteAppDoc('${item.id}')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.resetXmlForm = function () {
+            const savedCloud = document.getElementById("cloudinaryCloudName").value;
+            const savedPreset = document.getElementById("cloudinaryUploadPreset").value;
+            document.getElementById("editXmlId").value = "";
+            document.getElementById("xmlForm").reset();
+            document.getElementById("cloudinaryCloudName").value = savedCloud;
+            document.getElementById("cloudinaryUploadPreset").value = savedPreset;
+            document.getElementById("xmlIsPaid").checked = true;
+            document.getElementById("xmlPrice").value = "9";
+            toggleXmlPriceInput();
+            clearMiniStatuses();
+            document.getElementById("xmlFormHeading").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add XML / Template';
+            document.getElementById("cancelXmlEditBtn").style.display = "none";
+            setStatus("xmlFormStatus", "");
+        };
+
+        window.startEditXml = function (id) {
+            const item = cachedXmls.find(x => x.id === id);
+            if (!item) return;
+            document.getElementById("editXmlId").value = item.id;
+            document.getElementById("xmlTitle").value = window.sanitizeDisplayText(item.title || "");
+            document.getElementById("xmlType").value = item.type || "XML";
+            document.getElementById("xmlThumbUrl").value = item.thumbUrl || "";
+            document.getElementById("xmlVideoUrl").value = item.videoUrl || "";
+            document.getElementById("xmlProtectedLink").value = item.protectedLink || "";
+            document.getElementById("xmlPhotos").value = Array.isArray(item.photos) ? item.photos.join("\n") : "";
+            document.getElementById("xmlDesc").value = window.sanitizeDisplayText(item.description || "");
+            document.getElementById("xmlIsPaid").checked = Boolean(item.isPaid);
+            document.getElementById("xmlPrice").value = item.price || 9;
+            toggleXmlPriceInput();
+
+            document.getElementById("xmlFormHeading").innerHTML = '<i class="fa-solid fa-pen"></i> Edit XML / Template';
+            document.getElementById("cancelXmlEditBtn").style.display = "inline-flex";
+            window.switchTab("xmlTab");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+
+        window.deleteXmlDoc = async function (id) {
+            if (!confirm("Is item ko delete karna hai?")) return;
+            await deleteDoc(doc(db, "xmlTemplates", id));
+        };
 
         document.getElementById("xmlForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const editId = document.getElementById("xmlEditId").value;
-            const photos = document.getElementById("xmlPhotos").value
-                .split("\n")
-                .map(s => s.trim())
+            const editId = document.getElementById("editXmlId").value.trim();
+            const isPaid = document.getElementById("xmlIsPaid").checked;
+            const price = isPaid ? Math.max(1, Number(document.getElementById("xmlPrice").value || 9)) : 0;
+
+            const rawPhotos = document.getElementById("xmlPhotos").value
+                .split(/[\n,]+/)
+                .map(cleanUrl)
                 .filter(Boolean);
+
+            const thumb = cleanUrl(document.getElementById("xmlThumbUrl").value) || rawPhotos[0] || "";
+            if (thumb && !rawPhotos.includes(thumb)) {
+                rawPhotos.unshift(thumb);
+            }
+
             const payload = {
-                title: document.getElementById("xmlTitle").value.trim(),
+                title: window.sanitizeDisplayText(document.getElementById("xmlTitle").value),
                 type: document.getElementById("xmlType").value,
-                thumbUrl: document.getElementById("xmlThumbUrl").value.trim(),
-                protectedLink: document.getElementById("xmlProtectedLink").value.trim(),
-                videoUrl: document.getElementById("xmlVideoUrl").value.trim(),
-                price: Number(document.getElementById("xmlPrice").value || 9),
-                photos,
-                description: document.getElementById("xmlDesc").value.trim(),
-                isPaid: document.getElementById("xmlIsPaid").checked
+                thumbUrl: thumb,
+                videoUrl: cleanUrl(document.getElementById("xmlVideoUrl").value),
+                photos: rawPhotos,
+                protectedLink: cleanUrl(document.getElementById("xmlProtectedLink").value),
+                description: window.sanitizeDisplayText(document.getElementById("xmlDesc").value),
+                isPaid,
+                price
             };
-            if (editId) await updateDoc(doc(db, "xmlTemplates", editId), payload);
-            else await addDoc(collection(db, "xmlTemplates"), payload);
-            window.resetXmlForm();
-            showToast("XML / Template saved");
+
+            try {
+                if (editId) {
+                    await updateDoc(doc(db, "xmlTemplates", editId), payload);
+                    setStatus("xmlFormStatus", "XML / Template updated!");
+                } else {
+                    await addDoc(collection(db, "xmlTemplates"), payload);
+                    setStatus("xmlFormStatus", "XML / Template added!");
+                }
+                resetXmlForm();
+            } catch (err) {
+                setStatus("xmlFormStatus", err.message, true);
+            }
         });
 
-        document.getElementById("profileForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const extraPhotos = document.getElementById("gameExtraPhotosInput").value
-                .split("\n")
-                .map(s => s.trim())
-                .filter(Boolean);
-            await setDoc(doc(db, "settings", "general"), {
-                ...currentGeneralSettings,
-                gameLabel: document.getElementById("gameLabelInput").value.trim(),
-                gameUid: document.getElementById("gameUidInput").value.trim(),
-                gameMainPhoto: document.getElementById("gameMainPhotoInput").value.trim(),
-                gameExtraPhotos: extraPhotos
-            }, { merge: true });
-            showToast("Profile & Gallery updated");
-        });
+        function renderAdminXmls() {
+            const container = document.getElementById("adminXmlList");
+            container.innerHTML = "";
+            if (cachedXmls.length === 0) {
+                container.innerHTML = '<p style="color:var(--muted);">Koi XML / Template nahi mila.</p>';
+                return;
+            }
 
-        document.getElementById("socialForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            await addDoc(collection(db, "socials"), {
-                platform: document.getElementById("socialPlatform").value.trim(),
-                url: document.getElementById("socialUrl").value.trim()
+            cachedXmls.forEach(item => {
+                const isPaid = Boolean(item.isPaid);
+                const shotCount = Array.isArray(item.photos) ? item.photos.length : 0;
+                const hasVideo = Boolean(item.videoUrl);
+                const card = document.createElement("div");
+                card.className = "admin-item-card";
+                card.innerHTML = `
+                    <div class="item-top">
+                        <img src="${cleanUrl(item.thumbUrl) || FALLBACK_ICON}" class="item-thumb" alt="Thumb" onerror="this.src='${FALLBACK_ICON}'">
+                        <div style="min-width:0; flex:1;">
+                            <span class="badge badge-cat">${item.type || "XML"}</span>
+                            <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
+                                ${isPaid ? `PAID • ₹${item.price || 9}` : "FREE"}
+                            </span>
+                            <span class="badge badge-cat">${shotCount} Photos</span>
+                            ${hasVideo ? `<span class="badge badge-free"><i class="fa-solid fa-video"></i> Video</span>` : ""}
+                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${window.sanitizeDisplayText(item.title || "Untitled")}</div>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button type="button" class="btn btn-ghost" onclick="startEditXml('${item.id}')">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="deleteXmlDoc('${item.id}')">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
             });
-            document.getElementById("socialForm").reset();
-            showToast("Social link added");
-        });
+        }
 
         document.getElementById("settingsForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            await setDoc(doc(db, "settings", "general"), {
-                ...currentGeneralSettings,
-                storeName: document.getElementById("storeNameInput").value.trim() || "MAGGIE STORE",
-                logoUrl: document.getElementById("storeLogoInput").value.trim()
-            }, { merge: true });
-            showToast("Store settings saved");
-        });
-
-        document.getElementById("adminSearch").addEventListener("input", () => {
-            renderAppsList();
-            renderXmlList();
-        });
-
-        onSnapshot(doc(db, "settings", "general"), (snap) => {
-            currentGeneralSettings = snap.exists() ? snap.data() : {};
-            if (currentGeneralSettings.storeName) {
-                document.getElementById("sideStoreName").innerText = currentGeneralSettings.storeName;
-                document.getElementById("storeNameInput").value = currentGeneralSettings.storeName;
+            try {
+                await setDoc(doc(db, "settings", "general"), {
+                    storeName: window.sanitizeDisplayText(document.getElementById("storeNameInput").value) || "MAGGIE STORE",
+                    logoUrl: cleanUrl(document.getElementById("storeLogoInput").value),
+                    cloudinaryCloudName: document.getElementById("cloudinaryCloudName").value.trim(),
+                    cloudinaryUploadPreset: document.getElementById("cloudinaryUploadPreset").value.trim()
+                }, { merge: true });
+                setStatus("settingsStatus", "Store settings saved!");
+            } catch (err) {
+                setStatus("settingsStatus", err.message, true);
             }
-            if (currentGeneralSettings.logoUrl) {
-                document.getElementById("storeLogoInput").value = currentGeneralSettings.logoUrl;
+        });
+
+        document.getElementById("gameProfileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const gameUid = window.sanitizeDisplayText(document.getElementById("gameUidInput").value);
+            const gameLabel = window.sanitizeDisplayText(document.getElementById("gameLabelInput").value);
+            const gameMainPhoto = cleanUrl(document.getElementById("gameMainPhotoInput").value);
+            const gameExtraPhotos = document.getElementById("gameExtraPhotosInput").value
+                .split(/[\n,]+/)
+                .map(cleanUrl)
+                .filter(Boolean);
+
+            try {
+                await setDoc(doc(db, "settings", "general"), {
+                    gameUid,
+                    gameLabel,
+                    gameMainPhoto,
+                    gameExtraPhotos
+                }, { merge: true });
+                setStatus("gameProfileStatus", "Game UID & profile photos saved!");
+            } catch (err) {
+                setStatus("gameProfileStatus", err.message, true);
             }
-            document.getElementById("gameLabelInput").value = currentGeneralSettings.gameLabel || "";
-            document.getElementById("gameUidInput").value = currentGeneralSettings.gameUid || "";
-            document.getElementById("gameMainPhotoInput").value = currentGeneralSettings.gameMainPhoto || "";
-            document.getElementById("gameExtraPhotosInput").value = Array.isArray(currentGeneralSettings.gameExtraPhotos)
-                ? currentGeneralSettings.gameExtraPhotos.join("\n")
-                : "";
         });
 
-        onSnapshot(collection(db, "apps"), (snap) => {
-            appsData = [];
-            snap.forEach(d => appsData.push({ id: d.id, ...d.data() }));
-            renderAppsList();
-            updatePortalAnalytics();
+        window.clearGameProfileData = async function () {
+            if (!confirm("Game UID aur saari profile photos hata dein?")) return;
+            try {
+                await setDoc(doc(db, "settings", "general"), {
+                    gameUid: "",
+                    gameLabel: "",
+                    gameMainPhoto: "",
+                    gameExtraPhotos: []
+                }, { merge: true });
+                document.getElementById("gameUidInput").value = "";
+                document.getElementById("gameLabelInput").value = "";
+                document.getElementById("gameMainPhotoInput").value = "";
+                document.getElementById("gameExtraPhotosInput").value = "";
+                setStatus("gameProfileStatus", "Game UID & photos removed. Website par ab kuch nahi dikhega.");
+            } catch (err) {
+                setStatus("gameProfileStatus", err.message, true);
+            }
+        };
+
+        document.getElementById("socialForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            try {
+                await addDoc(collection(db, "socials"), {
+                    platform: window.sanitizeDisplayText(document.getElementById("socialPlatform").value),
+                    url: cleanUrl(document.getElementById("socialUrl").value)
+                });
+                document.getElementById("socialForm").reset();
+                setStatus("socialStatus", "Social link added!");
+            } catch (err) {
+                setStatus("socialStatus", err.message, true);
+            }
         });
 
-        onSnapshot(collection(db, "xmlTemplates"), (snap) => {
-            xmlData = [];
-            snap.forEach(d => xmlData.push({ id: d.id, ...d.data() }));
-            renderXmlList();
-            updatePortalAnalytics();
-        });
-
-        onSnapshot(collection(db, "socials"), (snap) => {
-            socialsData = [];
-            snap.forEach(d => socialsData.push({ id: d.id, ...d.data() }));
-            renderSocialsList();
-        });
+        window.deleteSocialDoc = async function (id) {
+            await deleteDoc(doc(db, "socials", id));
+        };
     </script>
 </body>
 </html>
