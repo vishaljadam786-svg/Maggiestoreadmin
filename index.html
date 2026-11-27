@@ -225,7 +225,8 @@
             align-items: center;
         }
 
-        .url-upload-row input[type="url"] {
+        .url-upload-row input[type="url"],
+        .url-upload-row input[type="text"] {
             flex: 1;
             min-width: 0;
         }
@@ -243,6 +244,12 @@
             font-size: 0.76rem;
             color: var(--accent);
             font-weight: 600;
+        }
+
+        .helper-note {
+            font-size: 0.73rem;
+            color: var(--muted);
+            line-height: 1.45;
         }
 
         input[type="text"],
@@ -501,6 +508,28 @@
                             </div>
                             <span id="xmlThumbUploadStatus" class="upload-status-mini"></span>
                         </div>
+
+                        <div class="field">
+                            <label for="cloudinaryCloudName">Cloudinary Cloud Name</label>
+                            <input type="text" id="cloudinaryCloudName" placeholder="e.g. dxyz123abc">
+                        </div>
+                        <div class="field">
+                            <label for="cloudinaryUploadPreset">Cloudinary Upload Preset (Unsigned)</label>
+                            <input type="text" id="cloudinaryUploadPreset" placeholder="e.g. ml_default">
+                        </div>
+
+                        <div class="field full">
+                            <label for="xmlVideoUrl">Video Preview (Upload Video dabayein — link khud yahan aa jayega)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="xmlVideoUrl" placeholder="Upload Video dabayein ya video URL paste karein">
+                                <button type="button" class="btn btn-upload" id="btnUploadVideo" onclick="triggerVideoUpload('xmlVideoUrl', 'xmlVideoUploadStatus')">
+                                    <i class="fa-solid fa-video"></i> Upload Video
+                                </button>
+                            </div>
+                            <span id="xmlVideoUploadStatus" class="upload-status-mini"></span>
+                            <span class="helper-note">Cloudinary API Key: <code>4FZC2hmy01N7N-SL363oTK9FCCI</code>. Pehli baar Cloud Name aur Unsigned Preset daalein (ya prompt mein enter karein)—video upload hote hi link apne aap upar ke box mein set ho jayega.</span>
+                        </div>
+
                         <div class="field full">
                             <label for="xmlProtectedLink">Protected Download / Drive / GitHub Link *</label>
                             <input type="url" id="xmlProtectedLink" placeholder="https://..." required>
@@ -584,7 +613,6 @@
                 </form>
             </div>
 
-            <!-- GAME UID & PROFILE PHOTOS -->
             <div class="panel-card">
                 <h2><i class="fa-solid fa-gamepad"></i> Game UID & Profile Photos</h2>
                 <form id="gameProfileForm">
@@ -660,9 +688,11 @@
 
     <input type="file" id="imgbbSinglePicker" accept="image/*" style="display:none;">
     <input type="file" id="imgbbMultiPicker" accept="image/*" multiple style="display:none;">
+    <input type="file" id="cloudinaryVideoPicker" accept="video/*" style="display:none;">
 
     <script>
         const IMGBB_API_KEY = "780dc15b619fbfd202530d9ee62682db";
+        const CLOUDINARY_API_KEY = "4FZC2hmy01N7N-SL363oTK9FCCI";
 
         (function initTheme() {
             const t = localStorage.getItem("maggie_theme") || "dark";
@@ -736,8 +766,62 @@
             return data.data.display_url || data.data.url;
         }
 
+        function ensureCloudinaryConfig() {
+            const cloudInput = document.getElementById("cloudinaryCloudName");
+            const presetInput = document.getElementById("cloudinaryUploadPreset");
+
+            let cloudName = (cloudInput?.value || localStorage.getItem("maggie_cloud_name") || "").trim();
+            let preset = (presetInput?.value || localStorage.getItem("maggie_cloud_preset") || "").trim();
+
+            if (!cloudName) {
+                const enteredCloud = prompt("Cloudinary Cloud Name enter karein:");
+                if (enteredCloud && enteredCloud.trim()) {
+                    cloudName = enteredCloud.trim();
+                    if (cloudInput) cloudInput.value = cloudName;
+                    localStorage.setItem("maggie_cloud_name", cloudName);
+                }
+            } else {
+                localStorage.setItem("maggie_cloud_name", cloudName);
+            }
+
+            if (!preset) {
+                const enteredPreset = prompt("Cloudinary Unsigned Upload Preset enter karein:");
+                if (enteredPreset && enteredPreset.trim()) {
+                    preset = enteredPreset.trim();
+                    if (presetInput) presetInput.value = preset;
+                    localStorage.setItem("maggie_cloud_preset", preset);
+                }
+            } else {
+                localStorage.setItem("maggie_cloud_preset", preset);
+            }
+
+            if (!cloudName) throw new Error("Cloudinary Cloud Name zaroori hai");
+            if (!preset) throw new Error("Cloudinary Upload Preset zaroori hai");
+
+            return { cloudName, preset };
+        }
+
+        async function uploadVideoToCloudinary(file) {
+            const { cloudName, preset } = ensureCloudinaryConfig();
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", preset);
+            formData.append("api_key", CLOUDINARY_API_KEY);
+
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${encodeURIComponent(cloudName)}/video/upload`, {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+            if (!res.ok || !data.secure_url) {
+                throw new Error(data?.error?.message || "Cloudinary video upload failed");
+            }
+            return data.secure_url;
+        }
+
         let activeSingleTarget = null;
         let activeMultiTarget = null;
+        let activeVideoTarget = null;
 
         window.triggerSingleUpload = function (inputId, statusId) {
             activeSingleTarget = { inputId, statusId };
@@ -749,6 +833,13 @@
         window.triggerMultiUpload = function (textareaId, statusId) {
             activeMultiTarget = { textareaId, statusId };
             const picker = document.getElementById("imgbbMultiPicker");
+            picker.value = "";
+            picker.click();
+        };
+
+        window.triggerVideoUpload = function (inputId, statusId) {
+            activeVideoTarget = { inputId, statusId };
+            const picker = document.getElementById("cloudinaryVideoPicker");
             picker.value = "";
             picker.click();
         };
@@ -817,6 +908,37 @@
                 statusEl.innerText = `${uploadedUrls.length} image(s) uploaded to imgbb!`;
             }
         });
+
+        document.getElementById("cloudinaryVideoPicker").addEventListener("change", async (e) => {
+            const file = e.target.files?.[0];
+            if (!file || !activeVideoTarget) return;
+            const { inputId, statusId } = activeVideoTarget;
+            const inputEl = document.getElementById(inputId);
+            const statusEl = document.getElementById(statusId);
+            const btn = document.getElementById("btnUploadVideo");
+
+            if (btn) btn.disabled = true;
+            if (statusEl) {
+                statusEl.style.color = "var(--warm)";
+                statusEl.innerText = `Uploading "${file.name}" to Cloudinary...`;
+            }
+
+            try {
+                const videoUrl = await uploadVideoToCloudinary(file);
+                if (inputEl) inputEl.value = videoUrl;
+                if (statusEl) {
+                    statusEl.style.color = "var(--accent)";
+                    statusEl.innerText = "Cloudinary upload complete! Video link set ho gaya.";
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.style.color = "var(--danger)";
+                    statusEl.innerText = `Upload failed: ${err.message}`;
+                }
+            } finally {
+                if (btn) btn.disabled = false;
+            }
+        });
     </script>
 
     <script type="module">
@@ -860,7 +982,7 @@
         }
 
         function clearMiniStatuses() {
-            ["appLogoUploadStatus", "xmlThumbUploadStatus", "xmlShotsUploadStatus", "storeLogoUploadStatus", "gameMainUploadStatus", "gameExtraUploadStatus"]
+            ["appLogoUploadStatus", "xmlThumbUploadStatus", "xmlVideoUploadStatus", "xmlShotsUploadStatus", "storeLogoUploadStatus", "gameMainUploadStatus", "gameExtraUploadStatus"]
                 .forEach(id => {
                     const el = document.getElementById(id);
                     if (el) el.innerText = "";
@@ -888,6 +1010,14 @@
                 const s = snap.data();
                 if (s.storeName) document.getElementById("storeNameInput").value = window.sanitizeDisplayText(s.storeName);
                 if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
+                if (s.cloudinaryCloudName) {
+                    document.getElementById("cloudinaryCloudName").value = s.cloudinaryCloudName;
+                    localStorage.setItem("maggie_cloud_name", s.cloudinaryCloudName);
+                }
+                if (s.cloudinaryUploadPreset) {
+                    document.getElementById("cloudinaryUploadPreset").value = s.cloudinaryUploadPreset;
+                    localStorage.setItem("maggie_cloud_preset", s.cloudinaryUploadPreset);
+                }
                 document.getElementById("gameUidInput").value = window.sanitizeDisplayText(s.gameUid || "");
                 document.getElementById("gameLabelInput").value = window.sanitizeDisplayText(s.gameLabel || "");
                 document.getElementById("gameMainPhotoInput").value = s.gameMainPhoto || "";
@@ -1038,8 +1168,12 @@
         }
 
         window.resetXmlForm = function () {
+            const savedCloud = document.getElementById("cloudinaryCloudName").value;
+            const savedPreset = document.getElementById("cloudinaryUploadPreset").value;
             document.getElementById("editXmlId").value = "";
             document.getElementById("xmlForm").reset();
+            document.getElementById("cloudinaryCloudName").value = savedCloud;
+            document.getElementById("cloudinaryUploadPreset").value = savedPreset;
             document.getElementById("xmlIsPaid").checked = true;
             document.getElementById("xmlPrice").value = "9";
             toggleXmlPriceInput();
@@ -1056,6 +1190,7 @@
             document.getElementById("xmlTitle").value = window.sanitizeDisplayText(item.title || "");
             document.getElementById("xmlType").value = item.type || "XML";
             document.getElementById("xmlThumbUrl").value = item.thumbUrl || "";
+            document.getElementById("xmlVideoUrl").value = item.videoUrl || "";
             document.getElementById("xmlProtectedLink").value = item.protectedLink || "";
             document.getElementById("xmlPhotos").value = Array.isArray(item.photos) ? item.photos.join("\n") : "";
             document.getElementById("xmlDesc").value = window.sanitizeDisplayText(item.description || "");
@@ -1094,6 +1229,7 @@
                 title: window.sanitizeDisplayText(document.getElementById("xmlTitle").value),
                 type: document.getElementById("xmlType").value,
                 thumbUrl: thumb,
+                videoUrl: cleanUrl(document.getElementById("xmlVideoUrl").value),
                 photos: rawPhotos,
                 protectedLink: cleanUrl(document.getElementById("xmlProtectedLink").value),
                 description: window.sanitizeDisplayText(document.getElementById("xmlDesc").value),
@@ -1126,6 +1262,7 @@
             cachedXmls.forEach(item => {
                 const isPaid = Boolean(item.isPaid);
                 const shotCount = Array.isArray(item.photos) ? item.photos.length : 0;
+                const hasVideo = Boolean(item.videoUrl);
                 const card = document.createElement("div");
                 card.className = "admin-item-card";
                 card.innerHTML = `
@@ -1137,6 +1274,7 @@
                                 ${isPaid ? `PAID • ₹${item.price || 9}` : "FREE"}
                             </span>
                             <span class="badge badge-cat">${shotCount} Photos</span>
+                            ${hasVideo ? `<span class="badge badge-free"><i class="fa-solid fa-video"></i> Video</span>` : ""}
                             <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${window.sanitizeDisplayText(item.title || "Untitled")}</div>
                         </div>
                     </div>
@@ -1158,7 +1296,9 @@
             try {
                 await setDoc(doc(db, "settings", "general"), {
                     storeName: window.sanitizeDisplayText(document.getElementById("storeNameInput").value) || "MAGGIE STORE",
-                    logoUrl: cleanUrl(document.getElementById("storeLogoInput").value)
+                    logoUrl: cleanUrl(document.getElementById("storeLogoInput").value),
+                    cloudinaryCloudName: document.getElementById("cloudinaryCloudName").value.trim(),
+                    cloudinaryUploadPreset: document.getElementById("cloudinaryUploadPreset").value.trim()
                 }, { merge: true });
                 setStatus("settingsStatus", "Store settings saved!");
             } catch (err) {
