@@ -45,8 +45,7 @@
         .styled-name-text {
             font-family: 'Noto Sans', 'Plus Jakarta Sans', 'DejaVu Sans', 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif !important;
             text-transform: none !important;
-            line-height: 1.45;
-            font-variant-ligatures: none;
+            line-height: 1.4;
         }
 
         body {
@@ -113,9 +112,11 @@
             gap: 7px;
             text-decoration: none;
             transition: transform 0.15s, opacity 0.2s;
+            white-space: nowrap;
         }
 
         .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .btn-primary { background: var(--accent); color: var(--accent-ink); }
         .btn-warm { background: var(--warm); color: #141820; }
         .btn-danger { background: var(--danger); color: #fff; }
@@ -123,6 +124,11 @@
             background: var(--surface);
             color: var(--ink);
             border: 1px solid var(--border);
+        }
+        .btn-upload {
+            background: var(--surface);
+            color: var(--accent);
+            border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
         }
 
         .icon-btn {
@@ -211,6 +217,32 @@
             font-size: 0.78rem;
             font-weight: 700;
             color: var(--muted);
+        }
+
+        .url-upload-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .url-upload-row input[type="url"] {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .multi-upload-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .upload-status-mini {
+            font-size: 0.76rem;
+            color: var(--accent);
+            font-weight: 600;
         }
 
         input[type="text"],
@@ -335,6 +367,10 @@
             font-size: 0.84rem;
             font-weight: 600;
         }
+
+        @media (max-width: 540px) {
+            .url-upload-row { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
@@ -354,7 +390,6 @@
         </div>
     </header>
 
-    <!-- DIRECT DASHBOARD (NO LOGIN SCREEN) -->
     <div id="dashboardScreen" class="wrap">
         <div class="tabs-row">
             <button type="button" class="tab-btn active" data-tab="appsTab" onclick="switchTab('appsTab')">
@@ -368,7 +403,7 @@
             </button>
         </div>
 
-        <!-- TAB 1: APPS (SUPPORTS FREE & PAID) -->
+        <!-- TAB 1: APPS -->
         <div id="appsTab" class="tab-panel active">
             <div class="panel-card">
                 <h2 id="appFormHeading"><i class="fa-solid fa-plus-circle"></i> Add New App</h2>
@@ -383,11 +418,17 @@
                             <label for="appCategory">Category *</label>
                             <input type="text" id="appCategory" placeholder="e.g. Editing, Games, Tools" required>
                         </div>
-                        <div class="field">
-                            <label for="appLogoUrl">App Icon URL (imgbb / direct link) *</label>
-                            <input type="url" id="appLogoUrl" placeholder="https://i.ibb.co/..." required>
+                        <div class="field full">
+                            <label for="appLogoUrl">App Icon (URL ya Upload Image to imgbb) *</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="appLogoUrl" placeholder="https://i.ibb.co/... ya Upload Image dabayein" required>
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('appLogoUrl', 'appLogoUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="appLogoUploadStatus" class="upload-status-mini"></span>
                         </div>
-                        <div class="field">
+                        <div class="field full">
                             <label for="appDownloadUrl">Download / File URL (GitHub / Direct) *</label>
                             <input type="url" id="appDownloadUrl" placeholder="https://github.com/..." required>
                         </div>
@@ -450,11 +491,17 @@
                                 <option value="Preset">Preset</option>
                             </select>
                         </div>
-                        <div class="field">
-                            <label for="xmlThumbUrl">Thumbnail / Cover Photo URL</label>
-                            <input type="url" id="xmlThumbUrl" placeholder="https://i.ibb.co/...">
+                        <div class="field full">
+                            <label for="xmlThumbUrl">Thumbnail / Cover Photo (URL ya Upload Image to imgbb)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="xmlThumbUrl" placeholder="https://i.ibb.co/... ya Upload Image dabayein">
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('xmlThumbUrl', 'xmlThumbUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="xmlThumbUploadStatus" class="upload-status-mini"></span>
                         </div>
-                        <div class="field">
+                        <div class="field full">
                             <label for="xmlProtectedLink">Protected Download / Drive / GitHub Link *</label>
                             <input type="url" id="xmlProtectedLink" placeholder="https://..." required>
                         </div>
@@ -473,8 +520,14 @@
                         </div>
 
                         <div class="field full">
-                            <label for="xmlPhotos">All Screenshots URLs (Ek line mein ek URL ya comma se alag karein)</label>
+                            <label for="xmlPhotos">All Screenshots (URLs ek line mein ek ya Upload Images se add karein)</label>
                             <textarea id="xmlPhotos" placeholder="https://i.ibb.co/shot1.jpg&#10;https://i.ibb.co/shot2.jpg"></textarea>
+                            <div class="multi-upload-bar">
+                                <span id="xmlShotsUploadStatus" class="upload-status-mini"></span>
+                                <button type="button" class="btn btn-upload" onclick="triggerMultiUpload('xmlPhotos', 'xmlShotsUploadStatus')">
+                                    <i class="fa-solid fa-images"></i> Upload Screenshots
+                                </button>
+                            </div>
                         </div>
 
                         <div class="field full">
@@ -513,9 +566,15 @@
                             <label for="storeNameInput">Store Name</label>
                             <input type="text" id="storeNameInput" class="styled-name-text" placeholder="MAGGIE STORE" required>
                         </div>
-                        <div class="field">
-                            <label for="storeLogoInput">Store Logo URL (imgbb)</label>
-                            <input type="url" id="storeLogoInput" placeholder="https://i.ibb.co/...">
+                        <div class="field full">
+                            <label for="storeLogoInput">Store Logo (URL ya Upload Image to imgbb)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="storeLogoInput" placeholder="https://i.ibb.co/... ya Upload Image dabayein">
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('storeLogoInput', 'storeLogoUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="storeLogoUploadStatus" class="upload-status-mini"></span>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="margin-top:14px;">
@@ -525,32 +584,47 @@
                 </form>
             </div>
 
-            <!-- GAME UID & PROFILE PHOTOS (BOTTOM OF WEBSITE) -->
+            <!-- GAME UID & PROFILE PHOTOS -->
             <div class="panel-card">
-                <h2><i class="fa-solid fa-gamepad"></i> Game UID & Profile Photos (Bottom Section)</h2>
+                <h2><i class="fa-solid fa-gamepad"></i> Game UID & Profile Photos</h2>
                 <form id="gameProfileForm">
                     <div class="form-grid">
                         <div class="field">
                             <label for="gameUidInput">Game UID (Khali chhodne par hide ho jayega)</label>
-                            <input type="text" id="gameUidInput" class="styled-name-text" placeholder="e.g. 1234567890">
+                            <input type="text" id="gameUidInput" class="styled-name-text" placeholder="e.g. 2371945485">
                         </div>
                         <div class="field">
                             <label for="gameLabelInput">Game Name / Styled Font (Optional)</label>
-                            <input type="text" id="gameLabelInput" class="styled-name-text" placeholder="e.g. Mᴀ፝֟፝ɢɢɪᴇㅤᥫ᭡">
+                            <input type="text" id="gameLabelInput" class="styled-name-text" placeholder="e.g. MAGGIE">
                         </div>
                         <div class="field full">
-                            <label for="gameMainPhotoInput">Main Profile Photo URL (Hata doge toh sirf extra photos ya UID dikhega)</label>
-                            <input type="url" id="gameMainPhotoInput" placeholder="https://i.ibb.co/main-profile.jpg">
+                            <label for="gameMainPhotoInput">Main Profile Photo (URL ya Upload Image to imgbb)</label>
+                            <div class="url-upload-row">
+                                <input type="url" id="gameMainPhotoInput" placeholder="https://i.ibb.co/main-profile.jpg ya Upload Image dabayein">
+                                <button type="button" class="btn btn-upload" onclick="triggerSingleUpload('gameMainPhotoInput', 'gameMainUploadStatus')">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                                </button>
+                            </div>
+                            <span id="gameMainUploadStatus" class="upload-status-mini"></span>
                         </div>
                         <div class="field full">
-                            <label for="gameExtraPhotosInput">Extra Profile Photos URLs (Main photo ke neeche — ek line mein ek URL ya comma se alag karein; hata doge toh kuch nahi dikhega)</label>
+                            <label for="gameExtraPhotosInput">Extra Profile Photos (URLs ek line mein ek ya Upload Images se add karein)</label>
                             <textarea id="gameExtraPhotosInput" placeholder="https://i.ibb.co/extra1.jpg&#10;https://i.ibb.co/extra2.jpg"></textarea>
+                            <div class="multi-upload-bar">
+                                <span id="gameExtraUploadStatus" class="upload-status-mini"></span>
+                                <button type="button" class="btn btn-upload" onclick="triggerMultiUpload('gameExtraPhotosInput', 'gameExtraUploadStatus')">
+                                    <i class="fa-solid fa-images"></i> Upload Photos
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
                         <button type="submit" class="btn btn-primary">
                             <i class="fa-solid fa-floppy-disk"></i> Save Game Profile
+                        </button>
+                        <button type="button" class="btn btn-ghost" onclick="cleanGameNameInput()">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Fix Box Symbols (▯)
                         </button>
                         <button type="button" class="btn btn-danger" onclick="clearGameProfileData()">
                             <i class="fa-solid fa-trash"></i> Remove All Game Info
@@ -584,7 +658,12 @@
         </div>
     </div>
 
+    <input type="file" id="imgbbSinglePicker" accept="image/*" style="display:none;">
+    <input type="file" id="imgbbMultiPicker" accept="image/*" multiple style="display:none;">
+
     <script>
+        const IMGBB_API_KEY = "780dc15b619fbfd202530d9ee62682db";
+
         (function initTheme() {
             const t = localStorage.getItem("maggie_theme") || "dark";
             document.documentElement.setAttribute("data-theme", t);
@@ -606,6 +685,26 @@
             updateThemeIcon(next);
         };
 
+        window.sanitizeDisplayText = function (raw) {
+            if (!raw) return "";
+            return String(raw)
+                .replace(/[\u0300-\u036f\u0483-\u0489\u1ab0-\u1aff\u1dc0-\u1dff\u20d0-\u20ff\ufe20-\ufe2f]/g, "")
+                .replace(/[\u200b-\u200d\ufeff]/g, "")
+                .replace(/\s{2,}/g, " ")
+                .trim();
+        };
+
+        window.cleanGameNameInput = function () {
+            const inp = document.getElementById("gameLabelInput");
+            if (!inp) return;
+            inp.value = window.sanitizeDisplayText(inp.value);
+            const st = document.getElementById("gameProfileStatus");
+            if (st) {
+                st.style.color = "var(--accent)";
+                st.innerText = "Broken marks remove kar diye gaye hain. Ab Save Game Profile par click karein.";
+            }
+        };
+
         window.switchTab = function (tabId) {
             document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-tab") === tabId));
             document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === tabId));
@@ -620,6 +719,104 @@
             const checked = document.getElementById("xmlIsPaid").checked;
             document.getElementById("xmlPriceWrap").style.display = checked ? "flex" : "none";
         };
+
+        async function uploadFileToImgbb(file) {
+            const formData = new FormData();
+            formData.append("key", IMGBB_API_KEY);
+            formData.append("image", file);
+
+            const res = await fetch("https://api.imgbb.com/1/upload", {
+                method: "POST",
+                body: formData
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success || !data.data) {
+                throw new Error(data?.error?.message || "imgbb upload failed");
+            }
+            return data.data.display_url || data.data.url;
+        }
+
+        let activeSingleTarget = null;
+        let activeMultiTarget = null;
+
+        window.triggerSingleUpload = function (inputId, statusId) {
+            activeSingleTarget = { inputId, statusId };
+            const picker = document.getElementById("imgbbSinglePicker");
+            picker.value = "";
+            picker.click();
+        };
+
+        window.triggerMultiUpload = function (textareaId, statusId) {
+            activeMultiTarget = { textareaId, statusId };
+            const picker = document.getElementById("imgbbMultiPicker");
+            picker.value = "";
+            picker.click();
+        };
+
+        document.getElementById("imgbbSinglePicker").addEventListener("change", async (e) => {
+            const file = e.target.files?.[0];
+            if (!file || !activeSingleTarget) return;
+            const { inputId, statusId } = activeSingleTarget;
+            const inputEl = document.getElementById(inputId);
+            const statusEl = document.getElementById(statusId);
+
+            if (statusEl) {
+                statusEl.style.color = "var(--warm)";
+                statusEl.innerText = `Uploading "${file.name}" to imgbb...`;
+            }
+
+            try {
+                const url = await uploadFileToImgbb(file);
+                if (inputEl) inputEl.value = url;
+                if (statusEl) {
+                    statusEl.style.color = "var(--accent)";
+                    statusEl.innerText = "Uploaded to imgbb! URL set ho gaya.";
+                }
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.style.color = "var(--danger)";
+                    statusEl.innerText = `Upload failed: ${err.message}`;
+                }
+            }
+        });
+
+        document.getElementById("imgbbMultiPicker").addEventListener("change", async (e) => {
+            const files = Array.from(e.target.files || []);
+            if (!files.length || !activeMultiTarget) return;
+            const { textareaId, statusId } = activeMultiTarget;
+            const areaEl = document.getElementById(textareaId);
+            const statusEl = document.getElementById(statusId);
+
+            const uploadedUrls = [];
+            for (let i = 0; i < files.length; i++) {
+                const f = files[i];
+                if (statusEl) {
+                    statusEl.style.color = "var(--warm)";
+                    statusEl.innerText = `Uploading ${i + 1}/${files.length} to imgbb...`;
+                }
+                try {
+                    const url = await uploadFileToImgbb(f);
+                    uploadedUrls.push(url);
+                } catch (err) {
+                    if (statusEl) {
+                        statusEl.style.color = "var(--danger)";
+                        statusEl.innerText = `Error on image ${i + 1}: ${err.message}`;
+                    }
+                    return;
+                }
+            }
+
+            if (areaEl && uploadedUrls.length > 0) {
+                const existing = areaEl.value.trim();
+                areaEl.value = existing
+                    ? `${existing}\n${uploadedUrls.join("\n")}`
+                    : uploadedUrls.join("\n");
+            }
+            if (statusEl) {
+                statusEl.style.color = "var(--accent)";
+                statusEl.innerText = `${uploadedUrls.length} image(s) uploaded to imgbb!`;
+            }
+        });
     </script>
 
     <script type="module">
@@ -641,7 +838,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        const FALLBACK_ICON = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSI4OCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFjMjMzMCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTglIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjI2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZmlsbD0iIzlhYTRiOCI+TUFHR0lFPC90ZXh0Pjwvc3ZnPg==";
+        const FALLBACK_ICON = "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2788%27%20height%3D%2788%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%231c2330%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2758%25%27%20dominant-baseline%3D%27middle%27%20text-anchor%3D%27middle%27%20font-size%3D%2726%27%20font-family%3D%27Arial%2Csans-serif%27%20font-weight%3D%27bold%27%20fill%3D%27%239aa4b8%27%3EMAGGIE%3C/text%3E%3C/svg%3E";
 
         let cachedApps = [];
         let cachedXmls = [];
@@ -662,7 +859,14 @@
             el.innerText = msg;
         }
 
-        // APPS LIST
+        function clearMiniStatuses() {
+            ["appLogoUploadStatus", "xmlThumbUploadStatus", "xmlShotsUploadStatus", "storeLogoUploadStatus", "gameMainUploadStatus", "gameExtraUploadStatus"]
+                .forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = "";
+                });
+        }
+
         onSnapshot(collection(db, "apps"), (snap) => {
             cachedApps = [];
             snap.forEach(d => cachedApps.push({ id: d.id, ...d.data() }));
@@ -671,7 +875,6 @@
             setStatus("appFormStatus", err.message, true);
         });
 
-        // XML & TEMPLATES LIST
         onSnapshot(collection(db, "xmlTemplates"), (snap) => {
             cachedXmls = [];
             snap.forEach(d => cachedXmls.push({ id: d.id, ...d.data() }));
@@ -680,14 +883,13 @@
             setStatus("xmlFormStatus", err.message, true);
         });
 
-        // SETTINGS & GAME PROFILE
         onSnapshot(doc(db, "settings", "general"), (snap) => {
             if (snap.exists()) {
                 const s = snap.data();
-                if (s.storeName) document.getElementById("storeNameInput").value = s.storeName;
+                if (s.storeName) document.getElementById("storeNameInput").value = window.sanitizeDisplayText(s.storeName);
                 if (s.logoUrl) document.getElementById("storeLogoInput").value = s.logoUrl;
-                document.getElementById("gameUidInput").value = s.gameUid || "";
-                document.getElementById("gameLabelInput").value = s.gameLabel || "";
+                document.getElementById("gameUidInput").value = window.sanitizeDisplayText(s.gameUid || "");
+                document.getElementById("gameLabelInput").value = window.sanitizeDisplayText(s.gameLabel || "");
                 document.getElementById("gameMainPhotoInput").value = s.gameMainPhoto || "";
                 document.getElementById("gameExtraPhotosInput").value = Array.isArray(s.gameExtraPhotos)
                     ? s.gameExtraPhotos.join("\n")
@@ -695,7 +897,6 @@
             }
         });
 
-        // SOCIALS
         onSnapshot(collection(db, "socials"), (snap) => {
             const list = document.getElementById("adminSocialsList");
             list.innerHTML = "";
@@ -705,7 +906,7 @@
                 div.className = "admin-item-card";
                 div.innerHTML = `
                     <div>
-                        <div class="styled-name-text" style="font-weight:700;">${data.platform || "Link"}</div>
+                        <div class="styled-name-text" style="font-weight:700;">${window.sanitizeDisplayText(data.platform || "Link")}</div>
                         <div style="font-size:0.78rem; color:var(--muted); word-break:break-all;">${data.url || ""}</div>
                     </div>
                     <div class="item-actions">
@@ -718,13 +919,13 @@
             });
         });
 
-        // APPS CRUD (FREE + PAID)
         window.resetAppForm = function () {
             document.getElementById("editAppId").value = "";
             document.getElementById("appForm").reset();
             document.getElementById("appIsPaid").checked = false;
             document.getElementById("appPrice").value = "29";
             toggleAppPriceInput();
+            clearMiniStatuses();
             document.getElementById("appFormHeading").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add New App';
             document.getElementById("cancelAppEditBtn").style.display = "none";
             setStatus("appFormStatus", "");
@@ -734,11 +935,11 @@
             const item = cachedApps.find(a => a.id === id);
             if (!item) return;
             document.getElementById("editAppId").value = item.id;
-            document.getElementById("appName").value = item.name || "";
+            document.getElementById("appName").value = window.sanitizeDisplayText(item.name || "");
             document.getElementById("appCategory").value = item.category || "";
             document.getElementById("appLogoUrl").value = item.logoUrl || "";
             document.getElementById("appDownloadUrl").value = item.downloadUrl || "";
-            document.getElementById("appDesc").value = item.description || "";
+            document.getElementById("appDesc").value = window.sanitizeDisplayText(item.description || "");
             document.getElementById("appIsPaid").checked = Boolean(item.isPaid);
             document.getElementById("appPrice").value = item.price || 29;
             toggleAppPriceInput();
@@ -756,7 +957,7 @@
             const nextPrice = nextPaid ? Math.max(1, Number(item.price || 29)) : 0;
             try {
                 await updateDoc(doc(db, "apps", id), { isPaid: nextPaid, price: nextPrice });
-                setStatus("appFormStatus", `${item.name || "App"} ab ${nextPaid ? `Paid (₹${nextPrice})` : "Free"} set ho gaya!`);
+                setStatus("appFormStatus", `${window.sanitizeDisplayText(item.name || "App")} ab ${nextPaid ? `Paid (₹${nextPrice})` : "Free"} set ho gaya!`);
             } catch (err) {
                 setStatus("appFormStatus", err.message, true);
             }
@@ -774,11 +975,11 @@
             const price = isPaid ? Math.max(1, Number(document.getElementById("appPrice").value || 29)) : 0;
 
             const payload = {
-                name: document.getElementById("appName").value.trim(),
+                name: window.sanitizeDisplayText(document.getElementById("appName").value),
                 category: document.getElementById("appCategory").value.trim() || "General",
                 logoUrl: cleanUrl(document.getElementById("appLogoUrl").value),
                 downloadUrl: cleanUrl(document.getElementById("appDownloadUrl").value),
-                description: document.getElementById("appDesc").value.trim(),
+                description: window.sanitizeDisplayText(document.getElementById("appDesc").value),
                 isPaid,
                 price
             };
@@ -811,13 +1012,13 @@
                 card.className = "admin-item-card";
                 card.innerHTML = `
                     <div class="item-top">
-                        <img src="${cleanUrl(item.logoUrl) || FALLBACK_ICON}" class="item-thumb" alt="Icon">
+                        <img src="${cleanUrl(item.logoUrl) || FALLBACK_ICON}" class="item-thumb" alt="Icon" onerror="this.src='${FALLBACK_ICON}'">
                         <div style="min-width:0; flex:1;">
                             <span class="badge badge-cat">${item.category || "General"}</span>
                             <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
                                 ${isPaid ? `PAID • ₹${item.price || 29}` : "FREE"}
                             </span>
-                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${item.name || "App"}</div>
+                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${window.sanitizeDisplayText(item.name || "App")}</div>
                         </div>
                     </div>
                     <div class="item-actions">
@@ -836,13 +1037,13 @@
             });
         }
 
-        // XML & TEMPLATES CRUD
         window.resetXmlForm = function () {
             document.getElementById("editXmlId").value = "";
             document.getElementById("xmlForm").reset();
             document.getElementById("xmlIsPaid").checked = true;
             document.getElementById("xmlPrice").value = "9";
             toggleXmlPriceInput();
+            clearMiniStatuses();
             document.getElementById("xmlFormHeading").innerHTML = '<i class="fa-solid fa-plus-circle"></i> Add XML / Template';
             document.getElementById("cancelXmlEditBtn").style.display = "none";
             setStatus("xmlFormStatus", "");
@@ -852,12 +1053,12 @@
             const item = cachedXmls.find(x => x.id === id);
             if (!item) return;
             document.getElementById("editXmlId").value = item.id;
-            document.getElementById("xmlTitle").value = item.title || "";
+            document.getElementById("xmlTitle").value = window.sanitizeDisplayText(item.title || "");
             document.getElementById("xmlType").value = item.type || "XML";
             document.getElementById("xmlThumbUrl").value = item.thumbUrl || "";
             document.getElementById("xmlProtectedLink").value = item.protectedLink || "";
             document.getElementById("xmlPhotos").value = Array.isArray(item.photos) ? item.photos.join("\n") : "";
-            document.getElementById("xmlDesc").value = item.description || "";
+            document.getElementById("xmlDesc").value = window.sanitizeDisplayText(item.description || "");
             document.getElementById("xmlIsPaid").checked = Boolean(item.isPaid);
             document.getElementById("xmlPrice").value = item.price || 9;
             toggleXmlPriceInput();
@@ -890,12 +1091,12 @@
             }
 
             const payload = {
-                title: document.getElementById("xmlTitle").value.trim(),
+                title: window.sanitizeDisplayText(document.getElementById("xmlTitle").value),
                 type: document.getElementById("xmlType").value,
                 thumbUrl: thumb,
                 photos: rawPhotos,
                 protectedLink: cleanUrl(document.getElementById("xmlProtectedLink").value),
-                description: document.getElementById("xmlDesc").value.trim(),
+                description: window.sanitizeDisplayText(document.getElementById("xmlDesc").value),
                 isPaid,
                 price
             };
@@ -929,14 +1130,14 @@
                 card.className = "admin-item-card";
                 card.innerHTML = `
                     <div class="item-top">
-                        <img src="${cleanUrl(item.thumbUrl) || FALLBACK_ICON}" class="item-thumb" alt="Thumb">
+                        <img src="${cleanUrl(item.thumbUrl) || FALLBACK_ICON}" class="item-thumb" alt="Thumb" onerror="this.src='${FALLBACK_ICON}'">
                         <div style="min-width:0; flex:1;">
                             <span class="badge badge-cat">${item.type || "XML"}</span>
                             <span class="badge ${isPaid ? "badge-paid" : "badge-free"}">
                                 ${isPaid ? `PAID • ₹${item.price || 9}` : "FREE"}
                             </span>
                             <span class="badge badge-cat">${shotCount} Photos</span>
-                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${item.title || "Untitled"}</div>
+                            <div class="styled-name-text" style="font-weight:700; margin-top:3px;">${window.sanitizeDisplayText(item.title || "Untitled")}</div>
                         </div>
                     </div>
                     <div class="item-actions">
@@ -952,12 +1153,11 @@
             });
         }
 
-        // SETTINGS, GAME PROFILE & SOCIALS
         document.getElementById("settingsForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             try {
                 await setDoc(doc(db, "settings", "general"), {
-                    storeName: document.getElementById("storeNameInput").value.trim() || "MAGGIE STORE",
+                    storeName: window.sanitizeDisplayText(document.getElementById("storeNameInput").value) || "MAGGIE STORE",
                     logoUrl: cleanUrl(document.getElementById("storeLogoInput").value)
                 }, { merge: true });
                 setStatus("settingsStatus", "Store settings saved!");
@@ -968,8 +1168,8 @@
 
         document.getElementById("gameProfileForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const gameUid = document.getElementById("gameUidInput").value.trim();
-            const gameLabel = document.getElementById("gameLabelInput").value.trim();
+            const gameUid = window.sanitizeDisplayText(document.getElementById("gameUidInput").value);
+            const gameLabel = window.sanitizeDisplayText(document.getElementById("gameLabelInput").value);
             const gameMainPhoto = cleanUrl(document.getElementById("gameMainPhotoInput").value);
             const gameExtraPhotos = document.getElementById("gameExtraPhotosInput").value
                 .split(/[\n,]+/)
@@ -1012,7 +1212,7 @@
             e.preventDefault();
             try {
                 await addDoc(collection(db, "socials"), {
-                    platform: document.getElementById("socialPlatform").value.trim(),
+                    platform: window.sanitizeDisplayText(document.getElementById("socialPlatform").value),
                     url: cleanUrl(document.getElementById("socialUrl").value)
                 });
                 document.getElementById("socialForm").reset();
