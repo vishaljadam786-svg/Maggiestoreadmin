@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MAGGIE STORE - Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root, [data-theme="dark"] {
@@ -100,9 +100,10 @@
         }
 
         .brand-title {
-            font-family: 'Fraunces', serif;
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
         }
 
         .role-pill {
@@ -178,7 +179,6 @@
             padding: 0 20px;
         }
 
-        /* Portal Hero Header (Video inspired) */
         .portal-hero-head {
             text-align: center;
             margin-bottom: 18px;
@@ -194,13 +194,12 @@
         }
 
         .portal-main-heading {
-            font-family: 'Fraunces', serif;
-            font-size: clamp(1.65rem, 3.2vw, 2.35rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(1.6rem, 3.1vw, 2.25rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
         }
 
-        /* Portal Frame Window */
         .portal-window {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -323,10 +322,11 @@
         }
 
         .kpi-val {
-            font-family: 'Fraunces', serif;
-            font-size: 1.45rem;
-            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
             margin-top: 4px;
+            letter-spacing: -0.02em;
         }
 
         .charts-split {
@@ -422,12 +422,11 @@
 
         .ring-num {
             position: absolute;
-            font-family: 'Fraunces', serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 1.25rem;
-            font-weight: 700;
+            font-weight: 800;
         }
 
-        /* Code Preview Window (Video inspired bottom card) */
         .code-preview-card {
             background: #0d1118;
             border: 1px solid var(--border);
@@ -466,7 +465,6 @@
             white-space: pre;
         }
 
-        /* Existing Tabs & Forms */
         .tabs-row {
             display: flex;
             gap: 8px;
@@ -515,8 +513,10 @@
         }
 
         .panel-card h2 {
-            font-family: 'Fraunces', serif;
-            font-size: 1.35rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.28rem;
+            font-weight: 800;
+            letter-spacing: -0.015em;
             margin-bottom: 14px;
         }
 
@@ -736,7 +736,6 @@
             <h1 class="portal-main-heading">MAGGIE STORE Portal</h1>
         </div>
 
-        <!-- Portal Dashboard Window -->
         <section class="portal-window" aria-label="Dashboard Overview">
             <aside class="portal-sidebar">
                 <div class="portal-side-brand">
@@ -747,7 +746,7 @@
                     </div>
                 </div>
                 <button type="button" class="portal-nav-btn active" data-pnav="overview" onclick="selectPortalNav('overview', this)">
-                    <i class="fa-solid fa-chart-pie"></i> Visão geral
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard Overview
                 </button>
                 <button type="button" class="portal-nav-btn" data-pnav="apps" onclick="selectPortalNav('apps', this)">
                     <i class="fa-solid fa-mobile-screen"></i> Apps (Free / Paid)
@@ -763,11 +762,11 @@
             <div class="portal-body">
                 <div class="portal-topbar">
                     <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-                        <h2 id="portalViewTitle" style="font-family:'Fraunces',serif; font-size:1.25rem; margin:0;">Visão geral</h2>
-                        <input type="text" id="portalQuickFilter" class="portal-search" placeholder="Buscar app / XML...">
+                        <h2 id="portalViewTitle" style="font-size:1.2rem; font-weight:800; margin:0;">Dashboard Overview</h2>
+                        <input type="text" id="portalQuickFilter" class="portal-search" placeholder="Search app / XML...">
                     </div>
                     <button type="button" class="btn btn-coral" onclick="focusQuickNewItem()">
-                        <i class="fa-solid fa-plus"></i> Novo item
+                        <i class="fa-solid fa-plus"></i> Add New Item
                     </button>
                 </div>
 
@@ -834,7 +833,6 @@
             </div>
         </section>
 
-        <!-- Code Preview Card (Video inspired) -->
         <section class="code-preview-card" aria-label="Live Store State Snippet">
             <div class="code-win-bar">
                 <span class="mac-dot" style="background:#ff5f56;"></span>
@@ -1194,7 +1192,7 @@ syncPortalMetrics({ apps: apps.size, xmlPacks: xmlPacks.size });</pre>
             if (btnEl) btnEl.classList.add("active");
 
             const titleMap = {
-                overview: "Visão geral",
+                overview: "Dashboard Overview",
                 apps: "Apps (Free / Paid)",
                 xml: "XML & Templates",
                 settings: "Store & Socials"
@@ -1206,7 +1204,7 @@ syncPortalMetrics({ apps: apps.size, xmlPacks: xmlPacks.size });</pre>
             };
 
             const titleEl = document.getElementById("portalViewTitle");
-            if (titleEl) titleEl.innerText = titleMap[navKey] || "Visão geral";
+            if (titleEl) titleEl.innerText = titleMap[navKey] || "Dashboard Overview";
 
             if (tabMap[navKey]) {
                 window.switchTab(tabMap[navKey]);
